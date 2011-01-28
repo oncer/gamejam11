@@ -1,0 +1,15 @@
+GAME DESIGN
+
+Victim (NPC)
+Killer (Player)
+Bit
+
+Bits spawn randomly on the screen. Victims are controlled by the
+computer, walk around semi-randomly and try to eat bits.
+When a victim has collected enough bits, it splits in two.
+Killer can shoot Victims with a gun and can also eat bits (for points).
+When a Victim is killed, it explodes into bits, which can be eaten
+by other Victims.
+
+Goal is to control the Victim population and eventually kill all of them
+(Extinction).
