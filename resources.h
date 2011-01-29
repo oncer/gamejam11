@@ -1,3 +1,6 @@
+#ifndef _RESOURCES_H_
+#define _RESOURCES_H_
+
 #include <allegro5/allegro5.h>
 
 /* Contains game assets from files (images, sounds, ...) */
@@ -35,3 +38,5 @@ Resources(const Resources & );
 static Resources* theInstance;
 
 };
+
+#endif

@@ -30,6 +30,7 @@ void draw();
 
 Player* player;
 VictimList* victims;
+
 LevelObjectList* levelObjects;
 FoodList* foods;
 

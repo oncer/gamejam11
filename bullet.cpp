@@ -1,17 +1,19 @@
 #include <allegro5/allegro5.h>
 #include <iostream>
 #include <math.h>
+#include "victim.h"
 #include "bullet.h"
 #include "resources.h"
+#include "level.h"
 
 Bullet::Bullet(PixelCoords pos)
 {
 	position = pos;
-	dead = false;
+	isDead = false;
 	steps = 0;
-	maxSteps = 240;
+	maxSteps = 60;
 	dx = dy = 0;
-	dead = false;
+	isDead = false;
 }
 
 void Bullet::nextAnimFrame()
@@ -32,12 +34,27 @@ bool Bullet::canMove()
 	return true;
 }
 
+bool Bullet::collideWithVictim(Victim *v) {
+	return position.x < v->position.x + 32 &&
+		position.y < v->position.y + 32 &&
+		position.x > v->position.x &&
+		position.y > v->position.y;
+}
+
 void Bullet::doMove()
 {
 	position.x += dx;
 	position.y += dy;
 	steps++;
 	if (steps > maxSteps) {
-		dead = true;
+		isDead = true;
+	}
+	
+	VictimList *victims = Game::globalGame->currentLevel->victims;
+	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
+		Victim *v = *it;
+		if (collideWithVictim(v)) {
+			v->isDead = true;
+		}
 	}
 }

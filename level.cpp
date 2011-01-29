@@ -77,7 +77,7 @@ void Level::update()
 
 	for (BulletList::iterator it = bullets->begin(); it != bullets->end();) {
 		Bullet* bullet = *it;
-		if (bullet->dead) {
+		if (bullet->isDead) {
 			it = bullets->erase(it);
 			delete bullet;
 		}
