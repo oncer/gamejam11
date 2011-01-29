@@ -44,6 +44,7 @@ void Level::update()
 			food = *it;
 		}
 		if (it == foods->end()) break;
+		food->doMove();
 		food->nextAnimFrame();
 	}
 	

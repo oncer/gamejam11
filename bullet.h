@@ -27,8 +27,6 @@ private:
 int maxSteps;
 int steps;
 
-bool collideWithVictim(Victim *v);
-
 };
 
 #endif

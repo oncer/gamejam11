@@ -24,6 +24,8 @@ int fireTicks;
 int hunger; // if this reaches HUNGER_LIMIT, player dies
 bool isDead; // set after death animation concludes. => Game Over
 int keyBits;
+int stickyDiagonal; // make it not almost impossible to have a diagonal
+					// shoot direction while standing still
 
 void nextAnimFrame();
 void draw();
