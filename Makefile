@@ -1,14 +1,16 @@
 CC=g++
-OBJS=$(shell find . -maxdepth 1 -name "*.cpp" | sed s/.cpp/.o/)
+SOURCES=$(wildcard *.cpp)
+OBJS=$(SOURCES:.cpp=.o)
+HDRS=$(shell find . -maxdepth 1 -name "*.h")
 FLAGS=-g
-LDFLAGS=$(shell pkg-config --libs allegro-5.0 allegro_image-5.0 allegro_primitives-5.0)
+LDFLAGS=$(shell pkg-config --libs allegro-5.0 allegro_image-5.0 allegro_primitives-5.0 allegro_ttf-5.0)
 BIN=./game
 RM=rm
 EXEC=exec
 
 all: $(BIN)
 
-.cpp.o:
+%.o: %.cpp
 	$(CC) $< -c $(FLAGS)
 
 $(BIN): $(OBJS)

@@ -7,6 +7,7 @@
 #include "level.h"
 
 Bullet::Bullet(PixelCoords pos)
+    :bulletAnim(4, Resources::BULLET_FRAMES, true)
 {
 	position = pos;
 	isDead = false;
@@ -18,12 +19,13 @@ Bullet::Bullet(PixelCoords pos)
 
 void Bullet::nextAnimFrame()
 {
+    bulletAnim.update();
 }
 
 void Bullet::draw()
 {
 	Resources* resources = Resources::instance();
-	int currentFrame = 0;
+	int currentFrame = bulletAnim.getCurrentFrame();
 	ALLEGRO_BITMAP* currentFrameImg = resources->imgBullet[currentFrame];
 	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
 }
@@ -36,10 +38,10 @@ bool Bullet::canMove()
 
 void Bullet::doMove()
 {
-	position.x += dx;
-	position.y += dy;
-	steps++;
-	if (steps > maxSteps) {
-		isDead = true;
-	}
+    position.x += dx;
+    position.y += dy;
+    steps++;
+    if (steps > maxSteps) {
+        isDead = true;
+    }
 }

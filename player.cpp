@@ -43,7 +43,7 @@ void Player::increaseHunger()
 void Player::update()
 {
 	if (stickyDiagonal) stickyDiagonal--;
-	if (ix != 0 || iy != 0) {
+	if (!ifire && (ix != 0 || iy != 0)) {
 		if (stickyDiagonal && vx && vy) {
 			// assume the keys are e.g. left-down,up-down,up-up,left-up
 			// we want to keep shooting up/left, not straight left
@@ -57,12 +57,14 @@ void Player::update()
 		}
 	}
 
-	if (ifire && fireTicks == 0 && (vx != 0 || vy != 0)) {
+	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
 		Bullet *bullet = new Bullet(p);
-		float v = sqrt(vx * vx + vy * vy);
-		float dx = vx / v;
-		float dy = vy / v;
+        float dx = ix + (rand()%100 - 50) / 700.0;
+        float dy = iy + (rand()%100 - 50) / 700.0;
+		float v = sqrt(dx * dx + dy * dy);
+		dx = dx / v;
+		dy = dy / v;
 		bullet->dx = dx * Bullet::BASE_SPEED;
 		bullet->dy = dy * Bullet::BASE_SPEED;
 		fireTicks = fireRate;
@@ -81,7 +83,7 @@ bool Player::canMove()
 
 void Player::doMove()
 {
-	if (!isDead && (ix || iy)) {
+	if (!isDead && !ifire && (ix || iy)) {
 		float dx = ix;
 		float dy = iy;
 		float d = std::sqrt(dx * dx + dy * dy);

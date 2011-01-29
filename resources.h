@@ -19,8 +19,8 @@ void loadEverything();
 
 static const int PLAYER_FRAMES = 1;
 static const int VICTIM_FRAMES = 2;
-static const int BULLET_FRAMES = 1; // pulsating maybe?
-static const int EXPLOSION_FRAMES = 1;
+static const int BULLET_FRAMES = 4;
+static const int EXPLOSION_FRAMES = 6;
 static const int FOOD_VARIATIONS = 3;
 static const int BIT_VARIATIONS = 1; // how many different kinds of bits there are
 
