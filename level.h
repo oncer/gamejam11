@@ -35,6 +35,8 @@ bool isInLevelBoundaries(PixelCoords coords);
 int pixelWidth;
 int pixelHeight;
 
+int levelBackground;
+
 Player* player;
 VictimList* victims;
 

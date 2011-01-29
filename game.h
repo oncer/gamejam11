@@ -29,6 +29,7 @@ GameState state;
 void init ();
 void mainLoop ();
 void shutdown ();
+void restart ();
 
 private:
 
