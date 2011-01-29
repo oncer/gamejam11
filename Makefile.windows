@@ -1,0 +1,21 @@
+CC=g++
+SRC=$(shell find . -name "*.c*")
+LDFLAGS=-lallegro-5.0.0-RC4-monolith-mt -L dep/lib
+FLAGS=-I dep/include/
+BIN=./game.exe
+RM=rm
+EXEC=exec
+
+all: $(BIN)
+
+.cpp.o:
+	$(CC) $< -c $(FLAGS)
+
+$(BIN): $(OBJS)
+	$(CC) -o $@ $(OBJS) $(LDFLAGS)
+
+run:
+	$(EXEC) $(BIN)
+
+clean:
+	$(RM) $(BIN)
