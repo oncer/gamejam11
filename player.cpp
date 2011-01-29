@@ -41,4 +41,20 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 				break;
 		}
 	}
+	if (event->type == ALLEGRO_EVENT_KEY_UP) {
+		switch (event->keyboard.keycode) {
+			case ALLEGRO_KEY_LEFT:
+				ix = 0;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				ix = 0;
+				break;
+			case ALLEGRO_KEY_UP:
+				iy = 0;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				iy = 0;
+				break;
+		}
+	}
 }
