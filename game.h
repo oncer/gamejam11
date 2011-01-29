@@ -10,6 +10,9 @@ class Game
 {
 
 public:
+
+static Game *globalGame;
+Level* currentLevel;
 	
 void init ();
 void mainLoop ();
@@ -24,7 +27,6 @@ static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
 ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
-Level* currentLevel;
 
 ALLEGRO_EVENT_QUEUE *queue;
 

@@ -18,9 +18,10 @@ void Player::nextAnimFrame()
 
 	if (ifire && fireTicks == 0) {
 		Bullet *bullet = new Bullet(position);
-		bullet->dx = vx;
-		bullet->dy = vy;
+		bullet->dx = vx * 5;
+		bullet->dy = vy * 5;
 		fireTicks = fireRate;
+		Game::globalGame->currentLevel->bullets->push_back(bullet);
 	}
 	
 	if (fireTicks > 0)

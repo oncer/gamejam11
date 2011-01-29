@@ -1,4 +1,5 @@
 #include <allegro5/allegro5.h>
+#include <iostream>
 #include <math.h>
 #include "level.h"
 
@@ -7,16 +8,15 @@ Level::Level()
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
-<<<<<<< HEAD
+
 	bullets = new BulletList();
-=======
+
 	foods = new FoodList();
 	
 	pixelWidth = 640;  // TODO: dynamic
 	pixelHeight = 480; // TODO: dynamic
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
->>>>>>> 313e4c50e9a7992c51c64ef55192399df30995bb
 	
 	/* DEMO CODE */
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
@@ -67,6 +67,7 @@ void Level::update()
 		}
 		else
 			it++;
+	}
 
 	foodTimer--;
 	if (foodTimer <= 0) {
@@ -90,6 +91,10 @@ void Level::draw()
 		(*it)->draw();
 	}
 	player->draw();
+	
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
+		(*it)->draw();
+	}
 }
 
 void Level::spawnFood()
