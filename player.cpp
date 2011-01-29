@@ -1,7 +1,30 @@
 #include "player.h"
 
+Player::Player(PixelCoords pos)
+{
+	position = pos;
+	fireRate = 10;
+	fireTicks = 0;
+	ix = iy = ifire = 0;
+	vx = vy = 0;
+}
+
 void Player::nextAnimFrame()
 {
+	if (ix != 0 || iy != 0) {
+		vx = ix;
+		vy = iy;
+	}
+
+	if (ifire && fireTicks == 0) {
+		Bullet *bullet = new Bullet(position);
+		bullet->dx = vx;
+		bullet->dy = vy;
+		fireTicks = fireRate;
+	}
+	
+	if (fireTicks > 0)
+		fireTicks--;
 }
 
 void Player::draw()
@@ -39,6 +62,10 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 			case ALLEGRO_KEY_DOWN:
 				iy = 1;
 				break;
+			case ALLEGRO_KEY_SPACE:
+			case ALLEGRO_KEY_LSHIFT:
+				ifire = 1;
+				break;
 		}
 	}
 	if (event->type == ALLEGRO_EVENT_KEY_UP) {
@@ -54,6 +81,10 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 				break;
 			case ALLEGRO_KEY_DOWN:
 				iy = 0;
+				break;
+			case ALLEGRO_KEY_SPACE:
+			case ALLEGRO_KEY_LSHIFT:
+				ifire = 0;
 				break;
 		}
 	}

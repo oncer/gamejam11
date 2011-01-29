@@ -8,9 +8,11 @@ class Level;
 #include "player.h"
 #include "victim.h"
 #include "levelobject.h"
+#include "bullet.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
+typedef std::vector<Bullet*> BulletList;
 
 /* Contains runtime level info */
 class Level
@@ -26,6 +28,7 @@ public:
 	Player* player;
 	VictimList* victims;
 	LevelObjectList* levelObjects;
+	BulletList* bullets;
 
 };
 

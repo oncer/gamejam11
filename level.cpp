@@ -3,9 +3,10 @@
 
 Level::Level()
 {
-	player = new Player();
+	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
+	bullets = new BulletList();
 	
 	/* DEMO CODE */
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
@@ -32,6 +33,24 @@ void Level::update()
 			victim->doMove();
 		}
 		victim->nextAnimFrame();
+	}
+	
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
+		Bullet* bullet = *it;
+		if (bullet->canMove()) {
+			bullet->doMove();
+		}
+		bullet->nextAnimFrame();
+	}
+	
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end();) {
+		Bullet* bullet = *it;
+		if (bullet->dead) {
+			it = bullets->erase(it);
+			delete bullet;
+		}
+		else
+			it++;
 	}
 }
 

@@ -8,10 +8,15 @@ class Player;
 
 class Player
 {
-	int ix, iy; /* Input direction. */
+	int ix, iy; /* input direction */
+	int ifire; /* fire button input */
+	int vx, vy; /* view direction */
 	PixelCoords position;
-	
+	int fireRate; /* how many ticks for next bullet */
+	int fireTicks;
 public:
+
+Player(PixelCoords pos);
 
 void nextAnimFrame();
 void draw();
