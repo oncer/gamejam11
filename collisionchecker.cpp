@@ -87,3 +87,25 @@ void CollisionChecker::playerVsVictim()
 		}
 	}
 }
+
+void CollisionChecker::victimVsBullet()
+{
+	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
+		Victim* victim = *it;
+		if (victim->isDying || victim->isDead) {
+			continue;
+		}
+		
+		for (BulletList::iterator it = level->bullets->begin(); it != level->bullets->end(); it++) {
+			Bullet* bullet = *it;
+			if (bullet->dead) {
+				continue;
+			}
+			
+			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
+				victim->isDying = true;
+				bullet->dead = true;
+			}
+		}
+	}
+}

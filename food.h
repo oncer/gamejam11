@@ -10,8 +10,9 @@ class Food
 
 public:
 
-Food(PixelCoords pos, int val, bool playerEdible = true);
+Food(int var, PixelCoords pos, int val, bool playerEdible = true);
 
+int variation;
 PixelCoords position;
 int value;
 bool isPlayerEdible; // true if player can eat this

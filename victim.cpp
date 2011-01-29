@@ -15,6 +15,7 @@ Victim::Victim(PixelCoords pos)
 
 void Victim::nextAnimFrame()
 {
+	if (isDying) isDead = true; // TODO: die animation
 }
 
 void Victim::draw()

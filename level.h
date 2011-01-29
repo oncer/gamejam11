@@ -32,6 +32,7 @@ Player* player;
 VictimList* victims;
 LevelObjectList* levelObjects;
 FoodList* foods;
+BulletList* bullets;
 
 private:
 
@@ -45,8 +46,6 @@ int foodTimer; // Ticks remaining until food spawns
 void spawnFood();
 PixelCoords randomLevelCoords(); // returns valid random coords on level, not in any obstacle
 
-public:
-	BulletList* bullets;
 };
 
 #endif
