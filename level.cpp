@@ -65,6 +65,9 @@ void Level::update()
 		if (victim->canMove()) {
 			victim->doMove();
 		}
+		if (victim->splitCountdown <= 0) {
+			victims->push_back(new Victim(victim->split()));
+		}
 		victim->nextAnimFrame();
 	}
 

@@ -19,16 +19,19 @@ void feed(int foodValue);
 bool canMove();
 void doMove();
 void explode();
+Victim split();
 
 PixelCoords position;
 bool isDying;
 bool isDead;
 Plan plan;
 PixelCoords target; // This is where we want to go
+int splitCountdown; // How many food items we need to consume until split
 
 private:
 
 static const float BASE_SPEED = 1.0;
+static const int FOOD_TO_SPLIT = 3;
 
 float speed;
 
