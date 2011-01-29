@@ -12,6 +12,20 @@ void Player::draw()
 	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
 }
 
+void Player::feed(int foodValue)
+{
+	hunger -= foodValue;
+	if (hunger < 0) hunger = 0;
+}
+
+void Player::increaseHunger()
+{
+	hunger++;
+	if (hunger >= HUNGER_LIMIT) {
+		isDead = true;
+	}
+}
+
 bool Player::canMove()
 {
 	// TODO: collision check (use CollisionChecker or something as parameter)

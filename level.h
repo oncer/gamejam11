@@ -30,7 +30,7 @@ Player* player;
 
 private:
 
-static const int BASE_FOOD_INTERVAL = 900;
+static const int BASE_FOOD_INTERVAL = 600;
 
 VictimList* victims;
 LevelObjectList* levelObjects;
