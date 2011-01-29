@@ -3,7 +3,7 @@
 /* Contains game assets from files (images, sounds, ...) */
 class Resources
 {
-	
+
 public:
 
 Resources();
@@ -16,6 +16,7 @@ static const int BIT_VARIATIONS = 1; // how many different kinds of bits there a
 
 enum Frame { FRAME_FRONT }; // anim frame indices
 
+ALLEGRO_BITMAP* imgTitle;
 ALLEGRO_BITMAP* imgPlayer[PLAYER_FRAMES];
 ALLEGRO_BITMAP* imgVictim[VICTIM_FRAMES];
 ALLEGRO_BITMAP* imgBullet;
