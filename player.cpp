@@ -46,13 +46,16 @@ void Player::update()
 		vy = iy;
 	}
 
-	if (ifire && fireTicks == 0) {
+	if (ifire && fireTicks == 0 && (vx != 0 || vy != 0)) {
 		PixelCoords p = position;
 		p.x += 16;
 		p.y += 16;
 		Bullet *bullet = new Bullet(p);
-		bullet->dx = vx * Bullet::BASE_SPEED;
-		bullet->dy = vy * Bullet::BASE_SPEED;
+		float v = sqrt(vx * vx + vy * vy);
+		float dx = vx / v;
+		float dy = vy / v;
+		bullet->dx = dx * Bullet::BASE_SPEED;
+		bullet->dy = dy * Bullet::BASE_SPEED;
 		fireTicks = fireRate;
 		Game::globalGame->currentLevel->bullets->push_back(bullet);
 	}
