@@ -83,23 +83,25 @@ void Player::getSpeed(float *dx, float *dy) {
 
 bool Player::canMove()
 {
-	if (ix == 0 && iy == 0) return true;
 	CollisionChecker *c = Game::globalGame->collisionChecker;
-	float dx, dy;
-	getSpeed(&dx, &dy);
-	PixelCoords targetPos = position;
-	targetPos.x += dx;
-	targetPos.y += dy;
-	return c->playerCanMoveTo(targetPos);
+	return c->playerCanMoveTo(position);
 }
 
 void Player::doMove()
 {
-	if (!isDead && (ix || iy)) {
+	if (!isDead && (ix || iy) && !ifire) {
 		float dx, dy;
 		getSpeed(&dx, &dy);
+		
 		position.x += dx;
+		if (!canMove()) {
+			position.x -= dx;
+		}
+		
 		position.y += dy;
+		if (!canMove()) {
+			position.y -= dy;
+		}
 	}
 }
 	
@@ -150,6 +152,7 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 			case ALLEGRO_KEY_SPACE:
 			case ALLEGRO_KEY_LSHIFT:
 				ifire = 0;
+				keyBits &= ~16;
 				break;
 		}
 	}

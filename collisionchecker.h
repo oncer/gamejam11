@@ -18,12 +18,15 @@ public:
 
 CollisionChecker(Level* lvl);
 
+bool foodCanMoveTo(PixelCoords position);
+bool bulletCanMoveTo(PixelCoords position);
 bool playerCanMoveTo(PixelCoords position);
 bool victimCanMoveTo(PixelCoords position);
 void playerPickupFood();
 void victimPickupFood();
 void playerVsVictim();
 void victimVsBullet();
+bool canMoveTo(PixelCoords position, int w, int h);
 
 private:
 

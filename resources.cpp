@@ -68,6 +68,6 @@ void Resources::loadEverything()
 	imgBackground[0] = al_load_bitmap("./gfx/background 2.png");
 	imgBackground[1] = al_load_bitmap("./gfx/background 3.png");
 	
-	imgLevelObject[0] = al_load_bitmap("./gfx/rock.png");
+	imgLevelObject[0] = al_load_bitmap("./gfx/little rock.png");
 }
 

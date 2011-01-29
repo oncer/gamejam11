@@ -24,8 +24,11 @@ Level::Level()
 	/* DEMO CODE */
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
 	victims->push_back(new Victim((PixelCoords) {500, 30}));
+	
 	levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
-	levelObjects->push_back(new LevelObject((PixelCoords) {200, 200}));
+	
+	for (int i = 0; i < 4; i++)
+		levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
 }
 
 Level::~Level()
@@ -52,9 +55,7 @@ void Level::update()
 		food->nextAnimFrame();
 	}
 	
-	if (player->canMove()) {
-		player->doMove();
-	}
+	player->doMove();
 	player->update();
 	player->nextAnimFrame();
 	

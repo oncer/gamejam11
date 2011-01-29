@@ -22,9 +22,18 @@ void Food::doMove()
 {
 	float d = dx * dx + dy * dy;
 	if (d > 0.1) {
+		CollisionChecker *c = Game::globalGame->collisionChecker;
 		Level *level = Game::globalGame->currentLevel;
 		position.x += dx;
+		if (!c->foodCanMoveTo(position)) {
+			position.x -= dx;
+			dx = -dx;
+		}
 		position.y += dy;
+		if (!c->foodCanMoveTo(position)) {
+			position.y -= dy;
+			dy = -dy;
+		}
 		dx *= 0.95;
 		dy *= 0.95;
 		if (position.x > level->pixelWidth - Level::BORDER_ZONE) {

@@ -18,16 +18,30 @@ CollisionChecker::CollisionChecker(Level* lvl)
 	level = lvl;
 }
 
-bool CollisionChecker::playerCanMoveTo(PixelCoords position)
-{
+bool CollisionChecker::canMoveTo(PixelCoords position, int w, int h) {
 	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
 		LevelObject *lob = *it;
 		if (boxCollision(lob->position, position, BLOCK_WIDTH, BLOCK_HEIGHT,
-			PLAYER_WIDTH, PLAYER_HEIGHT)) {
+			w, h)) {
 			return false;
 		}
 	}
 	return true;
+}
+
+bool CollisionChecker::playerCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, PLAYER_WIDTH, PLAYER_HEIGHT);
+}
+
+bool CollisionChecker::foodCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, FOOD_WIDTH, FOOD_HEIGHT);
+}
+
+bool CollisionChecker::bulletCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, BULLET_WIDTH, BULLET_HEIGHT);
 }
 
 bool CollisionChecker::victimCanMoveTo(PixelCoords position)
@@ -111,3 +125,4 @@ void CollisionChecker::victimVsBullet()
 		}
 	}
 }
+
