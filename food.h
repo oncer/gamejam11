@@ -19,8 +19,11 @@ bool isPlayerEdible; // true if player can eat this
 bool isConsumed;
 bool isDead;
 
+float dx, dy;
+
 void nextAnimFrame();
 void draw();
+void doMove();
 
 private:
 

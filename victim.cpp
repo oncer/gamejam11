@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <math.h>
+#include <cstdlib>
 #include "level.h"
 #include "victim.h"
 #include "resources.h"
@@ -62,16 +63,19 @@ void Victim::doMove()
 
 void Victim::explode() {
 	int n = 8;
-	float r = 50;
 	for (int i = 0; i < n; i++) {
 		float a = 2 * 3.14 * i / n;
 		float x = cos(a);
 		float y = sin(a);
+		float r = 40 + std::rand() % 40; 
+
 		FoodList *foods = Game::globalGame->currentLevel->foods;
 		PixelCoords p = position;
 		p.x += x * r;
 		p.y += y * r;
 		Food *f = new Food(0, p, 1000, false);
+		f->dx = x * r / 10;
+		f->dy = y * r / 10;
 		foods->push_back(f);
 	}
 }

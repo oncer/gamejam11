@@ -41,9 +41,19 @@ void Player::increaseHunger()
 
 void Player::update()
 {
+	if (stickyDiagonal) stickyDiagonal--;
 	if (ix != 0 || iy != 0) {
-		vx = ix;
-		vy = iy;
+		if (stickyDiagonal && vx && vy) {
+			// assume the keys are e.g. left-down,up-down,up-up,left-up
+			// we want to keep shooting up/left, not straight left
+		}
+		else {
+			vx = ix;
+			vy = iy;
+			if (vx && vy) {
+				stickyDiagonal = 10;
+			}
+		}
 	}
 
 	if (ifire && fireTicks == 0 && (vx != 0 || vy != 0)) {
