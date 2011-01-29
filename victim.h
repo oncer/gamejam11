@@ -18,6 +18,7 @@ void draw();
 void feed(int foodValue);
 bool canMove();
 void doMove();
+void explode();
 
 PixelCoords position;
 bool isDying;

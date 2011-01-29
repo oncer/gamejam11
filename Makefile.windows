@@ -1,7 +1,7 @@
 CC=g++
-SRC=$(shell find . -name "*.c*")
+OBJS=$(shell find . -maxdepth 1 -name "*.cpp" | sed s/.cpp/.o/)
+FLAGS=-g -I dep/include/
 LDFLAGS=-lallegro-5.0.0-RC4-monolith-mt -L dep/lib
-FLAGS=-I dep/include/
 BIN=./game.exe
 RM=rm
 EXEC=exec

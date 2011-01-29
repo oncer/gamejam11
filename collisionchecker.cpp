@@ -105,6 +105,7 @@ void CollisionChecker::victimVsBullet()
 			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
 				victim->isDying = true;
 				bullet->isDead = true;
+				victim->explode();
 			}
 		}
 	}

@@ -34,13 +34,6 @@ bool Bullet::canMove()
 	return true;
 }
 
-bool Bullet::collideWithVictim(Victim *v) {
-	return position.x < v->position.x + 32 &&
-		position.y < v->position.y + 32 &&
-		position.x > v->position.x &&
-		position.y > v->position.y;
-}
-
 void Bullet::doMove()
 {
 	position.x += dx;
@@ -48,13 +41,5 @@ void Bullet::doMove()
 	steps++;
 	if (steps > maxSteps) {
 		isDead = true;
-	}
-	
-	VictimList *victims = Game::globalGame->currentLevel->victims;
-	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
-		Victim *v = *it;
-		if (collideWithVictim(v)) {
-			v->isDead = true;
-		}
 	}
 }
