@@ -30,6 +30,8 @@ Resources::Resources()
 
 Resources::~Resources()
 {
+	al_destroy_font(fontNormal);
+	al_destroy_font(fontBig);
 	al_destroy_bitmap(imgTitle);
 	for (int i = 0; i < PLAYER_FRAMES; i++) al_destroy_bitmap(imgPlayer[i]);
 	for (int i = 0; i < VICTIM_FRAMES; i++) al_destroy_bitmap(imgVictim[i]);
@@ -42,6 +44,9 @@ Resources::~Resources()
 
 void Resources::loadEverything()
 {
+	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 12, 0);
+	fontBig = al_load_font("./gfx/DejaVuSans.ttf", 64, 0);
+
 	imgTitle = al_load_bitmap("./gfx/title.png");
 
 	imgPlayer[0] = al_load_bitmap("./gfx/killa.png");

@@ -8,6 +8,14 @@
 #include "collisionchecker.h"
 #include "ai.h"
 
+enum GameState {
+	GS_Title,
+	GS_Playing,
+	GS_GameOver,
+	GS_LevelWon,
+	GS_GameWon
+};
+
 /* This class contains the main loop and owns game resources */
 class Game
 {
@@ -16,6 +24,7 @@ public:
 
 static Game *globalGame;
 Level* currentLevel;
+GameState state;
 
 void init ();
 void mainLoop ();

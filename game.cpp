@@ -3,6 +3,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <math.h>
 #include <time.h>
+#include "resources.h"
 #include "game.h"
 
 Game *Game::globalGame;
@@ -17,6 +18,8 @@ void Game::init ()
 	al_install_mouse(); // TODO: maybe not needed
 	al_install_keyboard();
 	al_init_image_addon();
+	al_init_font_addon();
+	al_init_ttf_addon();
 	al_init_primitives_addon(); // TODO: maybe not needed
 	srand(time(0));
 	
@@ -27,6 +30,7 @@ void Game::init ()
 	hud = new Hud();
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
+	state = GS_Title;
 	
 	timer = al_create_timer(1.0 / FPS);
 	
@@ -48,16 +52,30 @@ void Game::mainLoop ()
 
 		al_wait_for_event(queue, &event);
 		
-		if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-			break;
+		if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+	
+				break;
+			}
+			else {
+				if (state == GS_Title) {
+					state = GS_Playing;
+					continue;
+				}
+			}
+			
+			if (event.keyboard.keycode == ALLEGRO_KEY_F1) {
+				state = GS_GameOver;
+			}
 		}
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-		
-		/* let the player handle whatever events he wants */
-		currentLevel->player->handleEvent(&event);
-		
+
+		if (state == GS_Playing) {
+			/* let the player handle whatever events he wants */
+			currentLevel->player->handleEvent(&event);
+		}
 		if (event.type == ALLEGRO_EVENT_TIMER) {
 			update();
 			redraw = true;
@@ -86,20 +104,39 @@ void Game::mainLoop ()
 
 void Game::update()
 {
-	ai->planEverything();
-	currentLevel->update();
-	collisionChecker->playerPickupFood();
-	collisionChecker->victimPickupFood();
-	collisionChecker->victimVsBullet();
-	collisionChecker->playerVsVictim();
-	hud->setHunger(currentLevel->player->hunger);
-	hud->setMaxHunger(Player::HUNGER_LIMIT);
+	if (state == GS_Playing) {
+		ai->planEverything();
+		currentLevel->update();
+		collisionChecker->playerPickupFood();
+		collisionChecker->victimPickupFood();
+		collisionChecker->victimVsBullet();
+		collisionChecker->playerVsVictim();
+		hud->setHunger(currentLevel->player->hunger);
+		hud->setMaxHunger(Player::HUNGER_LIMIT);
+		
+		if (currentLevel->player->isDead) {
+			state = GS_GameOver;
+		}
+	}
 }
 
 void Game::draw()
 {
-	currentLevel->draw();
-	hud->draw();
+	Resources* resources = Resources::instance();
+	if (state == GS_Title) {
+		al_draw_bitmap(resources->imgTitle, 0, 0, 0);
+	}
+	else if (state == GS_Playing) {
+		currentLevel->draw();
+		hud->draw();
+	}
+	else if (state == GS_GameOver) {
+		currentLevel->draw();
+		hud->draw();
+		
+		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
+			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
+	}
 }
 
 void Game::shutdown ()

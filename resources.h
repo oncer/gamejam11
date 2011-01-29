@@ -2,6 +2,8 @@
 #define _RESOURCES_H_
 
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 /* Contains game assets from files (images, sounds, ...) */
 class Resources
@@ -31,6 +33,9 @@ ALLEGRO_BITMAP* imgBullet[BULLET_FRAMES];
 ALLEGRO_BITMAP* imgExplosion[EXPLOSION_FRAMES];
 ALLEGRO_BITMAP* imgFood[FOOD_VARIATIONS];
 ALLEGRO_BITMAP* imgBit[BIT_VARIATIONS];
+
+ALLEGRO_FONT* fontNormal;
+ALLEGRO_FONT* fontBig;
 
 private:
 
