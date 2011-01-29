@@ -6,6 +6,10 @@ void Player::nextAnimFrame()
 
 void Player::draw()
 {
+	Resources* resources = Resources::instance();
+	int currentFrame = 0;
+	ALLEGRO_BITMAP* currentFrameImg = resources->imgPlayer[currentFrame];
+	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
 }
 
 bool Player::canMove()
@@ -34,6 +38,22 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 				break;
 			case ALLEGRO_KEY_DOWN:
 				iy = 1;
+				break;
+		}
+	}
+	if (event->type == ALLEGRO_EVENT_KEY_UP) {
+		switch (event->keyboard.keycode) {
+			case ALLEGRO_KEY_LEFT:
+				ix = 0;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				ix = 0;
+				break;
+			case ALLEGRO_KEY_UP:
+				iy = 0;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				iy = 0;
 				break;
 		}
 	}
