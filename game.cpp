@@ -1,6 +1,9 @@
-#include "game.h"
+#include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <math.h>
+#include <time.h>
+#include "game.h"
 
 Game *Game::globalGame;
 
@@ -15,6 +18,7 @@ void Game::init ()
 	al_install_keyboard();
 	al_init_image_addon();
 	al_init_primitives_addon(); // TODO: maybe not needed
+	srand(time(0));
 	
 	resources = Resources::instance();
 	resources->loadEverything();
@@ -22,10 +26,11 @@ void Game::init ()
 	currentLevel = new Level();
 	hud = new Hud();
 	collisionChecker = new CollisionChecker(currentLevel);
+	ai = new AI(currentLevel);
 	
 	timer = al_create_timer(1.0 / FPS);
 	
-	queue  = al_create_event_queue();
+	queue = al_create_event_queue();
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_display_event_source(display));
@@ -81,6 +86,7 @@ void Game::mainLoop ()
 
 void Game::update()
 {
+	ai->planEverything();
 	currentLevel->update();
 	collisionChecker->playerPickupFood();
 	collisionChecker->victimPickupFood();
@@ -100,8 +106,7 @@ void Game::shutdown ()
 {
 	Resources::destroyInstance();
 	delete collisionChecker;
+	delete ai;
 	delete currentLevel;
 	delete hud;
 }
-
-	

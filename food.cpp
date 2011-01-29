@@ -35,6 +35,16 @@ void Food::doMove()
 void Food::draw()
 {
 	Resources* resources = Resources::instance();
-	al_draw_bitmap(isPlayerEdible ? resources->imgFood[variation] :
-		resources->imgBit[variation], position.x, position.y, 0);
+	ALLEGRO_BITMAP** imageCollection;
+	
+	if (isPlayerEdible) {
+		imageCollection = resources->imgFood;
+	}
+	else {
+		imageCollection = resources->imgBit;
+	}
+	
+	ALLEGRO_BITMAP* img = imageCollection[variation];
+	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
+	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }

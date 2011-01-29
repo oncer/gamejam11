@@ -1,7 +1,8 @@
 #include <allegro5/allegro5.h>
-#include <iostream>
 #include <math.h>
 #include "level.h"
+
+#include <stdio.h>
 
 Level::Level()
 {

@@ -21,8 +21,9 @@ void Player::draw()
 {
 	Resources* resources = Resources::instance();
 	int currentFrame = 0;
-	ALLEGRO_BITMAP* currentFrameImg = resources->imgPlayer[currentFrame];
-	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
+	ALLEGRO_BITMAP* img = resources->imgPlayer[currentFrame];
+	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
+	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }
 
 void Player::feed(int foodValue)
@@ -58,8 +59,6 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (vx != 0 || vy != 0)) {
 		PixelCoords p = position;
-		p.x += 16;
-		p.y += 16;
 		Bullet *bullet = new Bullet(p);
 		float v = sqrt(vx * vx + vy * vy);
 		float dx = vx / v;

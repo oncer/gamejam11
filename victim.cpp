@@ -24,8 +24,9 @@ void Victim::draw()
 {
 	Resources* resources = Resources::instance();
 	int currentFrame = 0;
-	ALLEGRO_BITMAP* currentFrameImg = resources->imgVictim[currentFrame];
-	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
+	ALLEGRO_BITMAP* img = resources->imgVictim[currentFrame];
+	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
+	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }
 
 void Victim::feed(int foodValue)
@@ -55,9 +56,7 @@ void Victim::doMove()
 	}
 
 	if (position == target) {
-		/* TODO: decide and plan actions here */
-		plan = PLAN_WANDER;
-		target = (PixelCoords) { (int)(target.x + 130) % 600, (int)(target.y + 30) % 600 };
+		plan = PLAN_NOTHING; // wait until AI gives us a new plan
 	}
 }
 
