@@ -1,3 +1,8 @@
+#ifndef _LEVEL_H_
+#define _LEVEL_H_
+
+class Level;
+
 #include <vector>
 #include <list>
 #include "player.h"
@@ -10,7 +15,6 @@ typedef std::vector<LevelObject*> LevelObjectList;
 /* Contains runtime level info */
 class Level
 {
-
 public:
 
 	Level();
@@ -24,3 +28,5 @@ public:
 	LevelObjectList* levelObjects;
 
 };
+
+#endif

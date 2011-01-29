@@ -31,9 +31,12 @@ void Game::mainLoop ()
 		
 		al_flip_display();
 		al_wait_for_event(queue, &event);
+		
 		if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
 			break;
 		}
+		
+		currentLevel->player->handleEvent(&event);
 	}
 }
 
