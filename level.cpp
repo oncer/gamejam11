@@ -47,6 +47,8 @@ void Level::update()
 		victim->nextAnimFrame();
 	}
 	
+	
+	
 	// spawn food?
 	foodTimer--;
 	if (foodTimer <= 0) {
@@ -55,7 +57,7 @@ void Level::update()
 	}
 	
 	// player hunger increases
-	player->increaseHunger(); hunger
+	player->increaseHunger();
 }
 
 void Level::draw()

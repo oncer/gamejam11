@@ -34,8 +34,10 @@ bool Player::canMove()
 
 void Player::doMove()
 {
-	position.x += ix;
-	position.y += iy;
+	if (!isDead) {
+		position.x += ix;
+		position.y += iy;
+	}
 }
 	
 bool Player::handleEvent(ALLEGRO_EVENT *event) {
