@@ -10,9 +10,13 @@ class Food
 
 public:
 
-Food(PixelCoords pos);
+Food(PixelCoords pos, int val, bool playerEdible = true);
 
 PixelCoords position;
+int value;
+bool isPlayerEdible; // true if player can eat this
+bool isConsumed;
+bool isDead;
 
 void nextAnimFrame();
 void draw();

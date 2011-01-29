@@ -29,9 +29,16 @@ Level::~Level()
 
 void Level::update()
 {
-	// move and animate everything
+	// move and animate everything, remove dead weight where necessary
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
-		(*it)->nextAnimFrame();
+		Food* food = *it;
+		while (food->isDead) {
+			it = foods->erase(it);
+			if (it == foods->end()) break;
+			food = *it;
+		}
+		if (it == foods->end()) break;
+		food->nextAnimFrame();
 	}
 	
 	if (player->canMove()) {
@@ -41,13 +48,17 @@ void Level::update()
 	
 	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
 		Victim* victim = *it;
+		while (victim->isDead) {
+			it = victims->erase(it);
+			if (it == victims->end()) break;
+			victim = *it;
+		}
+		if (it == victims->end()) break;
 		if (victim->canMove()) {
 			victim->doMove();
 		}
 		victim->nextAnimFrame();
 	}
-	
-	
 	
 	// spawn food?
 	foodTimer--;
@@ -79,7 +90,7 @@ void Level::draw()
 
 void Level::spawnFood()
 {
-	foods->push_back(new Food(randomLevelCoords()));
+	foods->push_back(new Food(randomLevelCoords(), 1000));
 }
 
 PixelCoords Level::randomLevelCoords()

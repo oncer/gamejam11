@@ -17,6 +17,7 @@ void Game::init ()
 	
 	currentLevel = new Level();
 	hud = new Hud();
+	collisionChecker = new CollisionChecker(currentLevel);
 	
 	timer = al_create_timer(1.0 / FPS);
 	
@@ -60,6 +61,9 @@ void Game::mainLoop ()
 void Game::update()
 {
 	currentLevel->update();
+	collisionChecker->playerPickupFood();
+	collisionChecker->victimPickupFood();
+	collisionChecker->playerVsVictim();
 	hud->setHunger(currentLevel->player->hunger);
 	hud->setMaxHunger(Player::HUNGER_LIMIT);
 }
@@ -73,6 +77,7 @@ void Game::draw()
 void Game::shutdown ()
 {
 	Resources::destroyInstance();
+	delete collisionChecker;
 	delete currentLevel;
 	delete hud;
 }

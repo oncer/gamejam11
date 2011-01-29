@@ -9,6 +9,8 @@ Victim::Victim(PixelCoords pos)
 	target = position;
 	plan = PLAN_WANDER;
 	speed = BASE_SPEED;
+	isDying = false;
+	isDead = false;
 }
 
 void Victim::nextAnimFrame()
@@ -21,6 +23,11 @@ void Victim::draw()
 	int currentFrame = 0;
 	ALLEGRO_BITMAP* currentFrameImg = resources->imgVictim[currentFrame];
 	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
+}
+
+void Victim::feed(int foodValue)
+{
+	// TODO: after a certain amount of food, the victim splits
 }
 
 bool Victim::canMove()

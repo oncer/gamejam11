@@ -5,6 +5,7 @@
 #include "resources.h"
 #include "level.h"
 #include "hud.h"
+#include "collisionchecker.h"
 
 /* This class contains the main loop and owns game resources */
 class Game
@@ -27,6 +28,7 @@ ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
 Level* currentLevel;
 Hud* hud;
+CollisionChecker* collisionChecker;
 
 ALLEGRO_EVENT_QUEUE *queue;
 

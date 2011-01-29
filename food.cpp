@@ -1,13 +1,18 @@
 #include "food.h"
 #include "resources.h"
 
-Food::Food(PixelCoords pos)
+Food::Food(PixelCoords pos, int val, bool playerEdible)
 {
 	position = pos;
+	value = val;
+	isPlayerEdible = playerEdible;
+	isConsumed = false;
+	isDead = false;
 }
 
 void Food::nextAnimFrame()
 {
+	if (isConsumed) isDead = true; // TODO: die animation
 }
 
 void Food::draw()

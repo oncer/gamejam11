@@ -27,14 +27,13 @@ void update();
 void draw();
 
 Player* player;
+VictimList* victims;
+LevelObjectList* levelObjects;
+FoodList* foods;
 
 private:
 
 static const int BASE_FOOD_INTERVAL = 600;
-
-VictimList* victims;
-LevelObjectList* levelObjects;
-FoodList* foods;
 
 int pixelWidth;
 int pixelHeight;
