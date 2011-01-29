@@ -122,6 +122,16 @@ void Level::draw()
 	}
 }
 
+bool Level::isInLevelBoundaries(PixelCoords coords)
+{
+	if (coords.x < BORDER_ZONE) return false;
+	if (coords.y < BORDER_ZONE) return false;
+	if (coords.x > pixelWidth - BORDER_ZONE) return false;
+	if (coords.y > pixelWidth - BORDER_ZONE) return false;
+	
+	return true;
+}
+
 void Level::spawnFood()
 {
 	int variation = rand() % Resources::FOOD_VARIATIONS;
