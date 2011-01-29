@@ -20,8 +20,9 @@ private:
 void update();
 void draw();
 
+static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
-ALLEGRO_BITMAP* bmp; // TODO: sample code; remove this
+ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
 Level* currentLevel;
 

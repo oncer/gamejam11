@@ -6,6 +6,10 @@ void Player::nextAnimFrame()
 
 void Player::draw()
 {
+	Resources* resources = Resources::instance();
+	int currentFrame = 0;
+	ALLEGRO_BITMAP* currentFrameImg = resources->imgPlayer[currentFrame];
+	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
 }
 
 bool Player::canMove()
