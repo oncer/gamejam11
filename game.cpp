@@ -19,6 +19,7 @@ void Game::init ()
 	resources->loadEverything();
 	
 	currentLevel = new Level();
+	hud = new Hud();
 	
 	timer = al_create_timer(1.0 / FPS);
 	
@@ -65,17 +66,21 @@ void Game::mainLoop ()
 void Game::update()
 {
 	currentLevel->update();
+	hud->setHunger(currentLevel->player->hunger);
+	hud->setMaxHunger(Player::HUNGER_LIMIT);
 }
 
 void Game::draw()
 {
 	currentLevel->draw();
+	hud->draw();
 }
 
 void Game::shutdown ()
 {
 	Resources::destroyInstance();
 	delete currentLevel;
+	delete hud;
 }
 
 	

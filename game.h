@@ -4,6 +4,7 @@
 #include <allegro5/allegro5.h>
 #include "resources.h"
 #include "level.h"
+#include "hud.h"
 
 /* This class contains the main loop and owns game resources */
 class Game
@@ -27,6 +28,8 @@ static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
 ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
+
+Hud* hud;
 
 ALLEGRO_EVENT_QUEUE *queue;
 

@@ -41,7 +41,8 @@ Resources::~Resources()
 void Resources::loadEverything()
 {
 	imgTitle = al_load_bitmap("./gfx/title.png");
-	imgPlayer[0] = al_load_bitmap("./gfx/player.png");
+
+	imgPlayer[0] = al_load_bitmap("./gfx/killa.png");
 
 	imgVictim[0] = al_load_bitmap("./gfx/smiled bacteria.png");
 	imgVictim[1] = al_load_bitmap("./gfx/wounded.png");

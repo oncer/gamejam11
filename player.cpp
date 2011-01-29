@@ -36,6 +36,20 @@ void Player::draw()
 	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
 }
 
+void Player::feed(int foodValue)
+{
+	hunger -= foodValue;
+	if (hunger < 0) hunger = 0;
+}
+
+void Player::increaseHunger()
+{
+	hunger++;
+	if (hunger >= HUNGER_LIMIT) {
+		isDead = true;
+	}
+}
+
 bool Player::canMove()
 {
 	// TODO: collision check (use CollisionChecker or something as parameter)
@@ -44,8 +58,10 @@ bool Player::canMove()
 
 void Player::doMove()
 {
-	position.x += ix;
-	position.y += iy;
+	if (!isDead) {
+		position.x += ix;
+		position.y += iy;
+	}
 }
 	
 bool Player::handleEvent(ALLEGRO_EVENT *event) {
