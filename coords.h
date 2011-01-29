@@ -9,4 +9,8 @@ struct PixelCoords
 	bool operator==(const PixelCoords& rhs);
 };
 
+// given coords at the center of the box of given size, 
+// this function returns coords at the top left of the box
+PixelCoords antiCenter(PixelCoords coords, int width, int height);
+
 #endif

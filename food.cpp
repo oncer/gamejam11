@@ -19,5 +19,7 @@ void Food::nextAnimFrame()
 void Food::draw()
 {
 	Resources* resources = Resources::instance();
-	al_draw_bitmap(resources->imgFood[variation], position.x, position.y, 0);
+	ALLEGRO_BITMAP* img = resources->imgFood[variation];
+	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
+	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }
