@@ -19,5 +19,6 @@ void Food::nextAnimFrame()
 void Food::draw()
 {
 	Resources* resources = Resources::instance();
-	al_draw_bitmap(resources->imgFood[variation], position.x, position.y, 0);
+	al_draw_bitmap(isPlayerEdible ? resources->imgFood[variation] :
+		resources->imgBit[variation], position.x, position.y, 0);
 }
