@@ -15,7 +15,6 @@ typedef std::vector<LevelObject*> LevelObjectList;
 /* Contains runtime level info */
 class Level
 {
-	int ix, iy; /* Input direction. */
 public:
 
 	Level();
