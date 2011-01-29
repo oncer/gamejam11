@@ -30,6 +30,8 @@ Level();
 void update();
 void draw();
 
+bool isInLevelBoundaries(PixelCoords coords);
+
 int pixelWidth;
 int pixelHeight;
 

@@ -13,6 +13,7 @@ Victim::Victim(PixelCoords pos)
 	speed = BASE_SPEED;
 	isDying = false;
 	isDead = false;
+	splitCountdown = FOOD_TO_SPLIT;
 }
 
 void Victim::nextAnimFrame()
@@ -31,7 +32,7 @@ void Victim::draw()
 
 void Victim::feed(int foodValue)
 {
-	// TODO: after a certain amount of food, the victim splits
+	splitCountdown--;
 }
 
 bool Victim::canMove()
@@ -61,6 +62,8 @@ void Victim::doMove()
 }
 
 void Victim::explode() {
+	isDying = true;
+	
 	int n = 8;
 	for (int i = 0; i < n; i++) {
 		float a = 2 * 3.14 * i / n;
@@ -77,4 +80,11 @@ void Victim::explode() {
 		f->dy = y * r / 10;
 		foods->push_back(f);
 	}
+}
+
+Victim Victim::split()
+{
+	splitCountdown += FOOD_TO_SPLIT; // reset countdown
+	Victim v = Victim(position);
+	return v;
 }

@@ -17,7 +17,7 @@ void AI::planEverything()
 		// this victim needs a plan - try smelling for food
 		for (FoodList::iterator it = level->foods->begin(); it != level->foods->end(); it++) {
 			Food* food = *it;
-			if (food->isConsumed || food->isDead) {
+			if (food->isConsumed || food->isDead || !level->isInLevelBoundaries(food->position)) {
 				continue;
 			}
 			if (distance(food->position, victim->position) <= SMELL_DISTANCE) {

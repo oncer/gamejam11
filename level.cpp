@@ -66,6 +66,9 @@ void Level::update()
 		if (victim->canMove()) {
 			victim->doMove();
 		}
+		if (victim->splitCountdown <= 0) {
+			victims->push_back(new Victim(victim->split()));
+		}
 		victim->nextAnimFrame();
 	}
 
@@ -117,6 +120,16 @@ void Level::draw()
 	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
 		(*it)->draw();
 	}
+}
+
+bool Level::isInLevelBoundaries(PixelCoords coords)
+{
+	if (coords.x < BORDER_ZONE) return false;
+	if (coords.y < BORDER_ZONE) return false;
+	if (coords.x > pixelWidth - BORDER_ZONE) return false;
+	if (coords.y > pixelWidth - BORDER_ZONE) return false;
+	
+	return true;
 }
 
 void Level::spawnFood()
