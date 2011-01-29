@@ -18,4 +18,4 @@ run:
 	$(EXEC) $(BIN)
 
 clean:
-	$(RM) $(BIN)
+	$(RM) $(BIN) *.o

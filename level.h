@@ -22,11 +22,16 @@ class Level
 
 public:
 
+static const int BORDER_ZONE = 40; // no moving objects within 40px of the level boundaries
+
 Level();
 ~Level();
 
 void update();
 void draw();
+
+int pixelWidth;
+int pixelHeight;
 
 Player* player;
 VictimList* victims;
@@ -39,8 +44,6 @@ private:
 
 static const int BASE_FOOD_INTERVAL = 600;
 
-int pixelWidth;
-int pixelHeight;
 int foodInterval; // Nr of ticks between food spawning
 int foodTimer; // Ticks remaining until food spawns
 

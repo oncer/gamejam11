@@ -13,4 +13,6 @@ struct PixelCoords
 // this function returns coords at the top left of the box
 PixelCoords antiCenter(PixelCoords coords, int width, int height);
 
+float distance(PixelCoords a, PixelCoords b);
+
 #endif

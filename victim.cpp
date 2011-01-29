@@ -54,8 +54,6 @@ void Victim::doMove()
 	}
 
 	if (position == target) {
-		/* TODO: decide and plan actions here */
-		plan = PLAN_WANDER;
-		target = (PixelCoords) { (int)(target.x + 130) % 600, (int)(target.y + 30) % 600 };
+		plan = PLAN_NOTHING; // wait until AI gives us a new plan
 	}
 }
