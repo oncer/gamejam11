@@ -6,7 +6,9 @@ class Resources
 
 public:
 
-Resources();
+static Resources* instance(); // get singleton instance
+static void destroyInstance(); // release resources
+
 ~Resources();
 void loadEverything();
 
@@ -21,5 +23,12 @@ ALLEGRO_BITMAP* imgPlayer[PLAYER_FRAMES];
 ALLEGRO_BITMAP* imgVictim[VICTIM_FRAMES];
 ALLEGRO_BITMAP* imgBullet;
 ALLEGRO_BITMAP* imgBit[BIT_VARIATIONS];
+
+private:
+
+Resources();
+Resources(const Resources & );
+
+static Resources* theInstance;
 
 };

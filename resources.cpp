@@ -1,5 +1,22 @@
 #include "resources.h"
 
+Resources* Resources::theInstance = NULL;
+
+Resources* Resources::instance()
+{
+	if (theInstance == NULL) {
+		theInstance = new Resources();
+	}
+}
+
+void Resources::destroyInstance()
+{
+	if (theInstance != NULL) {
+		delete theInstance;
+		theInstance = NULL;
+	}
+}
+
 Resources::Resources()
 {
 	imgTitle = NULL;
