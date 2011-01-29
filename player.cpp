@@ -75,20 +75,31 @@ void Player::update()
 		fireTicks--;
 }
 
+void Player::getSpeed(float *dx, float *dy) {
+	*dx = ix;
+	*dy = iy;
+	float d = std::sqrt(*dx * *dx + *dy * *dy);
+	*dx *= BASE_SPEED / d;
+	*dy *= BASE_SPEED / d;
+}
+
 bool Player::canMove()
 {
-	// TODO: collision check (use CollisionChecker or something as parameter)
-	return true;
+	if (ix == 0 && iy == 0) return true;
+	CollisionChecker *c = Game::globalGame->collisionChecker;
+	float dx, dy;
+	getSpeed(&dx, &dy);
+	PixelCoords targetPos = position;
+	targetPos.x += dx;
+	targetPos.y += dy;
+	return c->playerCanMoveTo(targetPos);
 }
 
 void Player::doMove()
 {
 	if (!isDead && !ifire && (ix || iy)) {
-		float dx = ix;
-		float dy = iy;
-		float d = std::sqrt(dx * dx + dy * dy);
-		dx *= BASE_SPEED / d;
-		dy *= BASE_SPEED / d;
+		float dx, dy;
+		getSpeed(&dx, &dy);
 		position.x += dx;
 		position.y += dy;
 	}

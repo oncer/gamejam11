@@ -26,6 +26,8 @@ Resources::Resources()
 	memset(imgBullet, 0, BULLET_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgFood, 0, FOOD_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 	memset(imgBit, 0, BIT_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
+	memset(imgBackground, 0, BACKGROUND_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
+	memset(imgLevelObject, 0, LEVEL_OBJECT_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 }
 
 Resources::~Resources()
@@ -39,7 +41,8 @@ Resources::~Resources()
 	for (int i = 0; i < EXPLOSION_FRAMES; i++) al_destroy_bitmap(imgExplosion[i]);
 	for (int i = 0; i < FOOD_VARIATIONS; i++) al_destroy_bitmap(imgFood[i]);
 	for (int i = 0; i < BIT_VARIATIONS; i++) al_destroy_bitmap(imgBit[i]);
-	
+	for (int i = 0; i < BACKGROUND_VARIATIONS; i++) al_destroy_bitmap(imgBackground[i]);
+	for (int i = 0; i < LEVEL_OBJECT_VARIATIONS; i++) al_destroy_bitmap(imgLevelObject[i]);
 }
 
 void Resources::loadEverything()
@@ -70,5 +73,10 @@ void Resources::loadEverything()
 	imgFood[2] = al_load_bitmap("./gfx/banana.png");
 	
 	imgBit[0] = al_load_bitmap("./gfx/bit.png");
+	
+	imgBackground[0] = al_load_bitmap("./gfx/background 2.png");
+	imgBackground[1] = al_load_bitmap("./gfx/background 3.png");
+	
+	imgLevelObject[0] = al_load_bitmap("./gfx/rock.png");
 }
 

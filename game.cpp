@@ -26,13 +26,15 @@ void Game::init ()
 	resources = Resources::instance();
 	resources->loadEverything();
 	
-	currentLevel = new Level();
+	al_set_window_title(display, "Super Extinction");
+	al_set_display_icon(display, resources->imgVictim[0]);
+
 	hud = new Hud();
-	collisionChecker = new CollisionChecker(currentLevel);
-	ai = new AI(currentLevel);
-	state = GS_Title;
 	
 	timer = al_create_timer(1.0 / FPS);
+	
+	currentLevel = NULL;
+	ai = NULL;
 	
 	queue = al_create_event_queue();
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
@@ -59,7 +61,11 @@ void Game::mainLoop ()
 			}
 			else {
 				if (state == GS_Title) {
-					state = GS_Playing;
+					restart();
+					continue;
+				}
+				else if (state == GS_GameOver) {
+					state = GS_Title;
 					continue;
 				}
 			}
@@ -137,6 +143,13 @@ void Game::draw()
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
 			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
 	}
+}
+
+void Game::restart() {
+	currentLevel = new Level();
+	collisionChecker = new CollisionChecker(currentLevel);
+	ai = new AI(currentLevel);
+	state = GS_Playing;
 }
 
 void Game::shutdown ()

@@ -38,6 +38,8 @@ void update();
 bool canMove();
 void doMove();
 
+private:
+	void getSpeed(float *dx, float *dy);
 };
 
 #endif

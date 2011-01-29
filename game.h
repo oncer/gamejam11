@@ -25,10 +25,12 @@ public:
 static Game *globalGame;
 Level* currentLevel;
 GameState state;
+CollisionChecker* collisionChecker;
 
 void init ();
 void mainLoop ();
 void shutdown ();
+void restart ();
 
 private:
 
@@ -41,7 +43,6 @@ ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
 
 Hud* hud;
-CollisionChecker* collisionChecker;
 AI* ai;
 
 ALLEGRO_EVENT_QUEUE *queue;
