@@ -33,6 +33,7 @@ void Victim::feed(int foodValue)
 
 bool Victim::canMove()
 {
+	if (isDead) return false;
 	// TODO: collision check (use CollisionChecker or something as parameter)
 	return true;
 }

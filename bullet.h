@@ -1,3 +1,6 @@
+#ifndef _BULLET_H_
+#define _BULLET_H_
+
 #include "coords.h"
 
 class Bullet
@@ -15,14 +18,17 @@ void doMove();
 
 PixelCoords position;
 float dx, dy;
-bool dead; /* indicates that this object can be removed */
+bool isDead; /* indicates that this object can be removed */
+
+static const float BASE_SPEED = 5.0;
 
 private:
-
-static const float BASE_SPEED = 1.0;
 
 int maxSteps;
 int steps;
 
+bool collideWithVictim(Victim *v);
 
 };
+
+#endif

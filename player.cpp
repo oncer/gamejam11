@@ -1,3 +1,4 @@
+#include <cmath>
 #include "player.h"
 
 Player::Player(PixelCoords pos)
@@ -5,6 +6,7 @@ Player::Player(PixelCoords pos)
 	position = pos;
 	fireRate = 10;
 	fireTicks = 0;
+	keyBits = 0;
 	ix = iy = ifire = 0;
 	vx = vy = 0;
 	hunger = 0;
@@ -45,9 +47,12 @@ void Player::update()
 	}
 
 	if (ifire && fireTicks == 0) {
-		Bullet *bullet = new Bullet(position);
-		bullet->dx = vx * 5;
-		bullet->dy = vy * 5;
+		PixelCoords p = position;
+		p.x += 16;
+		p.y += 16;
+		Bullet *bullet = new Bullet(p);
+		bullet->dx = vx * Bullet::BASE_SPEED;
+		bullet->dy = vy * Bullet::BASE_SPEED;
 		fireTicks = fireRate;
 		Game::globalGame->currentLevel->bullets->push_back(bullet);
 	}
@@ -64,9 +69,14 @@ bool Player::canMove()
 
 void Player::doMove()
 {
-	if (!isDead) {
-		position.x += ix;
-		position.y += iy;
+	if (!isDead && (ix || iy)) {
+		float dx = ix;
+		float dy = iy;
+		float d = std::sqrt(dx * dx + dy * dy);
+		dx *= BASE_SPEED / d;
+		dy *= BASE_SPEED / d;
+		position.x += dx;
+		position.y += dy;
 	}
 }
 	
@@ -75,35 +85,44 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 		switch (event->keyboard.keycode) {
 			case ALLEGRO_KEY_LEFT:
 				ix = -1;
+				keyBits |= 1;
 				break;
 			case ALLEGRO_KEY_RIGHT:
 				ix = 1;
+				keyBits |= 2;
 				break;
 			case ALLEGRO_KEY_UP:
 				iy = -1;
+				keyBits |= 4;
 				break;
 			case ALLEGRO_KEY_DOWN:
 				iy = 1;
+				keyBits |= 8;
 				break;
 			case ALLEGRO_KEY_SPACE:
 			case ALLEGRO_KEY_LSHIFT:
 				ifire = 1;
+				keyBits |= 16;
 				break;
 		}
 	}
 	if (event->type == ALLEGRO_EVENT_KEY_UP) {
 		switch (event->keyboard.keycode) {
 			case ALLEGRO_KEY_LEFT:
-				ix = 0;
+				keyBits &= ~1;
+				if ((keyBits & 3) == 0) ix = 0;
 				break;
 			case ALLEGRO_KEY_RIGHT:
-				ix = 0;
+				keyBits &= ~2;
+				if ((keyBits & 3) == 0) ix = 0;
 				break;
 			case ALLEGRO_KEY_UP:
-				iy = 0;
+				keyBits &= ~4;
+				if ((keyBits & 12) == 0) iy = 0;
 				break;
 			case ALLEGRO_KEY_DOWN:
-				iy = 0;
+				keyBits &= ~8;
+				if ((keyBits & 12) == 0) iy = 0;
 				break;
 			case ALLEGRO_KEY_SPACE:
 			case ALLEGRO_KEY_LSHIFT:

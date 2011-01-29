@@ -13,6 +13,7 @@ public:
 Player(PixelCoords pos);
 
 static const int HUNGER_LIMIT = 3000;
+static const float BASE_SPEED = 2.0;
 
 int ix, iy; /* input direction */
 int ifire; /* fire button input */
@@ -22,6 +23,7 @@ int fireRate; /* how many ticks for next bullet */
 int fireTicks;
 int hunger; // if this reaches HUNGER_LIMIT, player dies
 bool isDead; // set after death animation concludes. => Game Over
+int keyBits;
 
 void nextAnimFrame();
 void draw();

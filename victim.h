@@ -1,3 +1,6 @@
+#ifndef _VICTIM_H_
+#define _VICTIM_H_
+
 #include "coords.h"
 
 class Victim
@@ -29,3 +32,5 @@ Plan plan;
 PixelCoords target; // This is where we want to go
 
 };
+
+#endif

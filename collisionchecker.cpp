@@ -98,13 +98,13 @@ void CollisionChecker::victimVsBullet()
 		
 		for (BulletList::iterator it = level->bullets->begin(); it != level->bullets->end(); it++) {
 			Bullet* bullet = *it;
-			if (bullet->dead) {
+			if (bullet->isDead) {
 				continue;
 			}
 			
 			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
 				victim->isDying = true;
-				bullet->dead = true;
+				bullet->isDead = true;
 			}
 		}
 	}
