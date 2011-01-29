@@ -26,6 +26,9 @@ static Game *globalGame;
 Level* currentLevel;
 GameState state;
 CollisionChecker* collisionChecker;
+int levelCounter;
+
+int ignoreKeyboardTicks; // ignore keyboard for a number of ticks
 
 void init ();
 void mainLoop ();

@@ -47,7 +47,7 @@ Resources::~Resources()
 
 void Resources::loadEverything()
 {
-	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 12, 0);
+	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 24, 0);
 	fontBig = al_load_font("./gfx/DejaVuSans.ttf", 64, 0);
 
 	imgTitle = al_load_bitmap("./gfx/title.png");

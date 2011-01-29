@@ -1,10 +1,11 @@
 #include <allegro5/allegro5.h>
+#include <cstdlib>
 #include <math.h>
 #include "level.h"
 
 #include <stdio.h>
 
-Level::Level()
+Level::Level(int num)
 {
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
@@ -19,16 +20,27 @@ Level::Level()
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 	
-	levelBackground = 0;
+	levelBackground = num % 2;
 	
 	/* DEMO CODE */
-	victims->push_back(new Victim((PixelCoords) {50, 50}));
-	victims->push_back(new Victim((PixelCoords) {500, 30}));
-	
-	levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
-	
-	for (int i = 0; i < 4; i++)
-		levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
+	if (num == 1) {
+		victims->push_back(new Victim((PixelCoords) {50, 50}));
+		victims->push_back(new Victim((PixelCoords) {500, 30}));
+		
+		levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
+		
+		for (int i = 0; i < 4; i++)
+			levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
+	}
+	else {
+		for (int i = 0; i < 3 + num; i++) {
+			victims->push_back(new Victim((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+				
+			levelObjects->push_back(new LevelObject((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+		}
+	}
 }
 
 Level::~Level()

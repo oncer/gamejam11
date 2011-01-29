@@ -24,7 +24,7 @@ public:
 
 static const int BORDER_ZONE = 40; // no moving objects within 40px of the level boundaries
 
-Level();
+Level(int num);
 ~Level();
 
 void update();

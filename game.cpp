@@ -33,6 +33,7 @@ void Game::init ()
 	
 	timer = al_create_timer(1.0 / FPS);
 	
+	levelCounter = 1;
 	currentLevel = NULL;
 	ai = NULL;
 	
@@ -59,13 +60,18 @@ void Game::mainLoop ()
 	
 				break;
 			}
-			else {
+			else if (ignoreKeyboardTicks == 0) {
 				if (state == GS_Title) {
 					restart();
 					continue;
 				}
 				else if (state == GS_GameOver) {
 					state = GS_Title;
+					continue;
+				}
+				else if (state == GS_LevelWon) {
+					restart();
+					state = GS_Playing;
 					continue;
 				}
 			}
@@ -110,6 +116,8 @@ void Game::mainLoop ()
 
 void Game::update()
 {
+	if (ignoreKeyboardTicks) ignoreKeyboardTicks--;
+	
 	if (state == GS_Playing) {
 		ai->planEverything();
 		currentLevel->update();
@@ -122,6 +130,13 @@ void Game::update()
 		
 		if (currentLevel->player->isDead) {
 			state = GS_GameOver;
+			ignoreKeyboardTicks = 20;
+		}
+		
+		if (currentLevel->victims->size() == 0) {
+			levelCounter++;
+			state = GS_LevelWon;
+			ignoreKeyboardTicks = 20;
 		}
 	}
 }
@@ -143,10 +158,25 @@ void Game::draw()
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
 			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
 	}
+	else if (state == GS_LevelWon) {
+		currentLevel->draw();
+		hud->draw();
+		
+		for (int i = 0; i < 5; i++) {
+			int ox = (int[]){-3, 3, -3, 3, 0}[i];
+			int oy = (int[]){3, 3, -3, -3, 0}[i];
+			ALLEGRO_COLOR c;
+			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
+			al_draw_textf(resources->fontBig, c,
+				320 + ox, 200 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
+			al_draw_textf(resources->fontNormal, c,
+				320 + ox, 300 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
+		}
+	}
 }
 
 void Game::restart() {
-	currentLevel = new Level();
+	currentLevel = new Level(levelCounter);
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
 	state = GS_Playing;
