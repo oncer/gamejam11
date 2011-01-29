@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <math.h>
+#include "level.h"
 #include "victim.h"
 #include "resources.h"
 
@@ -56,5 +57,21 @@ void Victim::doMove()
 		/* TODO: decide and plan actions here */
 		plan = PLAN_WANDER;
 		target = (PixelCoords) { (int)(target.x + 130) % 600, (int)(target.y + 30) % 600 };
+	}
+}
+
+void Victim::explode() {
+	int n = 8;
+	float r = 50;
+	for (int i = 0; i < n; i++) {
+		float a = 2 * 3.14 * i / n;
+		float x = cos(a);
+		float y = sin(a);
+		FoodList *foods = Game::globalGame->currentLevel->foods;
+		PixelCoords p = position;
+		p.x += x * r;
+		p.y += y * r;
+		Food *f = new Food(0, p, 1000, false);
+		foods->push_back(f);
 	}
 }
