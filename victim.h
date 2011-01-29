@@ -15,6 +15,7 @@ void doMove();
 
 private:
 
+static const float BASE_SPEED = 1.0;
 enum Plan { PLAN_WANDER, PLAN_CHASE_FOOD }; // Current plan of action (AI)
 
 PixelCoords position;

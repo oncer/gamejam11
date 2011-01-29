@@ -5,6 +5,8 @@ struct PixelCoords
 {
 	float x;
 	float y;
+	
+	bool operator==(const PixelCoords& rhs);
 };
 
 #endif
