@@ -21,6 +21,18 @@ Level::~Level()
 
 void Level::update()
 {
+	if (player->canMove()) {
+		player->doMove();
+	}
+	player.nextAnimFrame();
+	
+	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
+		Victim* victim = *it;
+		if (victim->canMove()) {
+			victim->doMove();
+		}
+		victim->nextAnimFrame();
+	}
 }
 
 void Level::draw()
