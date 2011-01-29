@@ -83,7 +83,7 @@ void CollisionChecker::playerVsVictim()
 			continue;
 		}
 		if (boxCollision(level->player->position, victim->position, PLAYER_WIDTH, PLAYER_HEIGHT, VICTIM_WIDTH, VICTIM_HEIGHT)) {
-			victim->isDying = true;
+			victim->explode();
 		}
 	}
 }
@@ -103,7 +103,6 @@ void CollisionChecker::victimVsBullet()
 			}
 			
 			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
-				victim->isDying = true;
 				bullet->isDead = true;
 				victim->explode();
 			}

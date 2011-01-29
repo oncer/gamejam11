@@ -15,7 +15,7 @@ void planEverything(); // set actions for all the victims
 
 private:
 
-static const float SMELL_DISTANCE = 100; // Victims will smell food this far
+static const float SMELL_DISTANCE = 200; // Victims will smell food this far
 static const float WANDER_DISTANCE_MIN = 70;
 static const float WANDER_DISTANCE_MAX = 100;
 
