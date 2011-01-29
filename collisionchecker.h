@@ -36,6 +36,8 @@ static const int FOOD_WIDTH = 24;
 static const int FOOD_HEIGHT = 24;
 static const int BULLET_WIDTH = 4;
 static const int BULLET_HEIGHT = 4;
+static const int BLOCK_WIDTH = 32;
+static const int BLOCK_HEIGHT = 32;
 
 Level* level;
 

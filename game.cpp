@@ -25,6 +25,9 @@ void Game::init ()
 	
 	resources = Resources::instance();
 	resources->loadEverything();
+	
+	al_set_window_title(display, "Super Extinction");
+	al_set_display_icon(display, resources->imgVictim[0]);
 
 	hud = new Hud();
 	

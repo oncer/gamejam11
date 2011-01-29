@@ -24,6 +24,8 @@ Level::Level()
 	/* DEMO CODE */
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
 	victims->push_back(new Victim((PixelCoords) {500, 30}));
+	levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
+	levelObjects->push_back(new LevelObject((PixelCoords) {200, 200}));
 }
 
 Level::~Level()
@@ -109,6 +111,11 @@ void Level::draw()
 	// Background
 	//al_clear_to_color(al_map_rgb(127, 127, 127));
 	al_draw_bitmap(resources->imgBackground[levelBackground], 0, 0, 0);
+	
+	// Level objects (walls)
+	for (LevelObjectList::iterator it = levelObjects->begin(); it != levelObjects->end(); it++) {
+		(*it)->draw();
+	}
 	
 	// Food objects
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {

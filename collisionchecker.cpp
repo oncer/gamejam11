@@ -1,3 +1,4 @@
+#include <iostream>
 #include "collisionchecker.h"
 #include "level.h"
 
@@ -19,12 +20,13 @@ CollisionChecker::CollisionChecker(Level* lvl)
 
 bool CollisionChecker::playerCanMoveTo(PixelCoords position)
 {
-	/* TODO: level objects not implemented yet
 	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
-		if (boxCollision()) {
+		LevelObject *lob = *it;
+		if (boxCollision(lob->position, position, BLOCK_WIDTH, BLOCK_HEIGHT,
+			PLAYER_WIDTH, PLAYER_HEIGHT)) {
 			return false;
 		}
-	}*/
+	}
 	return true;
 }
 

@@ -24,6 +24,7 @@ static const int EXPLOSION_FRAMES = 1;
 static const int FOOD_VARIATIONS = 3;
 static const int BIT_VARIATIONS = 1; // how many different kinds of bits there are
 static const int BACKGROUND_VARIATIONS = 2;
+static const int LEVEL_OBJECT_VARIATIONS = 1;
 
 enum Frame { FRAME_FRONT }; // anim frame indices
 
@@ -35,6 +36,7 @@ ALLEGRO_BITMAP* imgExplosion[EXPLOSION_FRAMES];
 ALLEGRO_BITMAP* imgFood[FOOD_VARIATIONS];
 ALLEGRO_BITMAP* imgBit[BIT_VARIATIONS];
 ALLEGRO_BITMAP* imgBackground[BACKGROUND_VARIATIONS];
+ALLEGRO_BITMAP* imgLevelObject[LEVEL_OBJECT_VARIATIONS];
 
 ALLEGRO_FONT* fontNormal;
 ALLEGRO_FONT* fontBig;
