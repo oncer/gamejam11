@@ -1,5 +1,16 @@
 #include "player.h"
 
+Player::Player(PixelCoords pos)
+{
+	position = pos;
+	fireRate = 10;
+	fireTicks = 0;
+	ix = iy = ifire = 0;
+	vx = vy = 0;
+	hunger = 0;
+	isDead = false;
+}
+
 void Player::nextAnimFrame()
 {
 }
@@ -24,6 +35,25 @@ void Player::increaseHunger()
 	if (hunger >= HUNGER_LIMIT) {
 		isDead = true;
 	}
+}
+
+void Player::update()
+{
+	if (ix != 0 || iy != 0) {
+		vx = ix;
+		vy = iy;
+	}
+
+	if (ifire && fireTicks == 0) {
+		Bullet *bullet = new Bullet(position);
+		bullet->dx = vx * 5;
+		bullet->dy = vy * 5;
+		fireTicks = fireRate;
+		Game::globalGame->currentLevel->bullets->push_back(bullet);
+	}
+	
+	if (fireTicks > 0)
+		fireTicks--;
 }
 
 bool Player::canMove()
@@ -55,6 +85,10 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 			case ALLEGRO_KEY_DOWN:
 				iy = 1;
 				break;
+			case ALLEGRO_KEY_SPACE:
+			case ALLEGRO_KEY_LSHIFT:
+				ifire = 1;
+				break;
 		}
 	}
 	if (event->type == ALLEGRO_EVENT_KEY_UP) {
@@ -70,6 +104,10 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 				break;
 			case ALLEGRO_KEY_DOWN:
 				iy = 0;
+				break;
+			case ALLEGRO_KEY_SPACE:
+			case ALLEGRO_KEY_LSHIFT:
+				ifire = 0;
 				break;
 		}
 	}

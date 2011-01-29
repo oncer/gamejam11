@@ -2,8 +2,11 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
+Game *Game::globalGame;
+
 void Game::init ()
 {
+	globalGame = this;
 	al_init();
 	display = al_create_display(640, 480);
 	
@@ -24,7 +27,7 @@ void Game::init ()
 	queue  = al_create_event_queue();
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
-
+	al_register_event_source(queue, al_get_display_event_source(display));
 }
 
 void Game::mainLoop ()
@@ -40,6 +43,9 @@ void Game::mainLoop ()
 		al_wait_for_event(queue, &event);
 		
 		if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+			break;
+		}
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
 		

@@ -1,12 +1,16 @@
 #include <allegro5/allegro5.h>
+#include <iostream>
 #include <math.h>
 #include "level.h"
 
 Level::Level()
 {
-	player = new Player();
+	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
+
+	bullets = new BulletList();
+
 	foods = new FoodList();
 	
 	pixelWidth = 640;  // TODO: dynamic
@@ -33,6 +37,7 @@ void Level::update()
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
 		Food* food = *it;
 		while (food->isDead) {
+			delete food;
 			it = foods->erase(it);
 			if (it == foods->end()) break;
 			food = *it;
@@ -44,11 +49,13 @@ void Level::update()
 	if (player->canMove()) {
 		player->doMove();
 	}
+	player->update();
 	player->nextAnimFrame();
 	
 	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
 		Victim* victim = *it;
 		while (victim->isDead) {
+			delete victim;
 			it = victims->erase(it);
 			if (it == victims->end()) break;
 			victim = *it;
@@ -59,7 +66,25 @@ void Level::update()
 		}
 		victim->nextAnimFrame();
 	}
-	
+
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
+		Bullet* bullet = *it;
+		if (bullet->canMove()) {
+			bullet->doMove();
+		}
+		bullet->nextAnimFrame();
+	}
+
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end();) {
+		Bullet* bullet = *it;
+		if (bullet->dead) {
+			it = bullets->erase(it);
+			delete bullet;
+		}
+		else
+			it++;
+	}
+
 	// spawn food?
 	foodTimer--;
 	if (foodTimer <= 0) {
@@ -86,6 +111,10 @@ void Level::draw()
 		(*it)->draw();
 	}
 	player->draw();
+	
+	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
+		(*it)->draw();
+	}
 }
 
 void Level::spawnFood()

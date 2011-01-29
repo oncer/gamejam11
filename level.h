@@ -8,11 +8,13 @@ class Level;
 #include "player.h"
 #include "victim.h"
 #include "levelobject.h"
+#include "bullet.h"
 #include "food.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;
+typedef std::vector<Bullet*> BulletList;
 
 /* Contains runtime level info */
 class Level
@@ -43,6 +45,8 @@ int foodTimer; // Ticks remaining until food spawns
 void spawnFood();
 PixelCoords randomLevelCoords(); // returns valid random coords on level, not in any obstacle
 
+public:
+	BulletList* bullets;
 };
 
 #endif
