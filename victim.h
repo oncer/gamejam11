@@ -2,6 +2,7 @@
 #define _VICTIM_H_
 
 #include "coords.h"
+#include "animation.h"
 
 class Victim
 {
@@ -34,6 +35,8 @@ static const float BASE_SPEED = 1.0;
 static const int FOOD_TO_SPLIT = 3;
 
 float speed;
+Animation walkAnim;
+Animation deathAnim;
 
 };
 

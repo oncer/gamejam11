@@ -2,6 +2,7 @@
 #define _BULLET_H_
 
 #include "coords.h"
+#include "animation.h"
 
 class Bullet
 {
@@ -10,11 +11,11 @@ public:
 
 Bullet(PixelCoords pos);
 
-void nextAnimFrame();
 void draw();
 
 bool canMove();
 void doMove();
+void nextAnimFrame();
 
 PixelCoords position;
 float dx, dy;
@@ -26,6 +27,7 @@ private:
 
 int maxSteps;
 int steps;
+Animation bulletAnim;
 
 };
 

@@ -56,8 +56,17 @@ void Resources::loadEverything()
 
 	imgVictim[0] = al_load_bitmap("./gfx/smiled bacteria.png");
 	imgVictim[1] = al_load_bitmap("./gfx/wounded.png");
-	imgExplosion[0] = al_load_bitmap("./gfx/death.png");
-	imgBullet[0] = al_load_bitmap("./gfx/bullet.png");
+	imgExplosion[0] = al_load_bitmap("./gfx/explosion00.png");
+	imgExplosion[1] = al_load_bitmap("./gfx/explosion01.png");
+	imgExplosion[2] = al_load_bitmap("./gfx/explosion02.png");
+	imgExplosion[3] = al_load_bitmap("./gfx/explosion03.png");
+	imgExplosion[4] = al_load_bitmap("./gfx/explosion04.png");
+	imgExplosion[5] = al_load_bitmap("./gfx/explosion05.png");
+
+	imgBullet[0] = al_load_bitmap("./gfx/bullet00.png");
+        imgBullet[1] = al_load_bitmap("./gfx/bullet01.png");
+        imgBullet[2] = al_load_bitmap("./gfx/bullet02.png");
+        imgBullet[3] = al_load_bitmap("./gfx/bullet03.png");
 	
 	imgFood[0] = al_load_bitmap("./gfx/cola.png");
 	imgFood[1] = al_load_bitmap("./gfx/hot dog.png");
@@ -68,6 +77,6 @@ void Resources::loadEverything()
 	imgBackground[0] = al_load_bitmap("./gfx/background 2.png");
 	imgBackground[1] = al_load_bitmap("./gfx/background 3.png");
 	
-	imgLevelObject[0] = al_load_bitmap("./gfx/little rock.png");
+	imgLevelObject[0] = al_load_bitmap("./gfx/rock.png");
 }
 

@@ -6,6 +6,8 @@
 #include "resources.h"
 
 Victim::Victim(PixelCoords pos)
+    :walkAnim(6, 1, true),
+     deathAnim(3, Resources::EXPLOSION_FRAMES, false)
 {
 	position = pos;
 	target = position;
@@ -18,14 +20,25 @@ Victim::Victim(PixelCoords pos)
 
 void Victim::nextAnimFrame()
 {
-	if (isDying) isDead = true; // TODO: die animation
+    if (isDying) {
+        deathAnim.update();
+        if (deathAnim.isDone()) {
+            isDead = true;
+        }
+    }
 }
 
 void Victim::draw()
 {
 	Resources* resources = Resources::instance();
-	int currentFrame = 0;
-	ALLEGRO_BITMAP* img = resources->imgVictim[currentFrame];
+    ALLEGRO_BITMAP* img;
+    if (isDying) {
+        int currentFrame = deathAnim.getCurrentFrame();
+        img = resources->imgExplosion[currentFrame];
+    } else {
+        int currentFrame = 0;
+        img = resources->imgVictim[currentFrame];
+    }
 	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
 	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }
@@ -37,7 +50,7 @@ void Victim::feed(int foodValue)
 
 bool Victim::canMove()
 {
-	if (isDead) return false;
+	if (isDead || isDying) return false;
 	// TODO: collision check (use CollisionChecker or something as parameter)
 	return true;
 }
