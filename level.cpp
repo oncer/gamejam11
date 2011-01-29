@@ -119,7 +119,9 @@ void Level::draw()
 
 void Level::spawnFood()
 {
-	foods->push_back(new Food(randomLevelCoords(), 1000));
+	int variation = rand() % Resources::FOOD_VARIATIONS;
+	PixelCoords position = randomLevelCoords();
+	foods->push_back(new Food(variation, position, 1000));
 }
 
 PixelCoords Level::randomLevelCoords()

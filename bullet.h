@@ -16,12 +16,11 @@ void draw();
 bool canMove();
 void doMove();
 
+PixelCoords position;
 float dx, dy;
 bool isDead; /* indicates that this object can be removed */
 
 static const float BASE_SPEED = 5.0;
-
-PixelCoords position;
 
 private:
 

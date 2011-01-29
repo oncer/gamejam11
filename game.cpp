@@ -69,6 +69,7 @@ void Game::update()
 	currentLevel->update();
 	collisionChecker->playerPickupFood();
 	collisionChecker->victimPickupFood();
+	collisionChecker->victimVsBullet();
 	collisionChecker->playerVsVictim();
 	hud->setHunger(currentLevel->player->hunger);
 	hud->setMaxHunger(Player::HUNGER_LIMIT);

@@ -24,6 +24,7 @@ Resources::Resources()
 	memset(imgVictim, 0, VICTIM_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgExplosion, 0, EXPLOSION_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgBullet, 0, BULLET_FRAMES * sizeof(ALLEGRO_BITMAP*));
+	memset(imgFood, 0, FOOD_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 	memset(imgBit, 0, BIT_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 }
 
@@ -34,6 +35,7 @@ Resources::~Resources()
 	for (int i = 0; i < VICTIM_FRAMES; i++) al_destroy_bitmap(imgVictim[i]);
 	for (int i = 0; i < BULLET_FRAMES; i++) al_destroy_bitmap(imgBullet[i]);
 	for (int i = 0; i < EXPLOSION_FRAMES; i++) al_destroy_bitmap(imgExplosion[i]);
+	for (int i = 0; i < FOOD_VARIATIONS; i++) al_destroy_bitmap(imgFood[i]);
 	for (int i = 0; i < BIT_VARIATIONS; i++) al_destroy_bitmap(imgBit[i]);
 	
 }
@@ -48,6 +50,11 @@ void Resources::loadEverything()
 	imgVictim[1] = al_load_bitmap("./gfx/wounded.png");
 	imgExplosion[0] = al_load_bitmap("./gfx/death.png");
 	imgBullet[0] = al_load_bitmap("./gfx/bullet.png");
+	
+	imgFood[0] = al_load_bitmap("./gfx/cola.png");
+	imgFood[1] = al_load_bitmap("./gfx/hot dog.png");
+	imgFood[2] = al_load_bitmap("./gfx/banana.png");
+	
 	imgBit[0] = al_load_bitmap("./gfx/bit.png");
 }
 

@@ -17,9 +17,10 @@ void loadEverything();
 
 static const int PLAYER_FRAMES = 1;
 static const int VICTIM_FRAMES = 2;
-static const int EXPLOSION_FRAMES = 1;
-static const int BIT_VARIATIONS = 1; // how many different kinds of bits there are
 static const int BULLET_FRAMES = 1; // pulsating maybe?
+static const int EXPLOSION_FRAMES = 1;
+static const int FOOD_VARIATIONS = 3;
+static const int BIT_VARIATIONS = 1; // how many different kinds of bits there are
 
 enum Frame { FRAME_FRONT }; // anim frame indices
 
@@ -28,6 +29,7 @@ ALLEGRO_BITMAP* imgPlayer[PLAYER_FRAMES];
 ALLEGRO_BITMAP* imgVictim[VICTIM_FRAMES];
 ALLEGRO_BITMAP* imgBullet[BULLET_FRAMES];
 ALLEGRO_BITMAP* imgExplosion[EXPLOSION_FRAMES];
+ALLEGRO_BITMAP* imgFood[FOOD_VARIATIONS];
 ALLEGRO_BITMAP* imgBit[BIT_VARIATIONS];
 
 private:
