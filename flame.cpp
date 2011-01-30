@@ -19,12 +19,20 @@ void Flame::nextAnimFrame()
 
 void Flame::draw()
 {
+	float alpha = 1.;
+	
 	Resources* resources = Resources::instance();
 	int currentFrame = flameAnim.getCurrentFrame();
-	if (currentFrame >= Resources::FLAME_FRAMES) currentFrame = Resources::FLAME_FRAMES-1;
+	if (currentFrame >= Resources::FLAME_FRAMES) {
+		currentFrame = Resources::FLAME_FRAMES-1;
+	}
+	if (currentFrame >= Resources::FLAME_FRAMES*0.75) {
+		// fade out
+		alpha = 1- ((((float)currentFrame) / Resources::FLAME_FRAMES) - 0.75) * 4;
+	}
 	ALLEGRO_BITMAP* img = resources->imgFlame[currentFrame];
 	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
-	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
+	al_draw_tinted_bitmap(img, al_map_rgba_f(alpha, alpha, alpha, alpha), imgPos.x, imgPos.y, 0);
 }
 
 float Flame::getBaseSpeed()

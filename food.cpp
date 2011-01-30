@@ -109,6 +109,6 @@ void Food::draw()
 		scaleHeight *= scaling;
 	}
 	PixelCoords imgPos = antiCenter(position, scaleWidth, scaleHeight);
-	al_draw_tinted_scaled_bitmap(img, al_map_rgba_f(1, 1, 1, tintAlpha), 
+	al_draw_tinted_scaled_bitmap(img, al_map_rgba_f(tintAlpha, tintAlpha, tintAlpha, tintAlpha), 
 		0, 0, baseWidth, baseHeight, imgPos.x, imgPos.y, scaleWidth, scaleHeight, 0);
 }
