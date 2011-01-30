@@ -32,6 +32,8 @@ void mainLoop ();
 void shutdown ();
 void restart ();
 
+void changeMusic(const char* path);
+
 private:
 
 void update();
@@ -40,6 +42,8 @@ void draw();
 static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
 ALLEGRO_TIMER *timer;
+ALLEGRO_MIXER *mixer;
+ALLEGRO_VOICE *voice;
 Resources* resources; // Game assets from files (images, sounds, ...)
 
 Hud* hud;

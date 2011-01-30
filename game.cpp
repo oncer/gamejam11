@@ -1,6 +1,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <math.h>
 #include <time.h>
 #include "resources.h"
@@ -21,6 +23,11 @@ void Game::init ()
 	al_init_font_addon();
 	al_init_ttf_addon();
 	al_init_primitives_addon(); // TODO: maybe not needed
+    al_init_acodec_addon();
+    al_install_audio();
+    voice = al_create_voice(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
+    mixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_FLOAT32, ALLEGRO_CHANNEL_CONF2);
+    al_attach_mixer_to_voice(mixer, voice);
 	srand(time(0));
 	
 	resources = Resources::instance();
