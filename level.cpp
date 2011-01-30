@@ -1,10 +1,11 @@
 #include <allegro5/allegro5.h>
+#include <cstdlib>
 #include <math.h>
 #include "level.h"
 
 #include <stdio.h>
 
-Level::Level()
+Level::Level(int num)
 {
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
@@ -17,13 +18,35 @@ Level::Level()
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 	
+	levelBackground = num % 2;
+	
 	/* DEMO CODE */
+	/*
 	Resources* resources = Resources::instance();
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
 	victims->push_back(new Victim((PixelCoords) {500, 30}));
 	background = 0;
 	pixelWidth = al_get_bitmap_width(resources->imgLevelBackground[background]);
 	pixelHeight = al_get_bitmap_height(resources->imgLevelBackground[background]);
+	*/
+	if (num == 1) {
+		victims->push_back(new Victim((PixelCoords) {50, 50}));
+		victims->push_back(new Victim((PixelCoords) {500, 30}));
+		
+		levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
+		
+		for (int i = 0; i < 4; i++)
+			levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
+	}
+	else {
+		for (int i = 0; i < 3 + num; i++) {
+			victims->push_back(new Victim((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+				
+			levelObjects->push_back(new LevelObject((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+		}
+	}
 }
 
 Level::~Level()
@@ -50,9 +73,7 @@ void Level::update()
 		food->nextAnimFrame();
 	}
 	
-	if (player->canMove()) {
-		player->doMove();
-	}
+	player->doMove();
 	player->update();
 	player->nextAnimFrame();
 	
@@ -108,10 +129,15 @@ void Level::draw()
 	Resources* resources = Resources::instance();
 	
 	// Background
-	ALLEGRO_BITMAP* img = resources->imgLevelBackground[background];
+	ALLEGRO_BITMAP* img = resources->imgBackground[levelBackground];
 	float sw = al_get_bitmap_width(img);
 	float sh = al_get_bitmap_height(img);
 	al_draw_scaled_bitmap(img, 0, 0, sw, sh, 0, 0, pixelWidth, pixelHeight, 0);
+	
+	// Level objects (walls)
+	for (LevelObjectList::iterator it = levelObjects->begin(); it != levelObjects->end(); it++) {
+		(*it)->draw();
+	}
 	
 	// Food objects
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {

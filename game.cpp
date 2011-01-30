@@ -3,6 +3,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <math.h>
 #include <time.h>
+#include "resources.h"
 #include "game.h"
 
 Game *Game::globalGame;
@@ -17,18 +18,25 @@ void Game::init ()
 	al_install_mouse(); // TODO: maybe not needed
 	al_install_keyboard();
 	al_init_image_addon();
+	al_init_font_addon();
+	al_init_ttf_addon();
 	al_init_primitives_addon(); // TODO: maybe not needed
 	srand(time(0));
 	
 	resources = Resources::instance();
 	resources->loadEverything();
 	
-	currentLevel = new Level();
+	al_set_window_title(display, "Super Extinction");
+	al_set_display_icon(display, resources->imgVictim[0]);
+
 	hud = new Hud();
-	collisionChecker = new CollisionChecker(currentLevel);
-	ai = new AI(currentLevel);
 	
 	timer = al_create_timer(1.0 / FPS);
+	
+	levelCounter = 1;
+	currentLevel = NULL;
+	ai = NULL;
+	score = 0;
 	
 	queue = al_create_event_queue();
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
@@ -48,16 +56,40 @@ void Game::mainLoop ()
 
 		al_wait_for_event(queue, &event);
 		
-		if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-			break;
+		if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+	
+				break;
+			}
+			else if (ignoreKeyboardTicks == 0) {
+				if (state == GS_Title) {
+					score = 0;
+					restart();
+					continue;
+				}
+				else if (state == GS_GameOver) {
+					state = GS_Title;
+					continue;
+				}
+				else if (state == GS_LevelWon) {
+					restart();
+					state = GS_Playing;
+					continue;
+				}
+			}
+			
+			if (event.keyboard.keycode == ALLEGRO_KEY_F1) {
+				state = GS_GameOver;
+			}
 		}
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-		
-		/* let the player handle whatever events he wants */
-		currentLevel->player->handleEvent(&event);
-		
+
+		if (state == GS_Playing) {
+			/* let the player handle whatever events he wants */
+			currentLevel->player->handleEvent(&event);
+		}
 		if (event.type == ALLEGRO_EVENT_TIMER) {
 			update();
 			redraw = true;
@@ -86,20 +118,71 @@ void Game::mainLoop ()
 
 void Game::update()
 {
-	ai->planEverything();
-	currentLevel->update();
-	collisionChecker->playerPickupFood();
-	collisionChecker->victimPickupFood();
-	collisionChecker->victimVsBullet();
-	collisionChecker->playerVsVictim();
-	hud->setHunger(currentLevel->player->hunger);
-	hud->setMaxHunger(Player::HUNGER_LIMIT);
+	if (ignoreKeyboardTicks) ignoreKeyboardTicks--;
+	
+	if (state == GS_Playing) {
+		ai->planEverything();
+		currentLevel->update();
+		collisionChecker->playerPickupFood();
+		collisionChecker->victimPickupFood();
+		collisionChecker->victimVsBullet();
+		collisionChecker->playerVsVictim();
+		hud->setHunger(currentLevel->player->hunger);
+		hud->setMaxHunger(Player::HUNGER_LIMIT);
+		
+		if (currentLevel->player->isDead) {
+			state = GS_GameOver;
+			ignoreKeyboardTicks = 20;
+		}
+		
+		if (currentLevel->victims->size() == 0) {
+			levelCounter++;
+			state = GS_LevelWon;
+			score += SCORE_LEVEL;
+			ignoreKeyboardTicks = 20;
+		}
+	}
 }
 
 void Game::draw()
 {
-	currentLevel->draw();
-	hud->draw();
+	Resources* resources = Resources::instance();
+	if (state == GS_Title) {
+		al_draw_bitmap(resources->imgTitle, 0, 0, 0);
+	}
+	else if (state == GS_Playing) {
+		currentLevel->draw();
+		hud->draw();
+	}
+	else if (state == GS_GameOver) {
+		currentLevel->draw();
+		hud->draw();
+		
+		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
+			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
+	}
+	else if (state == GS_LevelWon) {
+		currentLevel->draw();
+		hud->draw();
+		
+		for (int i = 0; i < 5; i++) {
+			int ox = (int[]){-3, 3, -3, 3, 0}[i];
+			int oy = (int[]){3, 3, -3, -3, 0}[i];
+			ALLEGRO_COLOR c;
+			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
+			al_draw_textf(resources->fontBig, c,
+				320 + ox, 200 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
+			al_draw_textf(resources->fontNormal, c,
+				320 + ox, 300 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
+		}
+	}
+}
+
+void Game::restart() {
+	currentLevel = new Level(levelCounter);
+	collisionChecker = new CollisionChecker(currentLevel);
+	ai = new AI(currentLevel);
+	state = GS_Playing;
 }
 
 void Game::shutdown ()

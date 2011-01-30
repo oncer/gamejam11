@@ -19,8 +19,10 @@ void Resources::destroyInstance()
 
 Resources::Resources()
 {
+	fontNormal = NULL;
+	fontBig = NULL;
+
 	imgTitle = NULL;
-	memset(imgLevelBackground, 0, BACKGROUNDS * sizeof(ALLEGRO_BITMAP*));
 	memset(imgObstacle, 0, OBSTACLES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgPlayer, 0, PLAYER_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgVictim, 0, VICTIM_FRAMES * sizeof(ALLEGRO_BITMAP*));
@@ -28,12 +30,15 @@ Resources::Resources()
 	memset(imgBullet, 0, BULLET_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgFood, 0, FOOD_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 	memset(imgBit, 0, BIT_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
+	memset(imgBackground, 0, BACKGROUND_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
+	memset(imgLevelObject, 0, LEVEL_OBJECT_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
 }
 
 Resources::~Resources()
 {
+	al_destroy_font(fontNormal);
+	al_destroy_font(fontBig);
 	al_destroy_bitmap(imgTitle);
-	for (int i = 0; i < BACKGROUNDS; i++) al_destroy_bitmap(imgLevelBackground[i]);
 	for (int i = 0; i < OBSTACLES; i++) al_destroy_bitmap(imgObstacle[i]);
 	for (int i = 0; i < PLAYER_FRAMES; i++) al_destroy_bitmap(imgPlayer[i]);
 	for (int i = 0; i < VICTIM_FRAMES; i++) al_destroy_bitmap(imgVictim[i]);
@@ -41,16 +46,17 @@ Resources::~Resources()
 	for (int i = 0; i < EXPLOSION_FRAMES; i++) al_destroy_bitmap(imgExplosion[i]);
 	for (int i = 0; i < FOOD_VARIATIONS; i++) al_destroy_bitmap(imgFood[i]);
 	for (int i = 0; i < BIT_VARIATIONS; i++) al_destroy_bitmap(imgBit[i]);
+	for (int i = 0; i < BACKGROUND_VARIATIONS; i++) al_destroy_bitmap(imgBackground[i]);
+	for (int i = 0; i < LEVEL_OBJECT_VARIATIONS; i++) al_destroy_bitmap(imgLevelObject[i]);
 }
 
 void Resources::loadEverything()
 {
+	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 24, 0);
+	fontBig = al_load_font("./gfx/DejaVuSans.ttf", 64, 0);
+
 	imgTitle = al_load_bitmap("./gfx/title.png");
 
-	imgLevelBackground[0] = al_load_bitmap("./gfx/background.png");
-	imgLevelBackground[1] = al_load_bitmap("./gfx/background 2.png");
-	imgLevelBackground[2] = al_load_bitmap("./gfx/background 3.png");
-	
 	imgObstacle[0] = al_load_bitmap("./gfx/little rock.png");
 	imgObstacle[1] = al_load_bitmap("./gfx/rock.png");
 	imgObstacle[2] = al_load_bitmap("./gfx/rock middle-sized.png");
@@ -59,13 +65,27 @@ void Resources::loadEverything()
 
 	imgVictim[0] = al_load_bitmap("./gfx/smiled bacteria.png");
 	imgVictim[1] = al_load_bitmap("./gfx/wounded.png");
-	imgExplosion[0] = al_load_bitmap("./gfx/death.png");
-	imgBullet[0] = al_load_bitmap("./gfx/bullet.png");
+	imgExplosion[0] = al_load_bitmap("./gfx/explosion00.png");
+	imgExplosion[1] = al_load_bitmap("./gfx/explosion01.png");
+	imgExplosion[2] = al_load_bitmap("./gfx/explosion02.png");
+	imgExplosion[3] = al_load_bitmap("./gfx/explosion03.png");
+	imgExplosion[4] = al_load_bitmap("./gfx/explosion04.png");
+	imgExplosion[5] = al_load_bitmap("./gfx/explosion05.png");
+
+	imgBullet[0] = al_load_bitmap("./gfx/bullet00.png");
+        imgBullet[1] = al_load_bitmap("./gfx/bullet01.png");
+        imgBullet[2] = al_load_bitmap("./gfx/bullet02.png");
+        imgBullet[3] = al_load_bitmap("./gfx/bullet03.png");
 	
 	imgFood[0] = al_load_bitmap("./gfx/cola.png");
 	imgFood[1] = al_load_bitmap("./gfx/hot dog.png");
 	imgFood[2] = al_load_bitmap("./gfx/banana.png");
 	
 	imgBit[0] = al_load_bitmap("./gfx/bit.png");
+	
+	imgBackground[0] = al_load_bitmap("./gfx/background 2.png");
+	imgBackground[1] = al_load_bitmap("./gfx/background 3.png");
+	
+	imgLevelObject[0] = al_load_bitmap("./gfx/rock.png");
 }
 

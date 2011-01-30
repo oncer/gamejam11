@@ -43,7 +43,7 @@ void Player::increaseHunger()
 void Player::update()
 {
 	if (stickyDiagonal) stickyDiagonal--;
-	if (ix != 0 || iy != 0) {
+	if (!ifire && (ix != 0 || iy != 0)) {
 		if (stickyDiagonal && vx && vy) {
 			// assume the keys are e.g. left-down,up-down,up-up,left-up
 			// we want to keep shooting up/left, not straight left
@@ -57,12 +57,14 @@ void Player::update()
 		}
 	}
 
-	if (ifire && fireTicks == 0 && (vx != 0 || vy != 0)) {
+	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
 		Bullet *bullet = new Bullet(p);
-		float v = sqrt(vx * vx + vy * vy);
-		float dx = vx / v;
-		float dy = vy / v;
+        float dx = ix + (rand()%100 - 50) / 700.0;
+        float dy = iy + (rand()%100 - 50) / 700.0;
+		float v = sqrt(dx * dx + dy * dy);
+		dx = dx / v;
+		dy = dy / v;
 		bullet->dx = dx * Bullet::BASE_SPEED;
 		bullet->dy = dy * Bullet::BASE_SPEED;
 		fireTicks = fireRate;
@@ -73,22 +75,35 @@ void Player::update()
 		fireTicks--;
 }
 
+void Player::getSpeed(float *dx, float *dy) {
+	*dx = ix;
+	*dy = iy;
+	float d = std::sqrt(*dx * *dx + *dy * *dy);
+	*dx *= BASE_SPEED / d;
+	*dy *= BASE_SPEED / d;
+}
+
 bool Player::canMove()
 {
-	// TODO: collision check (use CollisionChecker or something as parameter)
-	return true;
+	CollisionChecker *c = Game::globalGame->collisionChecker;
+	return c->playerCanMoveTo(position);
 }
 
 void Player::doMove()
 {
-	if (!isDead && (ix || iy)) {
-		float dx = ix;
-		float dy = iy;
-		float d = std::sqrt(dx * dx + dy * dy);
-		dx *= BASE_SPEED / d;
-		dy *= BASE_SPEED / d;
+	if (!isDead && !ifire && (ix || iy)) {
+		float dx, dy;
+		getSpeed(&dx, &dy);
+		
 		position.x += dx;
+		if (!canMove()) {
+			position.x -= dx;
+		}
+		
 		position.y += dy;
+		if (!canMove()) {
+			position.y -= dy;
+		}
 	}
 }
 	
@@ -139,6 +154,7 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 			case ALLEGRO_KEY_SPACE:
 			case ALLEGRO_KEY_LSHIFT:
 				ifire = 0;
+				keyBits &= ~16;
 				break;
 		}
 	}

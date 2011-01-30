@@ -8,18 +8,37 @@
 #include "collisionchecker.h"
 #include "ai.h"
 
+enum GameState {
+	GS_Title,
+	GS_Playing,
+	GS_GameOver,
+	GS_LevelWon,
+	GS_GameWon
+};
+
 /* This class contains the main loop and owns game resources */
 class Game
 {
 
 public:
 
+static const int SCORE_KILL = 10; // only by shooting, not direct contact
+static const int SCORE_FOOD = 50;
+static const int SCORE_LEVEL = 500;
+
 static Game *globalGame;
 Level* currentLevel;
+GameState state;
+CollisionChecker* collisionChecker;
+int levelCounter;
+int score;
+
+int ignoreKeyboardTicks; // ignore keyboard for a number of ticks
 
 void init ();
 void mainLoop ();
 void shutdown ();
+void restart ();
 
 private:
 
@@ -32,7 +51,6 @@ ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
 
 Hud* hud;
-CollisionChecker* collisionChecker;
 AI* ai;
 
 ALLEGRO_EVENT_QUEUE *queue;
