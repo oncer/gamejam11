@@ -111,10 +111,10 @@ void Game::mainLoop ()
 		}
 		
 		if(redraw && al_is_event_queue_empty(queue)) {
-         redraw = false;
-         draw();
-         al_flip_display();
-      }
+			redraw = false;
+			draw();
+			al_flip_display();
+		}
 	}
 }
 
@@ -127,7 +127,7 @@ void Game::update()
 		currentLevel->update();
 		collisionChecker->playerPickupFood();
 		collisionChecker->victimPickupFood();
-		collisionChecker->victimVsBullet();
+		collisionChecker->victimVsProjectile();
 		collisionChecker->playerVsVictim();
 		hud->setHunger(currentLevel->player->hunger);
 		hud->setMaxHunger(Player::HUNGER_LIMIT);

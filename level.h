@@ -8,13 +8,13 @@ class Level;
 #include "player.h"
 #include "victim.h"
 #include "levelobject.h"
-#include "bullet.h"
+#include "projectile.h"
 #include "food.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;
-typedef std::vector<Bullet*> BulletList;
+typedef std::vector<Projectile*> ProjectileList;
 
 /* Contains runtime level info */
 class Level
@@ -43,7 +43,7 @@ VictimList* victims;
 
 LevelObjectList* levelObjects;
 FoodList* foods;
-BulletList* bullets;
+ProjectileList* projectiles;
 
 private:
 

@@ -1,16 +1,18 @@
 #include <cmath>
 #include "player.h"
+#include "flame.h"
+#include "bullet.h"
 
 Player::Player(PixelCoords pos)
 {
 	position = pos;
-	fireRate = 10;
-	fireTicks = 0;
 	keyBits = 0;
 	ix = iy = ifire = 0;
 	vx = vy = 0;
 	hunger = 0;
 	isDead = false;
+	fireTicks = 0;
+	changeWeapon(WEAPON_FLAMETHROWER);
 }
 
 void Player::nextAnimFrame()
@@ -59,16 +61,45 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
-		Bullet *bullet = new Bullet(p);
-        float dx = ix + (rand()%100 - 50) / 700.0;
-        float dy = iy + (rand()%100 - 50) / 700.0;
-		float v = sqrt(dx * dx + dy * dy);
-		dx = dx / v;
-		dy = dy / v;
-		bullet->dx = dx * Bullet::BASE_SPEED;
-		bullet->dy = dy * Bullet::BASE_SPEED;
-		fireTicks = fireRate;
-		Game::globalGame->currentLevel->bullets->push_back(bullet);
+		float dx = ix;
+		float dy = iy;
+		float v = 1.0;
+		
+		Bullet *bullet = NULL; // only for WEAPON_GUN
+		Flame *flame = NULL; // only for WEAPON_FLAMETHROWER
+		
+		switch (weaponType) {
+			
+		case WEAPON_GUN:;
+			bullet = new Bullet(p);
+			dx += (rand()%100 - 50) / 700.0;
+			dy += (rand()%100 - 50) / 700.0;
+			v = sqrt(dx * dx + dy * dy);
+			dx = dx / v;
+			dy = dy / v;
+			bullet->dx = dx * bullet->getBaseSpeed();
+			bullet->dy = dy * bullet->getBaseSpeed();
+			fireTicks = fireRate;
+			Game::globalGame->currentLevel->projectiles->push_back(bullet);
+			break;
+			
+		case WEAPON_FLAMETHROWER:
+			flame = new Flame(p);
+			dx += (rand()%400 - 200) / 700.0;
+			dy += (rand()%400 - 200) / 700.0;
+			v = sqrt(dx * dx + dy * dy);
+			dx = dx / v;
+			dy = dy / v;
+			flame->dx = dx * flame->getBaseSpeed();
+			flame->dy = dy * flame->getBaseSpeed();
+			fireTicks = fireRate;
+			Game::globalGame->currentLevel->projectiles->push_back(flame);
+			break;
+			
+		case WEAPON_LASER:
+			break;
+			
+		}
 	}
 	
 	if (fireTicks > 0)
@@ -104,6 +135,28 @@ void Player::doMove()
 		if (!canMove()) {
 			position.y -= dy;
 		}
+	}
+}
+
+void Player::changeWeapon(WeaponType type)
+{
+	fireTicks = 0;
+	weaponType = type;
+	
+	switch(weaponType) {
+		
+	case WEAPON_GUN:
+		fireRate = FIRE_RATE_BULLET;
+		break;
+		
+	case WEAPON_FLAMETHROWER:
+		fireRate = FIRE_RATE_FLAME;
+		break;
+		
+	case WEAPON_LASER:
+		fireRate = 1; // TODO: laser not implemented yet
+		break;
+		
 	}
 }
 	
