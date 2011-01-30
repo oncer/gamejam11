@@ -110,7 +110,11 @@ void Level::update()
 			victim->doMove();
 		}
 		if (victim->splitCountdown <= 0) {
-			victims->push_back(new Victim(victim->split()));
+			if (victim->splitAgain)
+				victim->splitAgain--;
+			else {
+				victims->push_back(new Victim(victim->split()));
+			}
 		}
 		victim->nextAnimFrame();
 	}
@@ -204,9 +208,9 @@ void Level::draw()
 	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
 		(*it)->draw();
 	}
-	
-	al_destroy_bitmap(drawingTarget);
+
 	al_set_target_bitmap(targetBackup);
+	al_destroy_bitmap(drawingTarget);
 }
 
 void Level::shake()
