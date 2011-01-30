@@ -7,6 +7,7 @@ Resources* Resources::instance()
 	if (theInstance == NULL) {
 		theInstance = new Resources();
 	}
+	return theInstance;
 }
 
 void Resources::destroyInstance()

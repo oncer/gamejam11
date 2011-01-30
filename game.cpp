@@ -45,7 +45,7 @@ void Game::init ()
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_display_event_source(display));
 	
-	drawingTarget = al_clone_bitmap(al_get_backbuffer(display));
+	drawingTarget = al_create_bitmap(Game::WIDTH, Game::HEIGHT);
 
 	state = GS_Title;
 	Audio::playMusic(Audio::MUSIC_TITLE);

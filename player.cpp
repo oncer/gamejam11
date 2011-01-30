@@ -240,4 +240,5 @@ bool Player::handleEvent(ALLEGRO_EVENT *event) {
 				break;
 		}
 	}
+	return true;
 }
