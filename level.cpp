@@ -1,4 +1,6 @@
 #include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
+
 #include <cstdlib>
 #include <math.h>
 #include <iostream>
@@ -14,6 +16,7 @@ Level::Level()
 	projectiles = new ProjectileList();
 	foods = new FoodList();
 	weapons = new WeaponList();
+	laser = new Laser();
 
 	levelNumber = 0;
 	ticks = 0;
@@ -74,6 +77,7 @@ Level::~Level()
 	delete levelObjects;
 	delete foods;
 	delete weapons;
+	delete laser;
 }
 
 void Level::update()
@@ -163,8 +167,7 @@ void Level::update()
 		weapons->push_back(new Weapon(WEAPON_FLAMETHROWER, randomLevelCoords()));
 	}
 	if ((levelNumber >= LASER_FIRST_LEVEL) && (ticks == LASER_SPAWN_TIME)) {
-		// TODO: spawn WEAPON_LASER when implemented
-		weapons->push_back(new Weapon(WEAPON_FLAMETHROWER, randomLevelCoords())); 
+		weapons->push_back(new Weapon(WEAPON_LASER, randomLevelCoords())); 
 	}
 	
 	// player hunger increases
@@ -219,9 +222,12 @@ void Level::draw()
 	}
 	player->draw();
 	
+	// Projectiles & Laser
 	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
 		(*it)->draw();
 	}
+	if (laser->active) drawLaser();
+	laser->deactivate();
 
 	al_set_target_bitmap(targetBackup);
 	al_destroy_bitmap(drawingTarget);
@@ -249,6 +255,17 @@ void Level::spawnFood()
 	int variation = rand() % Resources::FOOD_VARIATIONS;
 	PixelCoords position = randomLevelCoords();
 	foods->push_back(new Food(variation, position, 1000));
+}
+
+void Level::drawLaser()
+{
+	int laserFrame = ticks % LASER_COLORS;
+	ALLEGRO_COLOR color;
+	if (laserFrame == 0) color = LASER_COLOR_0;
+	if (laserFrame == 1) color = LASER_COLOR_1;
+	if (laserFrame == 2) color = LASER_COLOR_2; 
+	if (laserFrame == 3) color = LASER_COLOR_3; 
+	al_draw_line(laser->from.x, laser->from.y, laser->to.x, laser->to.y, color, 4);
 }
 
 PixelCoords Level::randomLevelCoords()
