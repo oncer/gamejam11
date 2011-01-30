@@ -74,6 +74,8 @@ void CollisionChecker::playerPickupFood()
 
 void CollisionChecker::victimPickupFood()
 {
+	size_t operations = 0;
+	
 	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
 		Victim* victim = *it;
 		if (victim->isDying || victim->isDead) {
@@ -87,6 +89,9 @@ void CollisionChecker::victimPickupFood()
 			if (boxCollision(victim->position, food->position, VICTIM_WIDTH, VICTIM_HEIGHT, FOOD_WIDTH, FOOD_HEIGHT)) {
 				victim->feed(food->value);
 				food->getEaten();
+			}
+			if (operations++ >= OPERATIONS_CAP) {
+				return; // ignore remaining checks
 			}
 		}
 	}
@@ -107,6 +112,8 @@ void CollisionChecker::playerVsVictim()
 
 void CollisionChecker::victimVsBullet()
 {
+	size_t operations = 0;
+	
 	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
 		Victim* victim = *it;
 		if (victim->isDying || victim->isDead) {
@@ -123,6 +130,10 @@ void CollisionChecker::victimVsBullet()
 				bullet->isDead = true;
 				victim->explode();
 				Game::globalGame->score += Game::SCORE_KILL;
+			}
+			
+			if (operations++ >= OPERATIONS_CAP) {
+				return; // ignore remaining checks
 			}
 		}
 	}

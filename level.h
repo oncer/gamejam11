@@ -47,7 +47,7 @@ BulletList* bullets;
 
 private:
 
-static const int BASE_FOOD_INTERVAL = 400;
+static const int BASE_FOOD_INTERVAL = 240;
 static const float SHAKE_ROTATION_GAIN = .7;
 static const float SHAKE_INTENSITY_GAIN = 1.5; // each shake adds rand from 0 to gain
 static const float SHAKE_INTENSITY_MAX = 10;

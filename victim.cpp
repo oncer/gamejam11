@@ -59,7 +59,7 @@ void Victim::doMove()
 {
 	float dir_x = target.x - position.x;
 	float dir_y = target.y - position.y;
-	float dir_w = sqrt(dir_x * dir_x + dir_y * dir_y);
+	float dir_w = sqrt(dir_x * dir_x + dir_y * dir_y) / speed;
 	
 	if (dir_w > 1) {
 		position.x += dir_x / dir_w;
@@ -101,6 +101,7 @@ void Victim::explode() {
 Victim Victim::split()
 {
 	splitCountdown += FOOD_TO_SPLIT; // reset countdown
+	speed += INCREASE_SPEED;
 	Victim v = Victim(position);
 	return v;
 }
