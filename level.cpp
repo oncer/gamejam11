@@ -9,19 +9,21 @@ Level::Level()
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
-
 	bullets = new BulletList();
-
 	foods = new FoodList();
-	
+
 	pixelWidth = 640;  // TODO: dynamic
 	pixelHeight = 480; // TODO: dynamic
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 	
 	/* DEMO CODE */
+	Resources* resources = Resources::instance();
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
 	victims->push_back(new Victim((PixelCoords) {500, 30}));
+	background = 0;
+	pixelWidth = al_get_bitmap_width(resources->imgLevelBackground[background]);
+	pixelHeight = al_get_bitmap_height(resources->imgLevelBackground[background]);
 }
 
 Level::~Level()
@@ -103,8 +105,13 @@ void Level::update()
 
 void Level::draw()
 {
+	Resources* resources = Resources::instance();
+	
 	// Background
-	al_clear_to_color(al_map_rgb(127, 127, 127));
+	ALLEGRO_BITMAP* img = resources->imgLevelBackground[background];
+	float sw = al_get_bitmap_width(img);
+	float sh = al_get_bitmap_height(img);
+	al_draw_scaled_bitmap(img, 0, 0, sw, sh, 0, 0, pixelWidth, pixelHeight, 0);
 	
 	// Food objects
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {

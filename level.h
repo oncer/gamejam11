@@ -46,6 +46,7 @@ private:
 
 static const int BASE_FOOD_INTERVAL = 600;
 
+int background; // Background gfx for this level
 int foodInterval; // Nr of ticks between food spawning
 int foodTimer; // Ticks remaining until food spawns
 
