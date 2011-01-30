@@ -46,7 +46,7 @@ BulletList* bullets;
 
 private:
 
-static const int BASE_FOOD_INTERVAL = 600;
+static const int BASE_FOOD_INTERVAL = 400;
 
 int background; // Background gfx for this level
 int foodInterval; // Nr of ticks between food spawning

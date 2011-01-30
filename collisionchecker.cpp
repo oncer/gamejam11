@@ -67,7 +67,7 @@ void CollisionChecker::playerPickupFood()
 				level->player->feed(food->value);
 				Game::globalGame->score += Game::SCORE_FOOD;
 			}
-			food->isConsumed = true;
+			food->getEaten();
 		}
 	}
 }
@@ -86,7 +86,7 @@ void CollisionChecker::victimPickupFood()
 			}
 			if (boxCollision(victim->position, food->position, VICTIM_WIDTH, VICTIM_HEIGHT, FOOD_WIDTH, FOOD_HEIGHT)) {
 				victim->feed(food->value);
-				food->isConsumed = true;
+				food->getEaten();
 			}
 		}
 	}

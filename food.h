@@ -24,8 +24,14 @@ float dx, dy;
 void nextAnimFrame();
 void draw();
 void doMove();
+void getEaten();
 
 private:
+
+static const int SPAWN_ANIM_TIME = 60;
+static const int DEATH_ANIM_TIME = 40;
+
+int animCountdown; // for spawn and death anims
 
 };
 
