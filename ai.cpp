@@ -56,5 +56,5 @@ void AI::fixTarget(Victim* victim)
 	if (victim->target.x < Level::BORDER_ZONE) victim->target.x = Level::BORDER_ZONE;
 	if (victim->target.y < Level::BORDER_ZONE) victim->target.y = Level::BORDER_ZONE;
 	if (victim->target.x > level->pixelWidth - Level::BORDER_ZONE) victim->target.x = level->pixelWidth - Level::BORDER_ZONE;
-	if (victim->target.y > level->pixelWidth - Level::BORDER_ZONE) victim->target.y = level->pixelWidth - Level::BORDER_ZONE;
+	if (victim->target.y > level->pixelHeight - Level::BORDER_ZONE) victim->target.y = level->pixelWidth - Level::BORDER_ZONE;
 }
