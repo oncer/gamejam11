@@ -28,7 +28,7 @@ void Food::getEaten()
 {
 	isConsumed = true;
 	animCountdown = DEATH_ANIM_TIME;
-	Audio::playSFX(SFX_COLLECT);
+	Audio::playSFX(Audio::SFX_COLLECT);
 }
 
 void Food::doMove()
