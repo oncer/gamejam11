@@ -191,9 +191,9 @@ void Level::draw()
 	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
 		(*it)->draw();
 	}
-	
-	al_destroy_bitmap(drawingTarget);
+
 	al_set_target_bitmap(targetBackup);
+	al_destroy_bitmap(drawingTarget);
 }
 
 void Level::shake()
