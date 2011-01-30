@@ -14,8 +14,8 @@ Level::Level(int num)
 	foods = new FoodList();
 
 	ticks = 0;
-	pixelWidth = 640;  // TODO: dynamic
-	pixelHeight = 480; // TODO: dynamic
+	pixelWidth = Game::WIDTH;
+	pixelHeight = Game::HEIGHT;
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 	

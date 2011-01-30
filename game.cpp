@@ -1,12 +1,11 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
 #include <math.h>
 #include <time.h>
 #include "resources.h"
 #include "game.h"
+#include "audio.h"
 
 Game *Game::globalGame;
 
@@ -15,7 +14,7 @@ void Game::init ()
 	globalGame = this;
 	al_init();
 	al_set_new_display_flags(ALLEGRO_RESIZABLE);
-	display = al_create_display(640, 480);
+	display = al_create_display(WIDTH, HEIGHT);
 	
 	al_install_mouse(); // TODO: maybe not needed
 	al_install_keyboard();
@@ -23,11 +22,7 @@ void Game::init ()
 	al_init_font_addon();
 	al_init_ttf_addon();
 	al_init_primitives_addon(); // TODO: maybe not needed
-    al_init_acodec_addon();
-    al_install_audio();
-    voice = al_create_voice(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
-    mixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_FLOAT32, ALLEGRO_CHANNEL_CONF2);
-    al_attach_mixer_to_voice(mixer, voice);
+	Audio::init();
 	srand(time(0));
 	
 	resources = Resources::instance();
@@ -51,6 +46,9 @@ void Game::init ()
 	al_register_event_source(queue, al_get_display_event_source(display));
 	
 	drawingTarget = al_clone_bitmap(al_get_backbuffer(display));
+
+	state = GS_Title;
+	Audio::playMusic(Audio::MUSIC_TITLE);
 }
 
 void Game::mainLoop ()
@@ -78,6 +76,7 @@ void Game::mainLoop ()
 				}
 				else if (state == GS_GameOver) {
 					state = GS_Title;
+					Audio::playMusic(Audio::MUSIC_TITLE);
 					continue;
 				}
 				else if (state == GS_LevelWon) {
@@ -108,9 +107,9 @@ void Game::mainLoop ()
 			int h = event.display.height;
 			al_acknowledge_resize(display);
 			ALLEGRO_TRANSFORM transform;
-			float s = h / 480.0;
-			int x = (w - 640 * s) / 2;
-			int y = (h - 480 * s) / 2;
+			float s = h / (double)HEIGHT;
+			int x = (w - WIDTH * s) / 2;
+			int y = (h - HEIGHT * s) / 2;
 
 			al_build_transform(&transform, x, y, s, s, 0);
 			al_use_transform(&transform);
@@ -165,7 +164,7 @@ void Game::draw()
 	else if (state == GS_GameOver) {
 		drawLevelAndHud();		
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
-			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
+			Game::WIDTH/2, Game::HEIGHT/2 - 32, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
 	}
 	else if (state == GS_LevelWon) {
 		drawLevelAndHud();
@@ -175,9 +174,9 @@ void Game::draw()
 			ALLEGRO_COLOR c;
 			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
 			al_draw_textf(resources->fontBig, c,
-				320 + ox, 200 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
+				Game::WIDTH/2 + ox, Game::HEIGHT/2 - 80 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
 			al_draw_textf(resources->fontNormal, c,
-				320 + ox, 300 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
+				Game::WIDTH/2 + ox, Game::HEIGHT/2 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
 		}
 	}
 }
@@ -204,6 +203,7 @@ void Game::restart() {
 
 void Game::shutdown ()
 {
+	Audio::quit();
 	Resources::destroyInstance();
 	delete collisionChecker;
 	delete ai;

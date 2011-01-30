@@ -3,7 +3,7 @@ SOURCES=$(wildcard *.cpp)
 OBJS=$(SOURCES:.cpp=.o)
 HDRS=$(shell find . -maxdepth 1 -name "*.h")
 FLAGS=-g
-LDFLAGS=$(shell pkg-config --libs allegro-5.0 allegro_image-5.0 allegro_primitives-5.0 allegro_ttf-5.0)
+LDFLAGS=$(shell pkg-config --libs allegro-5.0 allegro_image-5.0 allegro_primitives-5.0 allegro_ttf-5.0 allegro_audio-5.0 allegro_acodec-5.0)
 BIN=./game
 RM=rm
 EXEC=exec
@@ -20,4 +20,4 @@ run:
 	$(EXEC) $(BIN)
 
 clean:
-	$(RM) $(BIN) *.o
+	$(RM) -f $(BIN) $(OBJS)
