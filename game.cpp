@@ -142,6 +142,7 @@ void Game::update()
 		
 		if (currentLevel->player->isDead) {
 			state = GS_GameOver;
+			Audio::stopMusic();
 			ignoreKeyboardTicks = 20;
 		}
 		

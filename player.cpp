@@ -60,6 +60,9 @@ void Player::update()
 		}
 	}
 
+	static int flameAudioDelay = 0;
+	flameAudioDelay--;
+
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
 
@@ -98,12 +101,17 @@ void Player::update()
 			flame->dy = dy * flame->getBaseSpeed();
 			fireTicks = fireRate;
 			Game::globalGame->currentLevel->projectiles->push_back(flame);
+			if (flameAudioDelay <= 0) {
+				Audio::playSFX(Audio::SFX_FLAME);
+				flameAudioDelay = 4;
+			}
 			break;
 			
 		case WEAPON_LASER:
 			laser = Game::globalGame->currentLevel->laser;
 			laser->set(p, dx, dy);
 			laser->activate();
+			Audio::playSFX(Audio::SFX_LASER);
 			break;
 			
 		}

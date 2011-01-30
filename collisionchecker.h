@@ -59,6 +59,11 @@ static const int LASER_FIELD_SIZE = 30;
 
 Level* level;
 
+private:
+
+int explodeAudioDelay;
+
+
 };
 
 #endif

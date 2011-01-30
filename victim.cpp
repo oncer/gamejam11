@@ -96,8 +96,6 @@ void Victim::explode() {
 		foods->push_back(f);
 	}
 
-	Audio::playSFX(Audio::SFX_DEATH);
-	
 	// shake screen
 	Game::globalGame->currentLevel->shake();
 }

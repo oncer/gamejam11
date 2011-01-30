@@ -24,7 +24,6 @@ Level::Level()
 	pixelHeight = Game::HEIGHT;
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
-
 }
 
 void Level::create(int num) {

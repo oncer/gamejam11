@@ -12,6 +12,8 @@ enum {
     SFX_SHOT,
     SFX_DEATH,
     SFX_COLLECT,
+    SFX_FLAME,
+    SFX_LASER,
 };
 
 enum {

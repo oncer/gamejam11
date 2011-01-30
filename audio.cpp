@@ -28,6 +28,8 @@ void Audio::init()
 	LOAD(SFX_SHOT,		"audio/shot.wav"	);
 	LOAD(SFX_DEATH,		"audio/death.wav"	);
 	LOAD(SFX_COLLECT,	"audio/collect.wav" );
+	LOAD(SFX_FLAME,		"audio/flame.wav"	);
+	LOAD(SFX_LASER,		"audio/laser.wav"	);
 #undef LOAD
 }
 
