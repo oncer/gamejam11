@@ -62,19 +62,7 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
-<<<<<<< HEAD
-		Bullet *bullet = new Bullet(p);
-        float dx = ix + (rand()%100 - 50) / 700.0;
-        float dy = iy + (rand()%100 - 50) / 700.0;
-		float v = sqrt(dx * dx + dy * dy);
-		dx = dx / v;
-		dy = dy / v;
-		bullet->dx = dx * Bullet::BASE_SPEED;
-		bullet->dy = dy * Bullet::BASE_SPEED;
-		fireTicks = fireRate;
-		Game::globalGame->currentLevel->bullets->push_back(bullet);
-		Audio::playSFX(Audio::SFX_SHOT);
-=======
+
 		float dx = ix;
 		float dy = iy;
 		float v = 1.0;
@@ -95,6 +83,7 @@ void Player::update()
 			bullet->dy = dy * bullet->getBaseSpeed();
 			fireTicks = fireRate;
 			Game::globalGame->currentLevel->projectiles->push_back(bullet);
+			Audio::playSFX(Audio::SFX_SHOT);
 			break;
 			
 		case WEAPON_FLAMETHROWER:
