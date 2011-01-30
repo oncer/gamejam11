@@ -79,7 +79,7 @@ void Victim::explode() {
 	
 	int n = 8;
 	for (int i = 0; i < n; i++) {
-		float a = 2 * 3.14 * i / n;
+		float a = 2 * 3.14 * (i + (std::rand() % 64) / 64.0) / n;
 		float x = cos(a);
 		float y = sin(a);
 		float r = 40 + std::rand() % 40; 
