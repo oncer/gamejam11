@@ -174,9 +174,9 @@ void Game::draw()
 			ALLEGRO_COLOR c;
 			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
 			al_draw_textf(resources->fontBig, c,
-				Game::WIDTH/2 + ox, Game::HEIGHT/2 - 80 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
+				Game::WIDTH/2 + ox, Game::HEIGHT/2 - 60 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
 			al_draw_textf(resources->fontNormal, c,
-				Game::WIDTH/2 + ox, Game::HEIGHT/2 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
+				Game::WIDTH/2 + ox, Game::HEIGHT/2 + 20 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
 		}
 	}
 }

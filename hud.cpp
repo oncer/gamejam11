@@ -24,7 +24,7 @@ void Hud::draw()
 	}
 	
 	al_draw_textf(Resources::instance()->fontNormal, al_map_rgb(255, 255, 255),
-		630, 10, ALLEGRO_ALIGN_RIGHT, "Score: %d", Game::globalGame->score);
+		Game::WIDTH - 10, 10, ALLEGRO_ALIGN_RIGHT, "Score: %d", Game::globalGame->score);
 }
 
 void Hud::setMaxHunger(int value)
