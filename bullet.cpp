@@ -7,15 +7,10 @@
 #include "level.h"
 
 Bullet::Bullet(PixelCoords pos)
-    :bulletAnim(4, Resources::BULLET_FRAMES, true)
+    : Projectile(pos), bulletAnim(4, Resources::BULLET_FRAMES, true)
 {
-	position = pos;
-	isDead = false;
-	steps = 0;
-	maxSteps = 60;
-	dx = dy = 0;
-	isDead = false;
 }
+Bullet::~Bullet() {}
 
 void Bullet::nextAnimFrame()
 {
@@ -25,33 +20,13 @@ void Bullet::nextAnimFrame()
 void Bullet::draw()
 {
 	Resources* resources = Resources::instance();
-	int currentFrame = bulletAnim.getCurrentFrame();
-	ALLEGRO_BITMAP* currentFrameImg = resources->imgBullet[currentFrame];
-	al_draw_bitmap(currentFrameImg, position.x, position.y, 0);
+	int currentFrame = bulletAnim.getCurrentFrame();	
+	ALLEGRO_BITMAP* img = resources->imgBullet[currentFrame];
+	PixelCoords imgPos = antiCenter(position, al_get_bitmap_width(img), al_get_bitmap_height(img));
+	al_draw_bitmap(img, imgPos.x, imgPos.y, 0);
 }
 
-bool Bullet::canMove()
+float Bullet::getBaseSpeed()
 {
-	// TODO: collision check (use CollisionChecker or something as parameter)
-	return true;
-}
-
-void Bullet::doMove()
-{
-	CollisionChecker *c = Game::globalGame->collisionChecker;
-	position.x += dx;
-	if (!c->bulletCanMoveTo(position)) {
-		position.x -= dx;
-		dx = -dx;
-	}
-	position.y += dy;
-	if (!c->bulletCanMoveTo(position)) {
-		position.y -= dy;
-		dy = -dy;
-	}
-
-	steps++;
-	if (steps > maxSteps) {
-		isDead = true;
-	}
+	return Bullet::BASE_SPEED;
 }

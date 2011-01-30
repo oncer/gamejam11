@@ -21,7 +21,7 @@ CollisionChecker::CollisionChecker(Level* lvl)
 bool CollisionChecker::canMoveTo(PixelCoords position, int w, int h) {
 	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
 		LevelObject *lob = *it;
-		if (boxCollision(lob->position, position, BLOCK_WIDTH, BLOCK_HEIGHT,
+		if (boxCollision(lob->position, position, lob->w, lob->h,
 			w, h)) {
 			return false;
 		}
@@ -39,20 +39,28 @@ bool CollisionChecker::foodCanMoveTo(PixelCoords position)
 	return canMoveTo(position, FOOD_WIDTH, FOOD_HEIGHT);
 }
 
-bool CollisionChecker::bulletCanMoveTo(PixelCoords position)
+bool CollisionChecker::projectileCanMoveTo(PixelCoords position)
 {
-	return canMoveTo(position, BULLET_WIDTH, BULLET_HEIGHT);
+	return canMoveTo(position, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
 }
 
 bool CollisionChecker::victimCanMoveTo(PixelCoords position)
 {
-	/* TODO: level objects not implemented yet
-	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
-		if (boxCollision()) {
-			return false;
+	return canMoveTo(position, VICTIM_WIDTH, VICTIM_HEIGHT);
+}
+
+void CollisionChecker::playerPickupWeapon()
+{
+	for (WeaponList::iterator it = level->weapons->begin(); it != level->weapons->end(); it++) {
+		Weapon* weapon = *it;
+		if (weapon->isConsumed || weapon->isDead) {
+			continue;
 		}
-	}*/
-	return true;
+		if (boxCollision(level->player->position, weapon->position, PLAYER_WIDTH, PLAYER_HEIGHT, WEAPON_WIDTH, WEAPON_HEIGHT)) {
+			level->player->changeWeapon(weapon->weaponType);
+			weapon->getPickedUp();
+		}
+	}
 }
 
 void CollisionChecker::playerPickupFood()
@@ -110,7 +118,7 @@ void CollisionChecker::playerVsVictim()
 	}
 }
 
-void CollisionChecker::victimVsBullet()
+void CollisionChecker::victimVsProjectile()
 {
 	size_t operations = 0;
 	
@@ -120,14 +128,14 @@ void CollisionChecker::victimVsBullet()
 			continue;
 		}
 		
-		for (BulletList::iterator it = level->bullets->begin(); it != level->bullets->end(); it++) {
-			Bullet* bullet = *it;
-			if (bullet->isDead) {
+		for (ProjectileList::iterator it = level->projectiles->begin(); it != level->projectiles->end(); it++) {
+			Projectile* projectile = *it;
+			if (projectile->isDead) {
 				continue;
 			}
 			
-			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
-				bullet->isDead = true;
+			if (boxCollision(victim->position, projectile->position, VICTIM_WIDTH, VICTIM_HEIGHT, PROJECTILE_WIDTH, PROJECTILE_HEIGHT)) {
+				projectile->isDead = true;
 				victim->explode();
 				Game::globalGame->score += Game::SCORE_KILL;
 			}

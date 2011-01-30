@@ -17,6 +17,7 @@ Victim::Victim(PixelCoords pos)
 	isDying = false;
 	isDead = false;
 	splitCountdown = FOOD_TO_SPLIT;
+	splitAgain = 0;
 }
 
 void Victim::nextAnimFrame()
@@ -103,8 +104,11 @@ void Victim::explode() {
 
 Victim Victim::split()
 {
+	splitAgain = SPLIT_AGAIN_TICKS;
 	splitCountdown += FOOD_TO_SPLIT; // reset countdown
 	speed += INCREASE_SPEED;
+	if (speed > MAX_SPEED) speed = MAX_SPEED;
 	Victim v = Victim(position);
+	v.splitAgain = SPLIT_AGAIN_TICKS;
 	return v;
 }

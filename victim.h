@@ -29,12 +29,15 @@ Plan plan;
 PixelCoords target; // This is where we want to go
 int splitCountdown; // How many food items we need to consume until split
 int walkSteps; // How many steps are we walking to this target
+int splitAgain; // Ticks until can split again
 
 private:
 
+static const float MAX_SPEED = 2.5;
 static const float BASE_SPEED = 1.0;
 static const float INCREASE_SPEED = 0.1;
 static const int FOOD_TO_SPLIT = 3;
+static const int SPLIT_AGAIN_TICKS = 10;
 
 float speed;
 Animation walkAnim;

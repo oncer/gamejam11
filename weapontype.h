@@ -1,0 +1,6 @@
+#ifndef _WEAPONTYPE_H_
+#define _WEAPONTYPE_H_
+
+enum WeaponType { WEAPON_GUN=0, WEAPON_FLAMETHROWER, WEAPON_LASER };
+
+#endif

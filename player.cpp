@@ -1,17 +1,19 @@
 #include <cmath>
 #include "player.h"
 #include "audio.h"
+#include "flame.h"
+#include "bullet.h"
 
 Player::Player(PixelCoords pos)
 {
 	position = pos;
-	fireRate = 10;
-	fireTicks = 0;
 	keyBits = 0;
 	ix = iy = ifire = 0;
 	vx = vy = 0;
 	hunger = 0;
 	isDead = false;
+	fireTicks = 0;
+	changeWeapon(WEAPON_GUN);
 }
 
 void Player::nextAnimFrame()
@@ -60,6 +62,7 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
+<<<<<<< HEAD
 		Bullet *bullet = new Bullet(p);
         float dx = ix + (rand()%100 - 50) / 700.0;
         float dy = iy + (rand()%100 - 50) / 700.0;
@@ -71,6 +74,47 @@ void Player::update()
 		fireTicks = fireRate;
 		Game::globalGame->currentLevel->bullets->push_back(bullet);
 		Audio::playSFX(Audio::SFX_SHOT);
+=======
+		float dx = ix;
+		float dy = iy;
+		float v = 1.0;
+		
+		Bullet *bullet = NULL; // only for WEAPON_GUN
+		Flame *flame = NULL; // only for WEAPON_FLAMETHROWER
+		
+		switch (weaponType) {
+			
+		case WEAPON_GUN:;
+			bullet = new Bullet(p);
+			dx += (rand()%100 - 50) / 700.0;
+			dy += (rand()%100 - 50) / 700.0;
+			v = sqrt(dx * dx + dy * dy);
+			dx = dx / v;
+			dy = dy / v;
+			bullet->dx = dx * bullet->getBaseSpeed();
+			bullet->dy = dy * bullet->getBaseSpeed();
+			fireTicks = fireRate;
+			Game::globalGame->currentLevel->projectiles->push_back(bullet);
+			break;
+			
+		case WEAPON_FLAMETHROWER:
+			flame = new Flame(p);
+			dx += (rand()%400 - 200) / 700.0;
+			dy += (rand()%400 - 200) / 700.0;
+			v = sqrt(dx * dx + dy * dy);
+			dx = dx / v;
+			dy = dy / v;
+			flame->dx = dx * flame->getBaseSpeed();
+			flame->dy = dy * flame->getBaseSpeed();
+			fireTicks = fireRate;
+			Game::globalGame->currentLevel->projectiles->push_back(flame);
+			break;
+			
+		case WEAPON_LASER:
+			break;
+			
+		}
+>>>>>>> 70ff3aed42751c263655f8a36c0428525f0714bf
 	}
 	
 	if (fireTicks > 0)
@@ -87,6 +131,19 @@ void Player::getSpeed(float *dx, float *dy) {
 
 bool Player::canMove()
 {
+	Level *level = Game::globalGame->currentLevel;
+	if (position.x > level->pixelWidth) {
+		return false;
+	}
+	if (position.y > level->pixelHeight) {
+		return false;
+	}
+	if (position.x < 0) {
+		return false;
+	}
+	if (position.y < 0) {
+		return false;
+	}
 	CollisionChecker *c = Game::globalGame->collisionChecker;
 	return c->playerCanMoveTo(position);
 }
@@ -106,6 +163,28 @@ void Player::doMove()
 		if (!canMove()) {
 			position.y -= dy;
 		}
+	}
+}
+
+void Player::changeWeapon(WeaponType type)
+{
+	fireTicks = 0;
+	weaponType = type;
+	
+	switch(weaponType) {
+		
+	case WEAPON_GUN:
+		fireRate = FIRE_RATE_BULLET;
+		break;
+		
+	case WEAPON_FLAMETHROWER:
+		fireRate = FIRE_RATE_FLAME;
+		break;
+		
+	case WEAPON_LASER:
+		fireRate = 1; // TODO: laser not implemented yet
+		break;
+		
 	}
 }
 	

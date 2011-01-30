@@ -8,13 +8,15 @@ class Level;
 #include "player.h"
 #include "victim.h"
 #include "levelobject.h"
-#include "bullet.h"
+#include "projectile.h"
 #include "food.h"
+#include "weapon.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;
-typedef std::vector<Bullet*> BulletList;
+typedef std::list<Weapon*> WeaponList;
+typedef std::vector<Projectile*> ProjectileList;
 
 /* Contains runtime level info */
 class Level
@@ -24,8 +26,10 @@ public:
 
 static const int BORDER_ZONE = 40; // no moving objects within 40px of the level boundaries
 
-Level(int num);
+Level();
 ~Level();
+
+void create(int num);
 
 void update();
 void draw();
@@ -36,6 +40,7 @@ bool isInLevelBoundaries(PixelCoords coords);
 int pixelWidth;
 int pixelHeight;
 
+int levelNumber; // 1 and up 
 int levelBackground;
 
 Player* player;
@@ -43,10 +48,15 @@ VictimList* victims;
 
 LevelObjectList* levelObjects;
 FoodList* foods;
-BulletList* bullets;
+WeaponList* weapons;
+ProjectileList* projectiles;
 
 private:
 
+static const int FLAMETHROWER_SPAWN_TIME = 600;
+static const int LASER_SPAWN_TIME = 1200;
+static const int FLAMETHROWER_FIRST_LEVEL = 3;
+static const int LASER_FIRST_LEVEL = 6;
 static const int BASE_FOOD_INTERVAL = 240;
 static const float SHAKE_ROTATION_GAIN = .7;
 static const float SHAKE_INTENSITY_GAIN = 1.5; // each shake adds rand from 0 to gain

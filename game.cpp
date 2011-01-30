@@ -117,10 +117,10 @@ void Game::mainLoop ()
 		}
 		
 		if(redraw && al_is_event_queue_empty(queue)) {
-         redraw = false;
-         draw();
-         al_flip_display();
-      }
+			redraw = false;
+			draw();
+			al_flip_display();
+		}
 	}
 }
 
@@ -131,9 +131,10 @@ void Game::update()
 	if (state == GS_Playing) {
 		ai->planEverything();
 		currentLevel->update();
+		collisionChecker->playerPickupWeapon();
 		collisionChecker->playerPickupFood();
 		collisionChecker->victimPickupFood();
-		collisionChecker->victimVsBullet();
+		collisionChecker->victimVsProjectile();
 		collisionChecker->playerVsVictim();
 		hud->setHunger(currentLevel->player->hunger);
 		hud->setMaxHunger(Player::HUNGER_LIMIT);
@@ -195,9 +196,10 @@ void Game::restart() {
 	if (ai != NULL) delete ai;
 	if (collisionChecker != NULL) delete collisionChecker;
 	if (currentLevel != NULL) delete currentLevel;
-	currentLevel = new Level(levelCounter);
+	currentLevel = new Level();
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
+	currentLevel->create(levelCounter);
 	state = GS_Playing;
 }
 
