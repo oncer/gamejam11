@@ -134,6 +134,7 @@ void Game::update()
 		collisionChecker->playerPickupWeapon();
 		collisionChecker->playerPickupFood();
 		collisionChecker->victimPickupFood();
+		collisionChecker->victimVsLaser();
 		collisionChecker->victimVsProjectile();
 		collisionChecker->playerVsVictim();
 		hud->setHunger(currentLevel->player->hunger);

@@ -62,25 +62,14 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
-<<<<<<< HEAD
-		Bullet *bullet = new Bullet(p);
-        float dx = ix + (rand()%100 - 50) / 700.0;
-        float dy = iy + (rand()%100 - 50) / 700.0;
-		float v = sqrt(dx * dx + dy * dy);
-		dx = dx / v;
-		dy = dy / v;
-		bullet->dx = dx * Bullet::BASE_SPEED;
-		bullet->dy = dy * Bullet::BASE_SPEED;
-		fireTicks = fireRate;
-		Game::globalGame->currentLevel->bullets->push_back(bullet);
-		Audio::playSFX(Audio::SFX_SHOT);
-=======
+
 		float dx = ix;
 		float dy = iy;
 		float v = 1.0;
 		
 		Bullet *bullet = NULL; // only for WEAPON_GUN
 		Flame *flame = NULL; // only for WEAPON_FLAMETHROWER
+		Laser* laser = NULL; // only for WEAPON_LASER
 		
 		switch (weaponType) {
 			
@@ -95,6 +84,7 @@ void Player::update()
 			bullet->dy = dy * bullet->getBaseSpeed();
 			fireTicks = fireRate;
 			Game::globalGame->currentLevel->projectiles->push_back(bullet);
+			Audio::playSFX(Audio::SFX_SHOT);
 			break;
 			
 		case WEAPON_FLAMETHROWER:
@@ -111,10 +101,13 @@ void Player::update()
 			break;
 			
 		case WEAPON_LASER:
+			laser = Game::globalGame->currentLevel->laser;
+			laser->set(p, dx, dy);
+			laser->activate();
 			break;
 			
 		}
->>>>>>> 70ff3aed42751c263655f8a36c0428525f0714bf
+
 	}
 	
 	if (fireTicks > 0)

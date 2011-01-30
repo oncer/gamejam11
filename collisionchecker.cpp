@@ -118,6 +118,36 @@ void CollisionChecker::playerVsVictim()
 	}
 }
 
+void CollisionChecker::victimVsLaser()
+{
+	Laser* laser = level->laser;
+	if (!laser->active) {
+		return;
+	}
+	
+	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
+		Victim* victim = *it;
+		if (victim->isDying || victim->isDead) {
+			continue;
+		}
+		
+		PixelCoords partitionPos = laser->from;
+		float dx = ((float) laser->to.x - laser->from.x) / LASER_PARTITIONS;
+		float dy = ((float) laser->to.y - laser->from.y) / LASER_PARTITIONS;
+			
+		for (int i = 0; i < LASER_PARTITIONS; i++) {
+			if (boxCollision(victim->position, partitionPos, VICTIM_WIDTH, VICTIM_HEIGHT, LASER_FIELD_SIZE, LASER_FIELD_SIZE)) {
+				victim->explode();
+				Game::globalGame->score += Game::SCORE_KILL;
+				break; // try next victim
+			}
+			
+			partitionPos.x += dx;
+			partitionPos.y += dy;
+		}
+	}
+}
+
 void CollisionChecker::victimVsProjectile()
 {
 	size_t operations = 0;
