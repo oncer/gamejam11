@@ -24,8 +24,10 @@ public:
 
 static const int BORDER_ZONE = 40; // no moving objects within 40px of the level boundaries
 
-Level(int num);
+Level();
 ~Level();
+
+void create(int num);
 
 void update();
 void draw();

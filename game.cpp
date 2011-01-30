@@ -189,9 +189,10 @@ void Game::restart() {
 	if (ai != NULL) delete ai;
 	if (collisionChecker != NULL) delete collisionChecker;
 	if (currentLevel != NULL) delete currentLevel;
-	currentLevel = new Level(levelCounter);
+	currentLevel = new Level();
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
+	currentLevel->create(levelCounter);
 	state = GS_Playing;
 }
 
