@@ -116,6 +116,19 @@ void Player::getSpeed(float *dx, float *dy) {
 
 bool Player::canMove()
 {
+	Level *level = Game::globalGame->currentLevel;
+	if (position.x > level->pixelWidth) {
+		return false;
+	}
+	if (position.y > level->pixelHeight) {
+		return false;
+	}
+	if (position.x < 0) {
+		return false;
+	}
+	if (position.y < 0) {
+		return false;
+	}
 	CollisionChecker *c = Game::globalGame->collisionChecker;
 	return c->playerCanMoveTo(position);
 }
