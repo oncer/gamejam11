@@ -166,8 +166,8 @@ void Game::draw()
 		hud->draw();
 		
 		for (int i = 0; i < 5; i++) {
-			int ox = (int[]){-3, 3, -3, 3, 0}[i];
-			int oy = (int[]){3, 3, -3, -3, 0}[i];
+			int ox = (int[]){-1, 1, -1, 1, 0}[i];
+			int oy = (int[]){1, 1, -1, -1, 0}[i];
 			ALLEGRO_COLOR c;
 			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
 			al_draw_textf(resources->fontBig, c,

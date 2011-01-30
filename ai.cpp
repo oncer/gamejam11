@@ -14,6 +14,11 @@ void AI::planEverything()
 			continue;
 		}
 		
+		if (victim->plan == Victim::PLAN_WANDER) {
+			// Don't stop wandering for food or they all clog together.
+			continue;
+		}
+		
 		// this victim needs a plan - try smelling for food
 		for (FoodList::iterator it = level->foods->begin(); it != level->foods->end(); it++) {
 			Food* food = *it;
@@ -21,8 +26,12 @@ void AI::planEverything()
 				continue;
 			}
 			if (distance(food->position, victim->position) <= SMELL_DISTANCE) {
+				// Don't alwys take first food.
+				int r = rand() % 100;
+				if (r < BACKOFF_CHANCE_PERCENT) continue;
 				victim->plan = Victim::PLAN_CHASE_FOOD;
 				victim->target = food->position;
+				
 				break;
 			}
 		}
