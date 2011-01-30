@@ -126,7 +126,8 @@ void Level::update()
 			if (victim->splitAgain)
 				victim->splitAgain--;
 			else {
-				victims->push_back(new Victim(victim->split()));
+				if (victims->size() < MAX_VICTIMS)
+					victims->push_back(new Victim(victim->split()));
 			}
 		}
 		victim->nextAnimFrame();
