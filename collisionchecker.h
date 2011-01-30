@@ -22,6 +22,7 @@ bool foodCanMoveTo(PixelCoords position);
 bool projectileCanMoveTo(PixelCoords position);
 bool playerCanMoveTo(PixelCoords position);
 bool victimCanMoveTo(PixelCoords position);
+void playerPickupWeapon();
 void playerPickupFood();
 void victimPickupFood();
 void playerVsVictim();
@@ -38,6 +39,8 @@ static const int VICTIM_WIDTH = 24;
 static const int VICTIM_HEIGHT = 24;
 static const int FOOD_WIDTH = 24;
 static const int FOOD_HEIGHT = 24;
+static const int WEAPON_WIDTH = 24;
+static const int WEAPON_HEIGHT = 24;
 
 static const int BULLET_WIDTH = 4;
 static const int BULLET_HEIGHT = 4;

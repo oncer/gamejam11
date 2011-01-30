@@ -102,6 +102,7 @@ Victim Victim::split()
 {
 	splitCountdown += FOOD_TO_SPLIT; // reset countdown
 	speed += INCREASE_SPEED;
+	if (speed > MAX_SPEED) speed = MAX_SPEED;
 	Victim v = Victim(position);
 	return v;
 }

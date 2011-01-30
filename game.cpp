@@ -125,6 +125,7 @@ void Game::update()
 	if (state == GS_Playing) {
 		ai->planEverything();
 		currentLevel->update();
+		collisionChecker->playerPickupWeapon();
 		collisionChecker->playerPickupFood();
 		collisionChecker->victimPickupFood();
 		collisionChecker->victimVsProjectile();

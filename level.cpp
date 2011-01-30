@@ -13,7 +13,9 @@ Level::Level()
 	levelObjects = new LevelObjectList();
 	projectiles = new ProjectileList();
 	foods = new FoodList();
+	weapons = new WeaponList();
 
+	levelNumber = 0;
 	ticks = 0;
 	pixelWidth = 640;  // TODO: dynamic
 	pixelHeight = 480; // TODO: dynamic
@@ -23,7 +25,7 @@ Level::Level()
 }
 
 void Level::create(int num) {
-
+	levelNumber = num;
 	levelBackground = num % 2;
 	
 	/* DEMO CODE */
@@ -70,6 +72,7 @@ Level::~Level()
 	delete victims;
 	delete levelObjects;
 	delete foods;
+	delete weapons;
 }
 
 void Level::update()
@@ -137,6 +140,15 @@ void Level::update()
 		foodTimer = foodInterval;
 	}
 	
+	// spawn weapons?
+	if ((levelNumber >= FLAMETHROWER_FIRST_LEVEL) && (ticks == FLAMETHROWER_SPAWN_TIME)) {
+		weapons->push_back(new Weapon(WEAPON_FLAMETHROWER, randomLevelCoords()));
+	}
+	if ((levelNumber >= LASER_FIRST_LEVEL) && (ticks == LASER_SPAWN_TIME)) {
+		// TODO: spawn WEAPON_LASER when implemented
+		weapons->push_back(new Weapon(WEAPON_FLAMETHROWER, randomLevelCoords())); 
+	}
+	
 	// player hunger increases
 	player->increaseHunger();
 	
@@ -175,6 +187,11 @@ void Level::draw()
 	
 	// Food objects
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
+		(*it)->draw();
+	}
+	
+	// Weapon objects
+	for (WeaponList::iterator it = weapons->begin(); it != weapons->end(); it++) {
 		(*it)->draw();
 	}
 	

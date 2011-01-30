@@ -27,6 +27,7 @@ Resources::Resources()
 	memset(imgPlayer, 0, PLAYER_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgVictim, 0, VICTIM_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgExplosion, 0, EXPLOSION_FRAMES * sizeof(ALLEGRO_BITMAP*));
+	memset(imgWeapon, 0, WEAPON_IMAGES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgBullet, 0, BULLET_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgFlame, 0, FLAME_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgFood, 0, FOOD_VARIATIONS * sizeof(ALLEGRO_BITMAP*));
@@ -43,6 +44,7 @@ Resources::~Resources()
 	for (int i = 0; i < OBSTACLES; i++) al_destroy_bitmap(imgObstacle[i]);
 	for (int i = 0; i < PLAYER_FRAMES; i++) al_destroy_bitmap(imgPlayer[i]);
 	for (int i = 0; i < VICTIM_FRAMES; i++) al_destroy_bitmap(imgVictim[i]);
+	for (int i = 0; i < WEAPON_IMAGES; i++) al_destroy_bitmap(imgWeapon[i]);
 	for (int i = 0; i < BULLET_FRAMES; i++) al_destroy_bitmap(imgBullet[i]);
 	for (int i = 0; i < FLAME_FRAMES; i++) al_destroy_bitmap(imgFlame[i]);
 	for (int i = 0; i < EXPLOSION_FRAMES; i++) al_destroy_bitmap(imgExplosion[i]);
@@ -73,6 +75,10 @@ void Resources::loadEverything()
 	imgExplosion[3] = al_load_bitmap("./gfx/explosion03.png");
 	imgExplosion[4] = al_load_bitmap("./gfx/explosion04.png");
 	imgExplosion[5] = al_load_bitmap("./gfx/explosion05.png");
+
+	imgWeapon[0] = al_load_bitmap("./gfx/gun - left.png");
+	imgWeapon[1] = al_load_bitmap("./gfx/gun - left.png");
+	imgWeapon[2] = al_load_bitmap("./gfx/gun - left.png");
 
 	imgBullet[0] = al_load_bitmap("./gfx/bullet00.png");
 	imgBullet[1] = al_load_bitmap("./gfx/bullet01.png");

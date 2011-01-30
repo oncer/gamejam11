@@ -5,6 +5,7 @@ class Player;
 
 #include "game.h"
 #include "coords.h"
+#include "weapontype.h"
 
 class Player
 {
@@ -17,8 +18,6 @@ static const int HUNGER_LIMIT = 2000;
 static const float BASE_SPEED = 2.0;
 static const int FIRE_RATE_BULLET = 10;
 static const int FIRE_RATE_FLAME = 3;
-
-enum WeaponType { WEAPON_GUN, WEAPON_FLAMETHROWER, WEAPON_LASER };
 
 int ix, iy; /* input direction */
 int ifire; /* fire button input */

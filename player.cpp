@@ -12,7 +12,7 @@ Player::Player(PixelCoords pos)
 	hunger = 0;
 	isDead = false;
 	fireTicks = 0;
-	changeWeapon(WEAPON_FLAMETHROWER);
+	changeWeapon(WEAPON_GUN);
 }
 
 void Player::nextAnimFrame()

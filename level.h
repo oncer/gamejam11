@@ -10,10 +10,12 @@ class Level;
 #include "levelobject.h"
 #include "projectile.h"
 #include "food.h"
+#include "weapon.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;
+typedef std::list<Weapon*> WeaponList;
 typedef std::vector<Projectile*> ProjectileList;
 
 /* Contains runtime level info */
@@ -38,6 +40,7 @@ bool isInLevelBoundaries(PixelCoords coords);
 int pixelWidth;
 int pixelHeight;
 
+int levelNumber; // 1 and up 
 int levelBackground;
 
 Player* player;
@@ -45,10 +48,15 @@ VictimList* victims;
 
 LevelObjectList* levelObjects;
 FoodList* foods;
+WeaponList* weapons;
 ProjectileList* projectiles;
 
 private:
 
+static const int FLAMETHROWER_SPAWN_TIME = 200;
+static const int LASER_SPAWN_TIME = 400;
+static const int FLAMETHROWER_FIRST_LEVEL = 3;
+static const int LASER_FIRST_LEVEL = 6;
 static const int BASE_FOOD_INTERVAL = 240;
 static const float SHAKE_ROTATION_GAIN = .7;
 static const float SHAKE_INTENSITY_GAIN = 1.5; // each shake adds rand from 0 to gain

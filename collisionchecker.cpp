@@ -49,6 +49,20 @@ bool CollisionChecker::victimCanMoveTo(PixelCoords position)
 	return canMoveTo(position, VICTIM_WIDTH, VICTIM_HEIGHT);
 }
 
+void CollisionChecker::playerPickupWeapon()
+{
+	for (WeaponList::iterator it = level->weapons->begin(); it != level->weapons->end(); it++) {
+		Weapon* weapon = *it;
+		if (weapon->isConsumed || weapon->isDead) {
+			continue;
+		}
+		if (boxCollision(level->player->position, weapon->position, PLAYER_WIDTH, PLAYER_HEIGHT, WEAPON_WIDTH, WEAPON_HEIGHT)) {
+			level->player->changeWeapon(weapon->weaponType);
+			weapon->getPickedUp();
+		}
+	}
+}
+
 void CollisionChecker::playerPickupFood()
 {
 	for (FoodList::iterator it = level->foods->begin(); it != level->foods->end(); it++) {
