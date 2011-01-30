@@ -26,6 +26,7 @@ class Level
 public:
 
 static const int BORDER_ZONE = 40; // no moving objects within 40px of the level boundaries
+static const int MAX_VICTIMS = 1000; // stop splitting after that
 
 Level();
 ~Level();

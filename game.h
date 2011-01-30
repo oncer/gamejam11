@@ -25,6 +25,8 @@ public:
 static const int SCORE_KILL = 10; // only by shooting, not direct contact
 static const int SCORE_FOOD = 50;
 static const int SCORE_LEVEL = 500;
+static const int WIDTH = 800;
+static const int HEIGHT = 600;
 
 static Game *globalGame;
 Level* currentLevel;
@@ -39,6 +41,8 @@ void init ();
 void mainLoop ();
 void shutdown ();
 void restart ();
+
+void changeMusic(const char* path);
 
 private:
 

@@ -20,8 +20,8 @@ Level::Level()
 
 	levelNumber = 0;
 	ticks = 0;
-	pixelWidth = 640;  // TODO: dynamic
-	pixelHeight = 480; // TODO: dynamic
+	pixelWidth = Game::WIDTH;
+	pixelHeight = Game::HEIGHT;
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 
@@ -130,7 +130,8 @@ void Level::update()
 			if (victim->splitAgain)
 				victim->splitAgain--;
 			else {
-				victims->push_back(new Victim(victim->split()));
+				if (victims->size() < MAX_VICTIMS)
+					victims->push_back(new Victim(victim->split()));
 			}
 		}
 		victim->nextAnimFrame();

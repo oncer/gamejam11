@@ -1,5 +1,6 @@
 #include <cmath>
 #include "player.h"
+#include "audio.h"
 #include "flame.h"
 #include "bullet.h"
 
@@ -61,6 +62,7 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
+
 		float dx = ix;
 		float dy = iy;
 		float v = 1.0;
@@ -82,6 +84,7 @@ void Player::update()
 			bullet->dy = dy * bullet->getBaseSpeed();
 			fireTicks = fireRate;
 			Game::globalGame->currentLevel->projectiles->push_back(bullet);
+			Audio::playSFX(Audio::SFX_SHOT);
 			break;
 			
 		case WEAPON_FLAMETHROWER:
@@ -104,6 +107,7 @@ void Player::update()
 			break;
 			
 		}
+
 	}
 	
 	if (fireTicks > 0)
@@ -120,6 +124,19 @@ void Player::getSpeed(float *dx, float *dy) {
 
 bool Player::canMove()
 {
+	Level *level = Game::globalGame->currentLevel;
+	if (position.x > level->pixelWidth) {
+		return false;
+	}
+	if (position.y > level->pixelHeight) {
+		return false;
+	}
+	if (position.x < 0) {
+		return false;
+	}
+	if (position.y < 0) {
+		return false;
+	}
 	CollisionChecker *c = Game::globalGame->collisionChecker;
 	return c->playerCanMoveTo(position);
 }
