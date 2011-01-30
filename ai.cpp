@@ -19,6 +19,12 @@ void AI::planEverything()
 			continue;
 		}
 		
+		if (victim->plan == Victim::PLAN_CHASE_FOOD) {
+			// Don't immediately look for new food once food is found.
+			victim->walkSteps++;
+			if (victim->walkSteps < MIN_FOOD_STEPS) continue;
+		}
+		
 		// this victim needs a plan - try smelling for food
 		for (FoodList::iterator it = level->foods->begin(); it != level->foods->end(); it++) {
 			Food* food = *it;
@@ -31,7 +37,7 @@ void AI::planEverything()
 				if (r < BACKOFF_CHANCE_PERCENT) continue;
 				victim->plan = Victim::PLAN_CHASE_FOOD;
 				victim->target = food->position;
-				
+				victim->walkSteps = 0;
 				break;
 			}
 		}

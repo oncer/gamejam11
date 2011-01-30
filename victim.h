@@ -28,6 +28,7 @@ bool isDead;
 Plan plan;
 PixelCoords target; // This is where we want to go
 int splitCountdown; // How many food items we need to consume until split
+int walkSteps; // How many steps are we walking to this target
 
 private:
 
