@@ -201,6 +201,7 @@ void Game::restart() {
 	ai = new AI(currentLevel);
 	currentLevel->create(levelCounter);
 	state = GS_Playing;
+	Audio::playMusic(Audio::MUSIC_BATTLE);
 }
 
 void Game::shutdown ()
