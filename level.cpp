@@ -11,7 +11,7 @@ Level::Level()
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
-	bullets = new BulletList();
+	projectiles = new ProjectileList();
 	foods = new FoodList();
 
 	ticks = 0;
@@ -112,19 +112,19 @@ void Level::update()
 		victim->nextAnimFrame();
 	}
 
-	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
-		Bullet* bullet = *it;
-		if (bullet->canMove()) {
-			bullet->doMove();
+	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
+		Projectile* projectile = *it;
+		if (projectile->canMove()) {
+			projectile->doMove();
 		}
-		bullet->nextAnimFrame();
+		projectile->nextAnimFrame();
 	}
 
-	for (BulletList::iterator it = bullets->begin(); it != bullets->end();) {
-		Bullet* bullet = *it;
-		if (bullet->isDead) {
-			it = bullets->erase(it);
-			delete bullet;
+	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end();) {
+		Projectile* projectile = *it;
+		if (projectile->isDead) {
+			it = projectiles->erase(it);
+			delete projectile;
 		}
 		else
 			it++;
@@ -184,7 +184,7 @@ void Level::draw()
 	}
 	player->draw();
 	
-	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
+	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
 		(*it)->draw();
 	}
 	
