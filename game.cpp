@@ -42,6 +42,8 @@ void Game::init ()
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_display_event_source(display));
+	
+	drawingTarget = al_clone_bitmap(al_get_backbuffer(display));
 }
 
 void Game::mainLoop ()
@@ -151,20 +153,15 @@ void Game::draw()
 		al_draw_bitmap(resources->imgTitle, 0, 0, 0);
 	}
 	else if (state == GS_Playing) {
-		currentLevel->draw();
-		hud->draw();
+		drawLevelAndHud();
 	}
 	else if (state == GS_GameOver) {
-		currentLevel->draw();
-		hud->draw();
-		
+		drawLevelAndHud();		
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
 			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
 	}
 	else if (state == GS_LevelWon) {
-		currentLevel->draw();
-		hud->draw();
-		
+		drawLevelAndHud();
 		for (int i = 0; i < 5; i++) {
 			int ox = (int[]){-3, 3, -3, 3, 0}[i];
 			int oy = (int[]){3, 3, -3, -3, 0}[i];
@@ -178,7 +175,20 @@ void Game::draw()
 	}
 }
 
+void Game::drawLevelAndHud()
+{
+	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	al_set_target_bitmap(drawingTarget);
+	currentLevel->draw();
+	al_set_target_bitmap(targetBackup);
+	al_draw_bitmap(drawingTarget, 0, 0, 0);
+	hud->draw();
+}
+
 void Game::restart() {
+	if (ai != NULL) delete ai;
+	if (collisionChecker != NULL) delete collisionChecker;
+	if (currentLevel != NULL) delete currentLevel;
 	currentLevel = new Level(levelCounter);
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
@@ -192,4 +202,5 @@ void Game::shutdown ()
 	delete ai;
 	delete currentLevel;
 	delete hud;
+	al_destroy_bitmap(drawingTarget);
 }

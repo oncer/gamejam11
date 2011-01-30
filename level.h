@@ -52,6 +52,7 @@ static const float SHAKE_ROTATION_GAIN = .7;
 static const float SHAKE_INTENSITY_GAIN = 1.5; // each shake adds rand from 0 to gain
 static const float SHAKE_INTENSITY_MAX = 10;
 
+long ticks; // game time
 int background; // Background gfx for this level
 int foodInterval; // Nr of ticks between food spawning
 int foodTimer; // Ticks remaining until food spawns

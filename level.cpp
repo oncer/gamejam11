@@ -13,6 +13,7 @@ Level::Level(int num)
 	bullets = new BulletList();
 	foods = new FoodList();
 
+	ticks = 0;
 	pixelWidth = 640;  // TODO: dynamic
 	pixelHeight = 480; // TODO: dynamic
 	foodInterval = BASE_FOOD_INTERVAL;
@@ -59,6 +60,8 @@ Level::~Level()
 
 void Level::update()
 {
+	ticks++;
+	
 	// move and animate everything, remove dead weight where necessary
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
 		Food* food = *it;
@@ -131,6 +134,18 @@ void Level::update()
 
 void Level::draw()
 {
+	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	int width = al_get_bitmap_width(targetBackup);
+	int height = al_get_bitmap_height(targetBackup);
+	
+	// shake
+	float offsetX = ((ticks % 2)*2-1) * cos(shakeAngle) * shakeIntensity;
+	float offsetY = ((ticks % 2)*2-1) * sin(shakeAngle) * shakeIntensity;
+	
+	ALLEGRO_BITMAP *drawingTarget = al_create_sub_bitmap(targetBackup,
+		offsetX, offsetY, width + offsetX, height + offsetY);
+	al_set_target_bitmap(drawingTarget);
+	
 	Resources* resources = Resources::instance();
 	
 	// Background
@@ -158,6 +173,9 @@ void Level::draw()
 	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
 		(*it)->draw();
 	}
+	
+	al_destroy_bitmap(drawingTarget);
+	al_set_target_bitmap(targetBackup);
 }
 
 void Level::shake()
