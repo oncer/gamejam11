@@ -74,7 +74,7 @@ void Game::mainLoop ()
 					restart();
 					continue;
 				}
-				else if (state == GS_GameOver) {
+				else if (state == GS_GameOver || state == GS_GameWon) {
 					state = GS_Title;
 					Audio::playMusic(Audio::MUSIC_TITLE);
 					continue;
@@ -88,6 +88,9 @@ void Game::mainLoop ()
 			
 			if (event.keyboard.keycode == ALLEGRO_KEY_F1) {
 				state = GS_GameOver;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_F2) {
+				currentLevel->victims->clear();
 			}
 		}
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -148,9 +151,15 @@ void Game::update()
 		
 		if (currentLevel->victims->size() == 0) {
 			levelCounter++;
-			state = GS_LevelWon;
-			score += SCORE_LEVEL;
-			ignoreKeyboardTicks = 20;
+			if (levelCounter == 21) {
+				state = GS_GameWon;
+				levelCounter = 1;
+			}
+			else {
+				state = GS_LevelWon;
+				score += SCORE_LEVEL;
+				ignoreKeyboardTicks = 20;
+			}
 		}
 	}
 }
@@ -168,6 +177,11 @@ void Game::draw()
 		drawLevelAndHud();		
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
 			Game::WIDTH/2, Game::HEIGHT/2 - 32, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
+	}
+	else if (state == GS_GameWon) {
+		drawLevelAndHud();		
+		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
+			Game::WIDTH/2, Game::HEIGHT/2 - 32, ALLEGRO_ALIGN_CENTRE, "Congratulations"); 
 	}
 	else if (state == GS_LevelWon) {
 		drawLevelAndHud();

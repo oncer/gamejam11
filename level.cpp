@@ -270,7 +270,7 @@ void Level::drawLaser()
 PixelCoords Level::randomLevelCoords()
 {
 	PixelCoords c;
-	c.x = rand() % pixelWidth;
-	c.y = rand() % pixelHeight;
+	c.x = BORDER_ZONE + rand() % (pixelWidth - BORDER_ZONE * 2);
+	c.y = BORDER_ZONE + rand() % (pixelHeight - BORDER_ZONE * 2);
 	return c;
 }

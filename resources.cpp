@@ -77,8 +77,8 @@ void Resources::loadEverything()
 	imgExplosion[5] = al_load_bitmap("./gfx/explosion05.png");
 
 	imgWeapon[0] = al_load_bitmap("./gfx/gun - left.png");
-	imgWeapon[1] = al_load_bitmap("./gfx/gun - left.png");
-	imgWeapon[2] = al_load_bitmap("./gfx/gun - left.png");
+	imgWeapon[1] = al_load_bitmap("./gfx/bazooka.png");
+	imgWeapon[2] = al_load_bitmap("./gfx/lasergun.png");
 
 	imgBullet[0] = al_load_bitmap("./gfx/bullet00.png");
 	imgBullet[1] = al_load_bitmap("./gfx/bullet01.png");
@@ -97,6 +97,7 @@ void Resources::loadEverything()
 	imgFlame[9] = al_load_bitmap("./gfx/flame09.png");
 	imgFlame[10] = al_load_bitmap("./gfx/flame10.png");
 	imgFlame[11] = al_load_bitmap("./gfx/flame11.png");
+	imgFlame[12] = al_load_bitmap("./gfx/flame12.png");
 	
 	imgFood[0] = al_load_bitmap("./gfx/cola.png");
 	imgFood[1] = al_load_bitmap("./gfx/hot dog.png");
