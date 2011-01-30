@@ -86,12 +86,12 @@ void Game::mainLoop ()
 				}
 			}
 			
-			if (event.keyboard.keycode == ALLEGRO_KEY_F1) {
+			/*if (event.keyboard.keycode == ALLEGRO_KEY_F1) {
 				state = GS_GameOver;
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_F2) {
 				currentLevel->victims->clear();
-			}
+			}*/
 		}
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
