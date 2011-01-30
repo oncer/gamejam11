@@ -1,5 +1,6 @@
 #include <cmath>
 #include "player.h"
+#include "audio.h"
 
 Player::Player(PixelCoords pos)
 {
@@ -69,6 +70,7 @@ void Player::update()
 		bullet->dy = dy * Bullet::BASE_SPEED;
 		fireTicks = fireRate;
 		Game::globalGame->currentLevel->bullets->push_back(bullet);
+		Audio::playSFX(Audio::SFX_SHOT);
 	}
 	
 	if (fireTicks > 0)
