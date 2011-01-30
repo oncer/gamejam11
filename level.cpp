@@ -27,6 +27,7 @@ Level::Level()
 void Level::create(int num) {
 	levelNumber = num;
 	levelBackground = num % 2;
+	ticks = 0;
 	
 	/* DEMO CODE */
 	/*
@@ -91,6 +92,18 @@ void Level::update()
 		if (it == foods->end()) break;
 		food->doMove();
 		food->nextAnimFrame();
+	}	
+
+	for (WeaponList::iterator it = weapons->begin(); it != weapons->end(); it++) {
+		Weapon* weapon = *it;
+		while (weapon->isDead) {
+			delete weapon;
+			it = weapons->erase(it);
+			if (it == weapons->end()) break;
+			weapon = *it;
+		}
+		if (it == weapons->end()) break;
+		weapon->nextAnimFrame();
 	}
 	
 	player->doMove();
