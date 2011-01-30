@@ -77,8 +77,8 @@ void Resources::loadEverything()
 	imgExplosion[5] = al_load_bitmap("./gfx/explosion05.png");
 
 	imgWeapon[0] = al_load_bitmap("./gfx/gun - left.png");
-	imgWeapon[1] = al_load_bitmap("./gfx/gun - left.png");
-	imgWeapon[2] = al_load_bitmap("./gfx/gun - left.png");
+	imgWeapon[1] = al_load_bitmap("./gfx/bazooka.png");
+	imgWeapon[2] = al_load_bitmap("./gfx/lasergun.png");
 
 	imgBullet[0] = al_load_bitmap("./gfx/bullet00.png");
 	imgBullet[1] = al_load_bitmap("./gfx/bullet01.png");

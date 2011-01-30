@@ -57,9 +57,9 @@ Laser* laser;
 
 private:
 
-static const int FLAMETHROWER_SPAWN_TIME = 100;
+static const int FLAMETHROWER_SPAWN_TIME = 600;
 static const int LASER_SPAWN_TIME = 1200;
-static const int FLAMETHROWER_FIRST_LEVEL = 1;
+static const int FLAMETHROWER_FIRST_LEVEL = 3;
 static const int LASER_FIRST_LEVEL = 6;
 static const int BASE_FOOD_INTERVAL = 240;
 static const float SHAKE_ROTATION_GAIN = .7;
