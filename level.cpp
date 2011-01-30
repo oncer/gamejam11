@@ -24,7 +24,6 @@ Level::Level()
 	pixelHeight = Game::HEIGHT;
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
-
 }
 
 void Level::create(int num) {
@@ -271,7 +270,7 @@ void Level::drawLaser()
 PixelCoords Level::randomLevelCoords()
 {
 	PixelCoords c;
-	c.x = rand() % pixelWidth;
-	c.y = rand() % pixelHeight;
+	c.x = BORDER_ZONE + rand() % (pixelWidth - BORDER_ZONE * 2);
+	c.y = BORDER_ZONE + rand() % (pixelHeight - BORDER_ZONE * 2);
 	return c;
 }

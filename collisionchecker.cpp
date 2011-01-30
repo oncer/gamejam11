@@ -1,6 +1,7 @@
 #include <iostream>
 #include "collisionchecker.h"
 #include "level.h"
+#include "audio.h"
 
 bool boxCollision (PixelCoords p1, PixelCoords p2, int w1, int h1, int w2, int h2)
 {
@@ -16,6 +17,7 @@ bool boxCollision (PixelCoords p1, PixelCoords p2, int w1, int h1, int w2, int h
 CollisionChecker::CollisionChecker(Level* lvl)
 {
 	level = lvl;
+	explodeAudioDelay = 0;
 }
 
 bool CollisionChecker::canMoveTo(PixelCoords position, int w, int h) {
@@ -107,6 +109,7 @@ void CollisionChecker::victimPickupFood()
 
 void CollisionChecker::playerVsVictim()
 {
+	explodeAudioDelay--;
 	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
 		Victim* victim = *it;
 		if (victim->isDying || victim->isDead) {
@@ -114,6 +117,10 @@ void CollisionChecker::playerVsVictim()
 		}
 		if (boxCollision(level->player->position, victim->position, PLAYER_WIDTH, PLAYER_HEIGHT, VICTIM_WIDTH, VICTIM_HEIGHT)) {
 			victim->explode();
+			if (explodeAudioDelay <= 0) {
+				Audio::playSFX(Audio::SFX_DEATH);
+				explodeAudioDelay = 5;
+			}
 		}
 	}
 }
@@ -138,6 +145,10 @@ void CollisionChecker::victimVsLaser()
 		for (int i = 0; i < LASER_PARTITIONS; i++) {
 			if (boxCollision(victim->position, partitionPos, VICTIM_WIDTH, VICTIM_HEIGHT, LASER_FIELD_SIZE, LASER_FIELD_SIZE)) {
 				victim->explode();
+				if (explodeAudioDelay <= 0) {
+					Audio::playSFX(Audio::SFX_DEATH);
+					explodeAudioDelay = 5;
+				}
 				Game::globalGame->score += Game::SCORE_KILL;
 				break; // try next victim
 			}
@@ -167,6 +178,10 @@ void CollisionChecker::victimVsProjectile()
 			if (boxCollision(victim->position, projectile->position, VICTIM_WIDTH, VICTIM_HEIGHT, PROJECTILE_WIDTH, PROJECTILE_HEIGHT)) {
 				projectile->isDead = true;
 				victim->explode();
+				if (explodeAudioDelay <= 0) {
+					Audio::playSFX(Audio::SFX_DEATH);
+					explodeAudioDelay = 5;
+				}
 				Game::globalGame->score += Game::SCORE_KILL;
 			}
 			

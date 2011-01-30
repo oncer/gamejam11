@@ -28,11 +28,14 @@ void Audio::init()
 	LOAD(SFX_SHOT,		"audio/shot.wav"	);
 	LOAD(SFX_DEATH,		"audio/death.wav"	);
 	LOAD(SFX_COLLECT,	"audio/collect.wav" );
+	LOAD(SFX_FLAME,		"audio/flame.wav"	);
+	LOAD(SFX_LASER,		"audio/laser.wav"	);
 #undef LOAD
 }
 
 void Audio::playMusic(int no, bool repeat)
 {
+	stopMusic();
     musicStream = al_load_audio_stream(musicFiles[no], 6, 1536);
     if (repeat) {
         al_set_audio_stream_playmode(musicStream, ALLEGRO_PLAYMODE_LOOP);
