@@ -97,6 +97,7 @@ void Resources::loadEverything()
 	imgFlame[9] = al_load_bitmap("./gfx/flame09.png");
 	imgFlame[10] = al_load_bitmap("./gfx/flame10.png");
 	imgFlame[11] = al_load_bitmap("./gfx/flame11.png");
+	imgFlame[12] = al_load_bitmap("./gfx/flame12.png");
 	
 	imgFood[0] = al_load_bitmap("./gfx/cola.png");
 	imgFood[1] = al_load_bitmap("./gfx/hot dog.png");
