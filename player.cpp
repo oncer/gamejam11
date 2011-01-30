@@ -62,6 +62,8 @@ void Player::update()
 
 	static int flameAudioDelay = 0;
 	flameAudioDelay--;
+	static int laserAudioDelay = 0;
+	laserAudioDelay--;
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
@@ -103,7 +105,7 @@ void Player::update()
 			Game::globalGame->currentLevel->projectiles->push_back(flame);
 			if (flameAudioDelay <= 0) {
 				Audio::playSFX(Audio::SFX_FLAME);
-				flameAudioDelay = 4;
+				flameAudioDelay = 5;
 			}
 			break;
 			
@@ -111,7 +113,10 @@ void Player::update()
 			laser = Game::globalGame->currentLevel->laser;
 			laser->set(p, dx, dy);
 			laser->activate();
-			Audio::playSFX(Audio::SFX_LASER);
+			if (laserAudioDelay <= 0) {
+				Audio::playSFX(Audio::SFX_LASER);
+				laserAudioDelay = 8;
+			}
 			break;
 			
 		}
