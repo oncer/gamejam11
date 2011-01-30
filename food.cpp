@@ -1,6 +1,7 @@
 #include "food.h"
 #include "resources.h"
 #include "level.h"
+#include "audio.h"
 
 Food::Food(int var, PixelCoords pos, int val, bool playerEdible)
 {
@@ -27,6 +28,7 @@ void Food::getEaten()
 {
 	isConsumed = true;
 	animCountdown = DEATH_ANIM_TIME;
+	Audio::playSFX(SFX_COLLECT);
 }
 
 void Food::doMove()
