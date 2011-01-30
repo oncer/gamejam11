@@ -103,7 +103,7 @@ void Player::update()
 			break;
 			
 		}
->>>>>>> 70ff3aed42751c263655f8a36c0428525f0714bf
+
 	}
 	
 	if (fireTicks > 0)
