@@ -1,5 +1,6 @@
 #include <cmath>
 #include "player.h"
+#include "audio.h"
 #include "flame.h"
 #include "bullet.h"
 
@@ -61,6 +62,19 @@ void Player::update()
 
 	if (ifire && fireTicks == 0 && (ix != 0 || iy != 0)) {
 		PixelCoords p = position;
+<<<<<<< HEAD
+		Bullet *bullet = new Bullet(p);
+        float dx = ix + (rand()%100 - 50) / 700.0;
+        float dy = iy + (rand()%100 - 50) / 700.0;
+		float v = sqrt(dx * dx + dy * dy);
+		dx = dx / v;
+		dy = dy / v;
+		bullet->dx = dx * Bullet::BASE_SPEED;
+		bullet->dy = dy * Bullet::BASE_SPEED;
+		fireTicks = fireRate;
+		Game::globalGame->currentLevel->bullets->push_back(bullet);
+		Audio::playSFX(Audio::SFX_SHOT);
+=======
 		float dx = ix;
 		float dy = iy;
 		float v = 1.0;
@@ -100,6 +114,7 @@ void Player::update()
 			break;
 			
 		}
+>>>>>>> 70ff3aed42751c263655f8a36c0428525f0714bf
 	}
 	
 	if (fireTicks > 0)

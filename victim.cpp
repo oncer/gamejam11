@@ -4,6 +4,7 @@
 #include "level.h"
 #include "victim.h"
 #include "resources.h"
+#include "audio.h"
 
 Victim::Victim(PixelCoords pos)
     :walkAnim(6, 1, true),
@@ -94,6 +95,8 @@ void Victim::explode() {
 		f->dy = y * r / 10;
 		foods->push_back(f);
 	}
+
+	Audio::playSFX(Audio::SFX_DEATH);
 	
 	// shake screen
 	Game::globalGame->currentLevel->shake();
