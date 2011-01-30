@@ -1,31 +1,53 @@
 #include <allegro5/allegro5.h>
+#include <cstdlib>
 #include <math.h>
 #include "level.h"
 
 #include <stdio.h>
 
-Level::Level()
+Level::Level(int num)
 {
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
 	levelObjects = new LevelObjectList();
-
 	bullets = new BulletList();
-
 	foods = new FoodList();
-	
+
+	ticks = 0;
 	pixelWidth = 640;  // TODO: dynamic
 	pixelHeight = 480; // TODO: dynamic
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
 	
-	levelBackground = 0;
+	levelBackground = num % 2;
 	
 	/* DEMO CODE */
+	/*
+	Resources* resources = Resources::instance();
 	victims->push_back(new Victim((PixelCoords) {50, 50}));
 	victims->push_back(new Victim((PixelCoords) {500, 30}));
-	levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
-	levelObjects->push_back(new LevelObject((PixelCoords) {200, 200}));
+	background = 0;
+	pixelWidth = al_get_bitmap_width(resources->imgLevelBackground[background]);
+	pixelHeight = al_get_bitmap_height(resources->imgLevelBackground[background]);
+	*/
+	if (num == 1) {
+		victims->push_back(new Victim((PixelCoords) {50, 50}));
+		victims->push_back(new Victim((PixelCoords) {500, 30}));
+		
+		levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
+		
+		for (int i = 0; i < 4; i++)
+			levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
+	}
+	else {
+		for (int i = 0; i < 3 + num; i++) {
+			victims->push_back(new Victim((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+				
+			levelObjects->push_back(new LevelObject((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}));
+		}
+	}
 }
 
 Level::~Level()
@@ -38,6 +60,8 @@ Level::~Level()
 
 void Level::update()
 {
+	ticks++;
+	
 	// move and animate everything, remove dead weight where necessary
 	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
 		Food* food = *it;
@@ -52,9 +76,7 @@ void Level::update()
 		food->nextAnimFrame();
 	}
 	
-	if (player->canMove()) {
-		player->doMove();
-	}
+	player->doMove();
 	player->update();
 	player->nextAnimFrame();
 	
@@ -103,14 +125,34 @@ void Level::update()
 	
 	// player hunger increases
 	player->increaseHunger();
+	
+	// level shake
+	shakeAngle += shakeRotation;
+	shakeIntensity *= 0.9;
+	shakeRotation *= 0.9;
 }
 
 void Level::draw()
 {
+	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	int width = al_get_bitmap_width(targetBackup);
+	int height = al_get_bitmap_height(targetBackup);
+	
+	// shake
+	float offsetX = ((ticks % 2)*2-1) * cos(shakeAngle) * shakeIntensity;
+	float offsetY = ((ticks % 2)*2-1) * sin(shakeAngle) * shakeIntensity;
+	
+	ALLEGRO_BITMAP *drawingTarget = al_create_sub_bitmap(targetBackup,
+		offsetX, offsetY, width + offsetX, height + offsetY);
+	al_set_target_bitmap(drawingTarget);
+	
 	Resources* resources = Resources::instance();
+	
 	// Background
-	//al_clear_to_color(al_map_rgb(127, 127, 127));
-	al_draw_bitmap(resources->imgBackground[levelBackground], 0, 0, 0);
+	ALLEGRO_BITMAP* img = resources->imgBackground[levelBackground];
+	float sw = al_get_bitmap_width(img);
+	float sh = al_get_bitmap_height(img);
+	al_draw_scaled_bitmap(img, 0, 0, sw, sh, 0, 0, pixelWidth, pixelHeight, 0);
 	
 	// Level objects (walls)
 	for (LevelObjectList::iterator it = levelObjects->begin(); it != levelObjects->end(); it++) {
@@ -131,6 +173,16 @@ void Level::draw()
 	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
 		(*it)->draw();
 	}
+	
+	al_destroy_bitmap(drawingTarget);
+	al_set_target_bitmap(targetBackup);
+}
+
+void Level::shake()
+{
+	shakeIntensity += SHAKE_INTENSITY_GAIN * rand() / RAND_MAX;
+	if (shakeIntensity > SHAKE_INTENSITY_MAX) shakeIntensity = SHAKE_INTENSITY_MAX;
+	shakeRotation += ((2.0 * SHAKE_ROTATION_GAIN) - SHAKE_ROTATION_GAIN) * rand() / RAND_MAX;
 }
 
 bool Level::isInLevelBoundaries(PixelCoords coords)

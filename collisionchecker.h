@@ -18,14 +18,20 @@ public:
 
 CollisionChecker(Level* lvl);
 
+bool foodCanMoveTo(PixelCoords position);
+bool bulletCanMoveTo(PixelCoords position);
 bool playerCanMoveTo(PixelCoords position);
 bool victimCanMoveTo(PixelCoords position);
 void playerPickupFood();
 void victimPickupFood();
 void playerVsVictim();
 void victimVsBullet();
+bool canMoveTo(PixelCoords position, int w, int h);
 
 private:
+
+// cap on nr. of expensive operations per tick (like collisions)
+static const int OPERATIONS_CAP = 5000;
 
 // bounding box sizes for collision checks of various objects
 static const int PLAYER_WIDTH = 16;

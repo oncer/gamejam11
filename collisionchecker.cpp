@@ -18,16 +18,30 @@ CollisionChecker::CollisionChecker(Level* lvl)
 	level = lvl;
 }
 
-bool CollisionChecker::playerCanMoveTo(PixelCoords position)
-{
+bool CollisionChecker::canMoveTo(PixelCoords position, int w, int h) {
 	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
 		LevelObject *lob = *it;
 		if (boxCollision(lob->position, position, BLOCK_WIDTH, BLOCK_HEIGHT,
-			PLAYER_WIDTH, PLAYER_HEIGHT)) {
+			w, h)) {
 			return false;
 		}
 	}
 	return true;
+}
+
+bool CollisionChecker::playerCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, PLAYER_WIDTH, PLAYER_HEIGHT);
+}
+
+bool CollisionChecker::foodCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, FOOD_WIDTH, FOOD_HEIGHT);
+}
+
+bool CollisionChecker::bulletCanMoveTo(PixelCoords position)
+{
+	return canMoveTo(position, BULLET_WIDTH, BULLET_HEIGHT);
 }
 
 bool CollisionChecker::victimCanMoveTo(PixelCoords position)
@@ -51,14 +65,17 @@ void CollisionChecker::playerPickupFood()
 		if (boxCollision(level->player->position, food->position, PLAYER_WIDTH, PLAYER_HEIGHT, FOOD_WIDTH, FOOD_HEIGHT)) {
 			if (food->isPlayerEdible) {
 				level->player->feed(food->value);
+				Game::globalGame->score += Game::SCORE_FOOD;
 			}
-			food->isConsumed = true;
+			food->getEaten();
 		}
 	}
 }
 
 void CollisionChecker::victimPickupFood()
 {
+	size_t operations = 0;
+	
 	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
 		Victim* victim = *it;
 		if (victim->isDying || victim->isDead) {
@@ -71,7 +88,10 @@ void CollisionChecker::victimPickupFood()
 			}
 			if (boxCollision(victim->position, food->position, VICTIM_WIDTH, VICTIM_HEIGHT, FOOD_WIDTH, FOOD_HEIGHT)) {
 				victim->feed(food->value);
-				food->isConsumed = true;
+				food->getEaten();
+			}
+			if (operations++ >= OPERATIONS_CAP) {
+				return; // ignore remaining checks
 			}
 		}
 	}
@@ -92,6 +112,8 @@ void CollisionChecker::playerVsVictim()
 
 void CollisionChecker::victimVsBullet()
 {
+	size_t operations = 0;
+	
 	for (VictimList::iterator it = level->victims->begin(); it != level->victims->end(); it++) {
 		Victim* victim = *it;
 		if (victim->isDying || victim->isDead) {
@@ -107,7 +129,13 @@ void CollisionChecker::victimVsBullet()
 			if (boxCollision(victim->position, bullet->position, VICTIM_WIDTH, VICTIM_HEIGHT, BULLET_WIDTH, BULLET_HEIGHT)) {
 				bullet->isDead = true;
 				victim->explode();
+				Game::globalGame->score += Game::SCORE_KILL;
+			}
+			
+			if (operations++ >= OPERATIONS_CAP) {
+				return; // ignore remaining checks
 			}
 		}
 	}
 }
+

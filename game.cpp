@@ -40,13 +40,17 @@ void Game::init ()
 	
 	timer = al_create_timer(1.0 / FPS);
 	
+	levelCounter = 1;
 	currentLevel = NULL;
 	ai = NULL;
+	score = 0;
 	
 	queue = al_create_event_queue();
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_display_event_source(display));
+	
+	drawingTarget = al_clone_bitmap(al_get_backbuffer(display));
 }
 
 void Game::mainLoop ()
@@ -66,13 +70,19 @@ void Game::mainLoop ()
 	
 				break;
 			}
-			else {
+			else if (ignoreKeyboardTicks == 0) {
 				if (state == GS_Title) {
+					score = 0;
 					restart();
 					continue;
 				}
 				else if (state == GS_GameOver) {
 					state = GS_Title;
+					continue;
+				}
+				else if (state == GS_LevelWon) {
+					restart();
+					state = GS_Playing;
 					continue;
 				}
 			}
@@ -117,6 +127,8 @@ void Game::mainLoop ()
 
 void Game::update()
 {
+	if (ignoreKeyboardTicks) ignoreKeyboardTicks--;
+	
 	if (state == GS_Playing) {
 		ai->planEverything();
 		currentLevel->update();
@@ -129,6 +141,14 @@ void Game::update()
 		
 		if (currentLevel->player->isDead) {
 			state = GS_GameOver;
+			ignoreKeyboardTicks = 20;
+		}
+		
+		if (currentLevel->victims->size() == 0) {
+			levelCounter++;
+			state = GS_LevelWon;
+			score += SCORE_LEVEL;
+			ignoreKeyboardTicks = 20;
 		}
 	}
 }
@@ -140,20 +160,43 @@ void Game::draw()
 		al_draw_bitmap(resources->imgTitle, 0, 0, 0);
 	}
 	else if (state == GS_Playing) {
-		currentLevel->draw();
-		hud->draw();
+		drawLevelAndHud();
 	}
 	else if (state == GS_GameOver) {
-		currentLevel->draw();
-		hud->draw();
-		
+		drawLevelAndHud();		
 		al_draw_textf(resources->fontBig, al_map_rgb(255, 255, 255),
 			320, 200, ALLEGRO_ALIGN_CENTRE, "Game Over"); 
 	}
+	else if (state == GS_LevelWon) {
+		drawLevelAndHud();
+		for (int i = 0; i < 5; i++) {
+			int ox = (int[]){-1, 1, -1, 1, 0}[i];
+			int oy = (int[]){1, 1, -1, -1, 0}[i];
+			ALLEGRO_COLOR c;
+			c = i == 4 ? al_map_rgb(255, 255, 255) : al_map_rgb(0, 0, 0);
+			al_draw_textf(resources->fontBig, c,
+				320 + ox, 200 + oy, ALLEGRO_ALIGN_CENTRE, "Extinction!");
+			al_draw_textf(resources->fontNormal, c,
+				320 + ox, 300 + oy, ALLEGRO_ALIGN_CENTRE, "Get ready for level %d!", levelCounter);
+		}
+	}
+}
+
+void Game::drawLevelAndHud()
+{
+	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	al_set_target_bitmap(drawingTarget);
+	currentLevel->draw();
+	al_set_target_bitmap(targetBackup);
+	al_draw_bitmap(drawingTarget, 0, 0, 0);
+	hud->draw();
 }
 
 void Game::restart() {
-	currentLevel = new Level();
+	if (ai != NULL) delete ai;
+	if (collisionChecker != NULL) delete collisionChecker;
+	if (currentLevel != NULL) delete currentLevel;
+	currentLevel = new Level(levelCounter);
 	collisionChecker = new CollisionChecker(currentLevel);
 	ai = new AI(currentLevel);
 	state = GS_Playing;
@@ -166,4 +209,5 @@ void Game::shutdown ()
 	delete ai;
 	delete currentLevel;
 	delete hud;
+	al_destroy_bitmap(drawingTarget);
 }

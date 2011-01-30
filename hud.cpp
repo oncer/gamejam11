@@ -1,6 +1,8 @@
 #include <allegro5/allegro_primitives.h>
 #include "hud.h"
+#include "resources.h"
 #include "coords.h"
+#include "game.h"
 
 #define COLOR_HUNGERBORDER al_map_rgb(200, 220, 10)
 #define COLOR_HUNGERBAR al_map_rgb(240, 30, 100)
@@ -20,6 +22,9 @@ void Hud::draw()
 		                         HUNGERBAR_POSITION.x+hunger_part, HUNGERBAR_POSITION.x+HUNGERBAR_HEIGHT-2,
 		                         COLOR_HUNGERBAR);
 	}
+	
+	al_draw_textf(Resources::instance()->fontNormal, al_map_rgb(255, 255, 255),
+		630, 10, ALLEGRO_ALIGN_RIGHT, "Score: %d", Game::globalGame->score);
 }
 
 void Hud::setMaxHunger(int value)

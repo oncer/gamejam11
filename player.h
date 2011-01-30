@@ -12,7 +12,7 @@ public:
 
 Player(PixelCoords pos);
 
-static const int HUNGER_LIMIT = 3000;
+static const int HUNGER_LIMIT = 2000;
 static const float BASE_SPEED = 2.0;
 
 int ix, iy; /* input direction */

@@ -38,10 +38,20 @@ bool Bullet::canMove()
 
 void Bullet::doMove()
 {
-    position.x += dx;
-    position.y += dy;
-    steps++;
-    if (steps > maxSteps) {
-        isDead = true;
-    }
+	CollisionChecker *c = Game::globalGame->collisionChecker;
+	position.x += dx;
+	if (!c->bulletCanMoveTo(position)) {
+		position.x -= dx;
+		dx = -dx;
+	}
+	position.y += dy;
+	if (!c->bulletCanMoveTo(position)) {
+		position.y -= dy;
+		dy = -dy;
+	}
+
+	steps++;
+	if (steps > maxSteps) {
+		isDead = true;
+	}
 }

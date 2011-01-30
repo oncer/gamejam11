@@ -19,7 +19,11 @@ void Resources::destroyInstance()
 
 Resources::Resources()
 {
+	fontNormal = NULL;
+	fontBig = NULL;
+
 	imgTitle = NULL;
+	memset(imgObstacle, 0, OBSTACLES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgPlayer, 0, PLAYER_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgVictim, 0, VICTIM_FRAMES * sizeof(ALLEGRO_BITMAP*));
 	memset(imgExplosion, 0, EXPLOSION_FRAMES * sizeof(ALLEGRO_BITMAP*));
@@ -35,6 +39,7 @@ Resources::~Resources()
 	al_destroy_font(fontNormal);
 	al_destroy_font(fontBig);
 	al_destroy_bitmap(imgTitle);
+	for (int i = 0; i < OBSTACLES; i++) al_destroy_bitmap(imgObstacle[i]);
 	for (int i = 0; i < PLAYER_FRAMES; i++) al_destroy_bitmap(imgPlayer[i]);
 	for (int i = 0; i < VICTIM_FRAMES; i++) al_destroy_bitmap(imgVictim[i]);
 	for (int i = 0; i < BULLET_FRAMES; i++) al_destroy_bitmap(imgBullet[i]);
@@ -47,11 +52,15 @@ Resources::~Resources()
 
 void Resources::loadEverything()
 {
-	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 12, 0);
+	fontNormal = al_load_font("./gfx/DejaVuSans.ttf", 24, 0);
 	fontBig = al_load_font("./gfx/DejaVuSans.ttf", 64, 0);
 
 	imgTitle = al_load_bitmap("./gfx/title.png");
 
+	imgObstacle[0] = al_load_bitmap("./gfx/little rock.png");
+	imgObstacle[1] = al_load_bitmap("./gfx/rock.png");
+	imgObstacle[2] = al_load_bitmap("./gfx/rock middle-sized.png");
+	
 	imgPlayer[0] = al_load_bitmap("./gfx/killa.png");
 
 	imgVictim[0] = al_load_bitmap("./gfx/smiled bacteria.png");

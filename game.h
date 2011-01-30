@@ -22,10 +22,18 @@ class Game
 
 public:
 
+static const int SCORE_KILL = 10; // only by shooting, not direct contact
+static const int SCORE_FOOD = 50;
+static const int SCORE_LEVEL = 500;
+
 static Game *globalGame;
 Level* currentLevel;
 GameState state;
 CollisionChecker* collisionChecker;
+int levelCounter;
+int score;
+
+int ignoreKeyboardTicks; // ignore keyboard for a number of ticks
 
 void init ();
 void mainLoop ();
@@ -38,6 +46,7 @@ private:
 
 void update();
 void draw();
+void drawLevelAndHud();
 
 static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
@@ -45,6 +54,7 @@ ALLEGRO_TIMER *timer;
 ALLEGRO_MIXER *mixer;
 ALLEGRO_VOICE *voice;
 Resources* resources; // Game assets from files (images, sounds, ...)
+ALLEGRO_BITMAP* drawingTarget; // in level: for alpha blending enabled draw operations
 
 Hud* hud;
 AI* ai;

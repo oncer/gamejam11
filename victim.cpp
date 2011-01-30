@@ -59,7 +59,7 @@ void Victim::doMove()
 {
 	float dir_x = target.x - position.x;
 	float dir_y = target.y - position.y;
-	float dir_w = sqrt(dir_x * dir_x + dir_y * dir_y);
+	float dir_w = sqrt(dir_x * dir_x + dir_y * dir_y) / speed;
 	
 	if (dir_w > 1) {
 		position.x += dir_x / dir_w;
@@ -79,7 +79,7 @@ void Victim::explode() {
 	
 	int n = 8;
 	for (int i = 0; i < n; i++) {
-		float a = 2 * 3.14 * i / n;
+		float a = 2 * 3.14 * (i + (std::rand() % 64) / 64.0) / n;
 		float x = cos(a);
 		float y = sin(a);
 		float r = 40 + std::rand() % 40; 
@@ -93,11 +93,15 @@ void Victim::explode() {
 		f->dy = y * r / 10;
 		foods->push_back(f);
 	}
+	
+	// shake screen
+	Game::globalGame->currentLevel->shake();
 }
 
 Victim Victim::split()
 {
 	splitCountdown += FOOD_TO_SPLIT; // reset countdown
+	speed += INCREASE_SPEED;
 	Victim v = Victim(position);
 	return v;
 }
