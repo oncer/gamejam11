@@ -26,6 +26,7 @@ void playerPickupWeapon();
 void playerPickupFood();
 void victimPickupFood();
 void playerVsVictim();
+void victimVsLaser();
 void victimVsProjectile();
 bool canMoveTo(PixelCoords position, int w, int h);
 
@@ -53,6 +54,8 @@ static const int BLOCK_HEIGHT2 = 64;
 static const int PROJECTILE_WIDTH = 4;
 static const int PROJECTILE_HEIGHT = 4;
 
+static const int LASER_PARTITIONS = 200;
+static const int LASER_FIELD_SIZE = 30;
 
 Level* level;
 

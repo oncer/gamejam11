@@ -11,6 +11,7 @@ class Level;
 #include "projectile.h"
 #include "food.h"
 #include "weapon.h"
+#include "laser.h"
 
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
@@ -36,6 +37,7 @@ void draw();
 void shake(); // killing enemies shakes the level, 1 call per kill
 
 bool isInLevelBoundaries(PixelCoords coords);
+void laserBeam (PixelCoords position, float dx, float dy); // only holds for 1 tick
 
 int pixelWidth;
 int pixelHeight;
@@ -50,6 +52,7 @@ LevelObjectList* levelObjects;
 FoodList* foods;
 WeaponList* weapons;
 ProjectileList* projectiles;
+Laser* laser;
 
 private:
 
@@ -61,6 +64,12 @@ static const int BASE_FOOD_INTERVAL = 240;
 static const float SHAKE_ROTATION_GAIN = .7;
 static const float SHAKE_INTENSITY_GAIN = 1.5; // each shake adds rand from 0 to gain
 static const float SHAKE_INTENSITY_MAX = 10;
+static const int LASER_COLORS = 4;
+
+#define LASER_COLOR_0 al_map_rgb(100, 100, 255)
+#define LASER_COLOR_1 al_map_rgb(200, 200, 255)
+#define LASER_COLOR_2 al_map_rgb(255, 255, 255)
+#define LASER_COLOR_3 al_map_rgb(200, 200, 255)
 
 long ticks; // game time
 int background; // Background gfx for this level
@@ -72,6 +81,7 @@ float shakeAngle;
 float shakeRotation;
 
 void spawnFood();
+void drawLaser();
 PixelCoords randomLevelCoords(); // returns valid random coords on level, not in any obstacle
 
 };

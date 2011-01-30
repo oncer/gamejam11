@@ -67,6 +67,7 @@ void Player::update()
 		
 		Bullet *bullet = NULL; // only for WEAPON_GUN
 		Flame *flame = NULL; // only for WEAPON_FLAMETHROWER
+		Laser* laser = NULL; // only for WEAPON_LASER
 		
 		switch (weaponType) {
 			
@@ -97,6 +98,9 @@ void Player::update()
 			break;
 			
 		case WEAPON_LASER:
+			laser = Game::globalGame->currentLevel->laser;
+			laser->set(p, dx, dy);
+			laser->activate();
 			break;
 			
 		}
