@@ -8,9 +8,11 @@ class LevelObject
 
 public:
 	PixelCoords position;
+	int variation;
+	int w, h;
 
-	LevelObject(PixelCoords pos);
-	
+	LevelObject(PixelCoords pos, int variation);
+
 	void draw();
 };
 

@@ -21,7 +21,7 @@ CollisionChecker::CollisionChecker(Level* lvl)
 bool CollisionChecker::canMoveTo(PixelCoords position, int w, int h) {
 	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
 		LevelObject *lob = *it;
-		if (boxCollision(lob->position, position, BLOCK_WIDTH, BLOCK_HEIGHT,
+		if (boxCollision(lob->position, position, lob->w, lob->h,
 			w, h)) {
 			return false;
 		}
@@ -46,13 +46,7 @@ bool CollisionChecker::bulletCanMoveTo(PixelCoords position)
 
 bool CollisionChecker::victimCanMoveTo(PixelCoords position)
 {
-	/* TODO: level objects not implemented yet
-	for (LevelObjectList::iterator it = level->levelObjects->begin(); it != level->levelObjects->end(); it++) {
-		if (boxCollision()) {
-			return false;
-		}
-	}*/
-	return true;
+	return canMoveTo(position, VICTIM_WIDTH, VICTIM_HEIGHT);
 }
 
 void CollisionChecker::playerPickupFood()

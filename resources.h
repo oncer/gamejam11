@@ -25,7 +25,7 @@ static const int EXPLOSION_FRAMES = 6;
 static const int FOOD_VARIATIONS = 3;
 static const int BIT_VARIATIONS = 1; // how many different kinds of bits there are
 static const int BACKGROUND_VARIATIONS = 2;
-static const int LEVEL_OBJECT_VARIATIONS = 1;
+static const int LEVEL_OBJECT_VARIATIONS = 3;
 
 enum Frame { FRAME_FRONT }; // anim frame indices
 

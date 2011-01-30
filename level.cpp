@@ -1,11 +1,12 @@
 #include <allegro5/allegro5.h>
 #include <cstdlib>
 #include <math.h>
+#include <iostream>
 #include "level.h"
 
 #include <stdio.h>
 
-Level::Level(int num)
+Level::Level()
 {
 	player = new Player((PixelCoords) {225, 40});
 	victims = new VictimList();
@@ -18,7 +19,11 @@ Level::Level(int num)
 	pixelHeight = 480; // TODO: dynamic
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
-	
+
+}
+
+void Level::create(int num) {
+
 	levelBackground = num % 2;
 	
 	/* DEMO CODE */
@@ -34,19 +39,28 @@ Level::Level(int num)
 		victims->push_back(new Victim((PixelCoords) {50, 50}));
 		victims->push_back(new Victim((PixelCoords) {500, 30}));
 		
-		levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}));
+		levelObjects->push_back(new LevelObject((PixelCoords) {100, 200}, 1));
 		
 		for (int i = 0; i < 4; i++)
-			levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}));
+			levelObjects->push_back(new LevelObject((PixelCoords) {200, 200 + i * 32}, 1));
 	}
 	else {
 		for (int i = 0; i < 3 + num; i++) {
 			victims->push_back(new Victim((PixelCoords) {
 				40 + std::rand() % 580, 40 + std::rand() % 400}));
 				
-			levelObjects->push_back(new LevelObject((PixelCoords) {
-				40 + std::rand() % 580, 40 + std::rand() % 400}));
+			LevelObject *lob = new LevelObject((PixelCoords) {
+				40 + std::rand() % 580, 40 + std::rand() % 400}, std::rand() % 3);
+			levelObjects->push_back(lob);
 		}
+	}
+	
+	// make sure player is not stuck
+	while (1) {
+		CollisionChecker *c = Game::globalGame->collisionChecker;
+		if (c->playerCanMoveTo(player->position)) break;
+		player->position.x = 40 + std::rand() % 580;
+		player->position.y = 40 + std::rand() % 400;
 	}
 }
 
