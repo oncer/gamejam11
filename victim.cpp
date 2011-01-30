@@ -93,6 +93,9 @@ void Victim::explode() {
 		f->dy = y * r / 10;
 		foods->push_back(f);
 	}
+	
+	// shake screen
+	Game::globalGame->currentLevel->shake();
 }
 
 Victim Victim::split()

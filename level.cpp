@@ -122,6 +122,11 @@ void Level::update()
 	
 	// player hunger increases
 	player->increaseHunger();
+	
+	// level shake
+	shakeAngle += shakeRotation;
+	shakeIntensity *= 0.9;
+	shakeRotation *= 0.9;
 }
 
 void Level::draw()
@@ -153,6 +158,13 @@ void Level::draw()
 	for (BulletList::iterator it = bullets->begin(); it != bullets->end(); it++) {
 		(*it)->draw();
 	}
+}
+
+void Level::shake()
+{
+	shakeIntensity += SHAKE_INTENSITY_GAIN * rand() / RAND_MAX;
+	if (shakeIntensity > SHAKE_INTENSITY_MAX) shakeIntensity = SHAKE_INTENSITY_MAX;
+	shakeRotation += ((2.0 * SHAKE_ROTATION_GAIN) - SHAKE_ROTATION_GAIN) * rand() / RAND_MAX;
 }
 
 bool Level::isInLevelBoundaries(PixelCoords coords)
