@@ -151,6 +151,7 @@ void Game::update()
 			if (levelCounter == 21) {
 				state = GS_GameWon;
 				levelCounter = 1;
+				ignoreKeyboardTicks = 20;
 			}
 			else {
 				state = GS_LevelWon;

@@ -24,6 +24,9 @@ Level::Level()
 	pixelHeight = Game::HEIGHT;
 	foodInterval = BASE_FOOD_INTERVAL;
 	foodTimer = foodInterval;
+	shakeIntensity = 0;
+	shakeAngle = 0;
+	shakeRotation = 0;
 }
 
 void Level::create(int num) {
@@ -180,9 +183,8 @@ void Level::update()
 
 void Level::draw()
 {
-	#if SCREEN_SHAKE_ENABLED
-	
 	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	const ALLEGRO_TRANSFORM* parentTransform = al_get_current_transform();
 	int width = al_get_bitmap_width(targetBackup);
 	int height = al_get_bitmap_height(targetBackup);
 	
@@ -193,8 +195,7 @@ void Level::draw()
 	ALLEGRO_BITMAP *drawingTarget = al_create_sub_bitmap(targetBackup,
 		offsetX, offsetY, width + offsetX, height + offsetY);
 	al_set_target_bitmap(drawingTarget);
-	
-	#endif /* SCREEN_SHAKE_ENABLED */
+	al_use_transform(parentTransform);
 	
 	Resources* resources = Resources::instance();
 	
@@ -232,13 +233,63 @@ void Level::draw()
 	if (laser->active) drawLaser();
 	laser->deactivate();
 
-	#if SCREEN_SHAKE_ENABLED
-	
 	al_set_target_bitmap(targetBackup);
 	al_destroy_bitmap(drawingTarget);
-	
-	#endif /* SCREEN_SHAKE_ENABLED */
 }
+
+/* BACKUP
+ * 
+void Level::draw()
+{
+	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
+	al_set_target_bitmap(shakeBuffer);
+	
+	Resources* resources = Resources::instance();
+	
+	// Background
+	ALLEGRO_BITMAP* img = resources->imgBackground[levelBackground];
+	float sw = al_get_bitmap_width(img);
+	float sh = al_get_bitmap_height(img);
+	al_draw_scaled_bitmap(img, 0, 0, sw, sh, 0, 0, pixelWidth, pixelHeight, 0);
+	
+	// Level objects (walls)
+	for (LevelObjectList::iterator it = levelObjects->begin(); it != levelObjects->end(); it++) {
+		(*it)->draw();
+	}
+	
+	// Food objects
+	for (FoodList::iterator it = foods->begin(); it != foods->end(); it++) {
+		(*it)->draw();
+	}
+	
+	// Weapon objects
+	for (WeaponList::iterator it = weapons->begin(); it != weapons->end(); it++) {
+		(*it)->draw();
+	}
+	
+	// Moving actors: Victims & Player
+	for (VictimList::iterator it = victims->begin(); it != victims->end(); it++) {
+		(*it)->draw();
+	}
+	player->draw();
+	
+	// Projectiles & Laser
+	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end(); it++) {
+		(*it)->draw();
+	}
+	if (laser->active) drawLaser();
+	laser->deactivate();
+
+	// shake
+	int tWidth = al_get_bitmap_width(targetBackup);
+	int tHeight = al_get_bitmap_height(targetBackup);
+	float offsetX = ((ticks % 2)*2-1) * cos(shakeAngle) * shakeIntensity;
+	float offsetY = ((ticks % 2)*2-1) * sin(shakeAngle) * shakeIntensity;
+	
+	al_set_target_bitmap(targetBackup);
+	al_draw_scaled_bitmap(shakeBuffer, 0, 0, pixelWidth, pixelHeight,
+		0, 0, tWidth, tHeight, 0);
+}  */
 
 void Level::shake()
 {

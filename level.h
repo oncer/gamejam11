@@ -13,8 +13,6 @@ class Level;
 #include "weapon.h"
 #include "laser.h"
 
-#define SCREEN_SHAKE_ENABLED 0
-
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;
@@ -82,6 +80,7 @@ int foodTimer; // Ticks remaining until food spawns
 float shakeIntensity; // approx. pixels
 float shakeAngle;
 float shakeRotation;
+ALLEGRO_BITMAP* shakeBuffer; // intermediate drawing target for shaking screen
 
 void spawnFood();
 void drawLaser();
