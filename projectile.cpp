@@ -42,3 +42,7 @@ void Projectile::doMove()
 		isDead = true;
 	}
 }
+
+void Projectile::onHitVictim()
+{
+}

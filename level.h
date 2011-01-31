@@ -13,6 +13,8 @@ class Level;
 #include "weapon.h"
 #include "laser.h"
 
+#define SCREEN_SHAKE_ENABLED 0
+
 typedef std::list<Victim*> VictimList;
 typedef std::vector<LevelObject*> LevelObjectList;
 typedef std::list<Food*> FoodList;

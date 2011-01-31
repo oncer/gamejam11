@@ -18,6 +18,7 @@ virtual bool canMove();
 virtual void doMove();
 virtual void nextAnimFrame() = 0;
 virtual float getBaseSpeed() = 0;
+virtual void onHitVictim();
 
 PixelCoords position;
 float dx, dy;

@@ -176,7 +176,7 @@ void CollisionChecker::victimVsProjectile()
 			}
 			
 			if (boxCollision(victim->position, projectile->position, VICTIM_WIDTH, VICTIM_HEIGHT, PROJECTILE_WIDTH, PROJECTILE_HEIGHT)) {
-				projectile->isDead = true;
+				projectile->onHitVictim();
 				victim->explode();
 				if (explodeAudioDelay <= 0) {
 					Audio::playSFX(Audio::SFX_DEATH);

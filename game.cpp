@@ -16,12 +16,11 @@ void Game::init ()
 	al_set_new_display_flags(ALLEGRO_RESIZABLE);
 	display = al_create_display(WIDTH, HEIGHT);
 	
-	al_install_mouse(); // TODO: maybe not needed
 	al_install_keyboard();
 	al_init_image_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
-	al_init_primitives_addon(); // TODO: maybe not needed
+	al_init_primitives_addon();
 	Audio::init();
 	srand(time(0));
 	
@@ -44,8 +43,6 @@ void Game::init ()
 	al_register_event_source(queue, (ALLEGRO_EVENT_SOURCE*)al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_timer_event_source(timer));
 	al_register_event_source(queue, al_get_display_event_source(display));
-	
-	drawingTarget = al_create_bitmap(Game::WIDTH, Game::HEIGHT);
 
 	state = GS_Title;
 	Audio::playMusic(Audio::MUSIC_TITLE);
@@ -200,11 +197,7 @@ void Game::draw()
 
 void Game::drawLevelAndHud()
 {
-	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
-	al_set_target_bitmap(drawingTarget);
 	currentLevel->draw();
-	al_set_target_bitmap(targetBackup);
-	al_draw_bitmap(drawingTarget, 0, 0, 0);
 	hud->draw();
 }
 
@@ -228,5 +221,4 @@ void Game::shutdown ()
 	delete ai;
 	delete currentLevel;
 	delete hud;
-	al_destroy_bitmap(drawingTarget);
 }

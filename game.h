@@ -54,7 +54,6 @@ static const int FPS = 60;
 ALLEGRO_DISPLAY * display; // TODO: move to somewhere else
 ALLEGRO_TIMER *timer;
 Resources* resources; // Game assets from files (images, sounds, ...)
-ALLEGRO_BITMAP* drawingTarget; // in level: for alpha blending enabled draw operations
 
 Hud* hud;
 AI* ai;

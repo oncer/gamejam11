@@ -30,3 +30,8 @@ float Bullet::getBaseSpeed()
 {
 	return Bullet::BASE_SPEED;
 }
+
+void Bullet::onHitVictim()
+{
+	isDead = true;
+}

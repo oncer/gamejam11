@@ -16,6 +16,7 @@ virtual ~Bullet();
 virtual void draw();
 virtual void nextAnimFrame();
 virtual float getBaseSpeed();
+virtual void onHitVictim();
 
 static const float BASE_SPEED = 5.0;
 

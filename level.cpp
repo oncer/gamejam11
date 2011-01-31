@@ -180,6 +180,8 @@ void Level::update()
 
 void Level::draw()
 {
+	#if SCREEN_SHAKE_ENABLED
+	
 	ALLEGRO_BITMAP* targetBackup = al_get_target_bitmap();
 	int width = al_get_bitmap_width(targetBackup);
 	int height = al_get_bitmap_height(targetBackup);
@@ -191,6 +193,8 @@ void Level::draw()
 	ALLEGRO_BITMAP *drawingTarget = al_create_sub_bitmap(targetBackup,
 		offsetX, offsetY, width + offsetX, height + offsetY);
 	al_set_target_bitmap(drawingTarget);
+	
+	#endif /* SCREEN_SHAKE_ENABLED */
 	
 	Resources* resources = Resources::instance();
 	
@@ -228,15 +232,19 @@ void Level::draw()
 	if (laser->active) drawLaser();
 	laser->deactivate();
 
+	#if SCREEN_SHAKE_ENABLED
+	
 	al_set_target_bitmap(targetBackup);
 	al_destroy_bitmap(drawingTarget);
+	
+	#endif /* SCREEN_SHAKE_ENABLED */
 }
 
 void Level::shake()
 {
 	shakeIntensity += SHAKE_INTENSITY_GAIN * rand() / RAND_MAX;
 	if (shakeIntensity > SHAKE_INTENSITY_MAX) shakeIntensity = SHAKE_INTENSITY_MAX;
-	shakeRotation += ((2.0 * SHAKE_ROTATION_GAIN) - SHAKE_ROTATION_GAIN) * rand() / RAND_MAX;
+	shakeRotation += SHAKE_ROTATION_GAIN * (2.0 * rand() / RAND_MAX - 1.0);
 }
 
 bool Level::isInLevelBoundaries(PixelCoords coords)
