@@ -14,6 +14,7 @@ Player::Player(PixelCoords pos)
 	isDead = false;
 	fireTicks = 0;
 	changeWeapon(WEAPON_GUN);
+        stickyDiagonal = 0;
 }
 
 void Player::nextAnimFrame()

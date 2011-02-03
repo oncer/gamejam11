@@ -18,6 +18,7 @@ virtual ~Flame();
 virtual void draw();
 virtual void nextAnimFrame();
 virtual float getBaseSpeed();
+virtual void onHitVictim();
 
 static const float BASE_SPEED = 4.0;
 

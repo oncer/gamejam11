@@ -39,3 +39,9 @@ float Flame::getBaseSpeed()
 {
 	return Flame::BASE_SPEED;
 }
+
+void Flame::onHitVictim()
+{
+    Projectile::onHitVictim();
+}
+

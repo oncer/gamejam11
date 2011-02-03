@@ -13,7 +13,6 @@ Projectile::Projectile(PixelCoords pos)
 	steps = 0;
 	maxSteps = 60;
 	dx = dy = 0;
-	isDead = false;
 }
 Projectile::~Projectile() {}
 
@@ -46,3 +45,4 @@ void Projectile::doMove()
 void Projectile::onHitVictim()
 {
 }
+

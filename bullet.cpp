@@ -35,3 +35,4 @@ void Bullet::onHitVictim()
 {
 	isDead = true;
 }
+

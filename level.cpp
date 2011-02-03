@@ -150,8 +150,8 @@ void Level::update()
 	for (ProjectileList::iterator it = projectiles->begin(); it != projectiles->end();) {
 		Projectile* projectile = *it;
 		if (projectile->isDead) {
-			it = projectiles->erase(it);
 			delete projectile;
+			it = projectiles->erase(it);
 		}
 		else
 			it++;
